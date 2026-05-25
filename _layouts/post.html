@@ -2,41 +2,64 @@
 layout: default
 ---
 
-<article class="post-article">
-  <div class="post-header">
-    <div class="post-meta-top">
-      <span class="post-category cat-{{ page.category }}">{{ page.category | upcase }}</span>
-      <span class="post-date">{{ page.date | date: "%Y.%m.%d" }}</span>
+<div class="post-wrap">
+  <div class="post-head">
+    <div class="post-head-meta">
+      <span class="cat-chip {% if page.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">
+        {{ page.category | upcase }}
+      </span>
+      <span class="art-date">{{ page.date | date: "%Y.%m.%d" }}</span>
     </div>
 
-    <div class="post-titles">
-      <h1 class="post-title-cn">{{ page.title_cn }}</h1>
-      <h2 class="post-title-en">{{ page.title_en }}</h2>
+    <h1 class="post-title-cn zh">{{ page.title_cn }}</h1>
+    <p class="post-title-en en">{{ page.title_en }}</p>
+
+    <div class="post-summary">
+      <p class="zh">{{ page.summary_cn }}</p>
+      <p class="en">{{ page.summary_en }}</p>
     </div>
 
-    <div class="post-summary-block">
-      <div class="summary-cn">{{ page.summary_cn }}</div>
-      <div class="summary-en">{{ page.summary_en }}</div>
-    </div>
-
-    <div class="post-tags">
+    <div class="post-tags-row">
       {% for tag in page.tags %}
-      <span class="tag">#{{ tag }}</span>
+      <span class="tag">{{ tag }}</span>
       {% endfor %}
     </div>
   </div>
 
-  <div class="lang-toggle">
-    <button class="lang-btn active" data-lang="cn">中文</button>
-    <button class="lang-btn" data-lang="en">English</button>
-    <button class="lang-btn" data-lang="both">双语</button>
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn">
+      <span class="zh">中文</span><span class="en">Chinese</span>
+    </button>
+    <button class="lsw-btn" data-target="en">
+      <span class="zh">英文</span><span class="en">English</span>
+    </button>
+    <button class="lsw-btn" data-target="both">
+      <span class="zh">双语</span><span class="en">Bilingual</span>
+    </button>
   </div>
 
-  <div class="post-content">
+  <div class="post-body post-content">
     {{ content }}
   </div>
 
   <div class="post-nav">
-    <a href="{{ '/' | relative_url }}" class="back-link">← 返回首页 / Back to Home</a>
+    <a href="{{ '/' | relative_url }}" class="back-link">
+      <span class="zh">← 返回首页</span>
+      <span class="en">← Back to Home</span>
+    </a>
   </div>
-</article>
+</div>
+
+<script>
+document.querySelectorAll('.lsw-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lsw-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const t = btn.dataset.target;
+    const pc = document.querySelector('.post-content');
+    pc.classList.remove('show-en','show-both');
+    if (t === 'en') pc.classList.add('show-en');
+    if (t === 'both') pc.classList.add('show-both');
+  });
+});
+</script>

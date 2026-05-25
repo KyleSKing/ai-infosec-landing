@@ -1,55 +1,107 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-lang="zh">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% if page.title_cn %}{{ page.title_cn }} | {% endif %}AI Infosec Landing</title>
+  <title>{% if page.title_cn %}{{ page.title_cn }} | {% endif %}AI · InfoSec Landing</title>
   <meta name="description" content="{{ page.summary_cn | default: site.description }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
   {% seo %}
 </head>
 <body>
-  <div class="scan-line"></div>
 
-  <header class="site-header">
-    <nav class="nav-container">
-      <a href="{{ '/' | relative_url }}" class="logo">
-        <span class="logo-bracket">[</span>
-        <span class="logo-text">AI<span class="accent">://</span>INFOSEC</span>
-        <span class="logo-bracket">]</span>
-      </a>
-      <div class="nav-links">
-        <a href="{{ '/category/ai' | relative_url }}" class="nav-link">AI情报</a>
-        <a href="{{ '/category/infosec' | relative_url }}" class="nav-link">安全预警</a>
-        <a href="{{ '/feed.xml' | relative_url }}" class="nav-link rss">RSS</a>
+<header class="site-header">
+  <nav class="nav">
+    <a href="{{ '/' | relative_url }}" class="logo">
+      <div class="logo-orb"></div>
+      <div>
+        <div class="logo-text">AI · INFOSEC</div>
+        <div class="logo-sub">Daily Intelligence</div>
       </div>
-    </nav>
-    <div class="header-ticker">
-      <span class="ticker-label">LIVE</span>
-      <span class="ticker-text">Daily AI & Cybersecurity Intelligence — Updated Every 08:00 CST</span>
+    </a>
+
+    <div class="nav-cats">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部</span><span class="en">All</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI 情报</span><span class="en">AI Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全预警</span><span class="en">InfoSec</span>
+      </button>
     </div>
-  </header>
 
-  <main class="main-content">
-    {{ content }}
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <span class="logo-text">AI<span class="accent">://</span>INFOSEC LANDING</span>
-        <p>双语AI与信息安全情报 / Bilingual AI & Security Intelligence</p>
+    <div class="nav-right">
+      <div class="live-pill">
+        <div class="live-dot"></div>
+        <span class="zh">每日更新</span><span class="en">DAILY</span>
       </div>
-      <div class="footer-meta">
-        <p>Powered by DeepSeek V4 Flash + Tavily Search</p>
-        <p>Auto-published daily via GitHub Actions</p>
-        <p class="footer-time" id="footer-time"></p>
+      <div class="lang-toggle">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
       </div>
     </div>
-  </footer>
+  </nav>
+</header>
 
-  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+<main>
+  {{ content }}
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="logo-name">AI · INFOSEC LANDING</div>
+      <p>
+        <span class="zh">每日 AI 与信息安全双语深度情报<br>由 DeepSeek V4 Flash + Tavily 驱动</span>
+        <span class="en">Daily bilingual AI & security intelligence<br>Powered by DeepSeek V4 Flash + Tavily</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p class="zh">© {{ 'now' | date: "%Y" }} AI Infosec Landing · 每天 08:00 CST 自动更新</p>
+      <p class="en">© {{ 'now' | date: "%Y" }} AI Infosec Landing · Auto-published daily 08:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Lang switch
+const htmlEl = document.documentElement;
+document.querySelectorAll('.lang-opt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-opt').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    htmlEl.setAttribute('data-lang', btn.dataset.lang);
+    localStorage.setItem('lang', btn.dataset.lang);
+  });
+});
+// Restore lang preference
+const saved = localStorage.getItem('lang');
+if (saved) {
+  htmlEl.setAttribute('data-lang', saved);
+  document.querySelectorAll('.lang-opt').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === saved);
+  });
+}
+
+// Category filter (homepage only)
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active','ai-active','sec-active'));
+    btn.classList.add('active');
+    const cat = btn.dataset.cat;
+    if (cat === 'ai') btn.classList.add('ai-active');
+    if (cat === 'infosec') btn.classList.add('sec-active');
+    document.querySelectorAll('.article[data-cat]').forEach(a => {
+      a.style.display = (cat === 'all' || a.dataset.cat === cat) ? '' : 'none';
+    });
+  });
+});
+</script>
 </body>
 </html>
