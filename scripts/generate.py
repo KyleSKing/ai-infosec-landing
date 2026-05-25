@@ -7,13 +7,14 @@ Uses Tavily for search + DeepSeek V4 Flash via OpenRouter for writing
 import os
 import json
 import requests
+import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 # Config
 OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
 TAVILY_API_KEY = os.environ["TAVILY_API_KEY"]
-MODEL = "deepseek/deepseek-v4-flash:free"
+MODEL = "deepseek/deepseek-v4-flash"
 POSTS_DIR = Path("_posts")
 POSTS_DIR.mkdir(exist_ok=True)
 
@@ -23,7 +24,7 @@ TODAY = datetime.now(BJT).strftime("%Y-%m-%d")
 TODAY_CN = datetime.now(BJT).strftime("%Y年%m月%d日")
 
 
-def tavily_search(query: str, max_results: int = 5) -> list[dict]:
+def tavily_search(query: str, max_results: int = 3) -> list[dict]:
     """Search for latest news using Tavily"""
     resp = requests.post(
         "https://api.tavily.com/search",
@@ -45,27 +46,40 @@ def tavily_search(query: str, max_results: int = 5) -> list[dict]:
 
 
 def call_llm(system: str, user: str) -> str:
-    """Call DeepSeek V4 Flash via OpenRouter"""
-    resp = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-            "HTTP-Referer": "https://ai-infosec-landing.github.io",
-            "X-Title": "AI Infosec Landing",
-        },
-        json={
-            "model": MODEL,
-            "messages": [
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
-            ],
-            "temperature": 0.7,
-            "max_tokens": 4000,
-        },
-        timeout=120,
-    )
-    resp.raise_for_status()
-    return resp.json()["choices"][0]["message"]["content"]
+    """Call DeepSeek V4 Flash via OpenRouter with retry/backoff"""
+    payload = {
+        "model": MODEL,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+        "temperature": 0.7,
+        "max_tokens": 4000,
+    }
+    print("Using model:", payload["model"])
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            resp = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                    "HTTP-Referer": "https://ai-infosec-landing.github.io",
+                    "X-Title": "AI Infosec Landing",
+                },
+                json=payload,
+                timeout=120,
+            )
+            resp.raise_for_status()
+            return resp.json()["choices"][0]["message"]["content"]
+        except requests.exceptions.HTTPError as e:
+            if resp.status_code == 429 and attempt < max_retries - 1:
+                wait = 2 ** attempt  # 1,2,4 seconds
+                print(f"Rate-limited (429), retrying in {wait}s...")
+                time.sleep(wait)
+                continue
+            else:
+                raise
 
 
 def generate_article(topic: str, category: str, search_queries: list[str]) -> dict:
@@ -91,7 +105,7 @@ def generate_article(topic: str, category: str, search_queries: list[str]) -> di
 
     # Build context
     context_parts = []
-    for i, r in enumerate(unique_results[:6], 1):
+    for i, r in enumerate(unique_results[:3], 1):
         context_parts.append(
             f"[{i}] {r['title']}\nURL: {r['url']}\n{r.get('content', '')[:500]}"
         )
@@ -238,7 +252,7 @@ summary_cn: "{article['summary_cn']}"
 
 
 def main():
-    print(f"🚀 AI Infosec Landing — Daily Publisher [{TODAY}]")
+    print(f"AI Infosec Landing — Daily Publisher [{TODAY}]")
     print("=" * 50)
 
     articles = [
