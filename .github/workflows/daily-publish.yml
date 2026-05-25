@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      # needed for pushing to gh-pages branch
-      # contents: write already covers it
 
     steps:
       - name: Checkout repository
@@ -33,18 +31,10 @@ jobs:
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
         run: python scripts/generate.py
 
-      - name: Set up Ruby and Jekyll
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1'  # or any version compatible with your Gemfile
-          bundler-cache: true
-
-      - name: Build Jekyll site
-        run: bundle exec jekyll build --destination _site
-
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./_site
-          # optionally keep history: keep_files: false
+      - name: Commit and push
+        run: |
+          git config --global user.name "AI Publisher Bot"
+          git config --global user.email "bot@ai-infosec-landing.io"
+          git add _posts/
+          git diff --staged --quiet || git commit -m "📰 Daily articles $(date '+%Y-%m-%d')"
+          git push
