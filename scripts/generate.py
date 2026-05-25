@@ -13,7 +13,7 @@ from pathlib import Path
 # Config
 OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
 TAVILY_API_KEY = os.environ["TAVILY_API_KEY"]
-MODEL = "deepseek/deepseek-v4-flash:free"
+MODEL = "deepseek/deepseek-v4-flash"
 POSTS_DIR = Path("_posts")
 POSTS_DIR.mkdir(exist_ok=True)
 
