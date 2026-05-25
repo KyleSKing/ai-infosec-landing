@@ -93,7 +93,7 @@ def generate_article(topic: str, category: str, search_queries: list[str]) -> di
 
     # Build context
     context_parts = []
-    for i, r in enumerate(unique_results[:6], 1):
+    for i, r in enumerate(unique_results[:3], 1):
         context_parts.append(
             f"[{i}] {r['title']}\nURL: {r['url']}\n{r.get('content', '')[:500]}"
         )
