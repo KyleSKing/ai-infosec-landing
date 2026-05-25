@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title_cn %}{{ page.title_cn }} | {% endif %}AI Infosec Landing</title>
+  <meta name="description" content="{{ page.summary_cn | default: site.description }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Noto+Sans+SC:wght@300;400;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  {% seo %}
+</head>
+<body>
+  <div class="scan-line"></div>
+
+  <header class="site-header">
+    <nav class="nav-container">
+      <a href="{{ '/' | relative_url }}" class="logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">AI<span class="accent">://</span>INFOSEC</span>
+        <span class="logo-bracket">]</span>
+      </a>
+      <div class="nav-links">
+        <a href="{{ '/category/ai' | relative_url }}" class="nav-link">AI情报</a>
+        <a href="{{ '/category/infosec' | relative_url }}" class="nav-link">安全预警</a>
+        <a href="{{ '/feed.xml' | relative_url }}" class="nav-link rss">RSS</a>
+      </div>
+    </nav>
+    <div class="header-ticker">
+      <span class="ticker-label">LIVE</span>
+      <span class="ticker-text">Daily AI & Cybersecurity Intelligence — Updated Every 08:00 CST</span>
+    </div>
+  </header>
+
+  <main class="main-content">
+    {{ content }}
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="logo-text">AI<span class="accent">://</span>INFOSEC LANDING</span>
+        <p>双语AI与信息安全情报 / Bilingual AI & Security Intelligence</p>
+      </div>
+      <div class="footer-meta">
+        <p>Powered by DeepSeek V4 Flash + Tavily Search</p>
+        <p>Auto-published daily via GitHub Actions</p>
+        <p class="footer-time" id="footer-time"></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+</body>
+</html>

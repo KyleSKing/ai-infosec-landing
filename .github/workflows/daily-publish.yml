@@ -1,0 +1,40 @@
+name: Daily Article Publisher
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天UTC 00:00（北京时间08:00）
+  workflow_dispatch:       # 允许手动触发
+
+jobs:
+  generate-and-publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests python-dateutil
+
+      - name: Generate articles
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+        run: python scripts/generate.py
+
+      - name: Commit and push
+        run: |
+          git config --global user.name "AI Publisher Bot"
+          git config --global user.email "bot@ai-infosec-landing.io"
+          git add _posts/
+          git diff --staged --quiet || git commit -m "📰 Daily articles $(date '+%Y-%m-%d')"
+          git push

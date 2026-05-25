@@ -1,0 +1,42 @@
+---
+layout: default
+---
+
+<article class="post-article">
+  <div class="post-header">
+    <div class="post-meta-top">
+      <span class="post-category cat-{{ page.category }}">{{ page.category | upcase }}</span>
+      <span class="post-date">{{ page.date | date: "%Y.%m.%d" }}</span>
+    </div>
+
+    <div class="post-titles">
+      <h1 class="post-title-cn">{{ page.title_cn }}</h1>
+      <h2 class="post-title-en">{{ page.title_en }}</h2>
+    </div>
+
+    <div class="post-summary-block">
+      <div class="summary-cn">{{ page.summary_cn }}</div>
+      <div class="summary-en">{{ page.summary_en }}</div>
+    </div>
+
+    <div class="post-tags">
+      {% for tag in page.tags %}
+      <span class="tag">#{{ tag }}</span>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="cn">中文</button>
+    <button class="lang-btn" data-lang="en">English</button>
+    <button class="lang-btn" data-lang="both">双语</button>
+  </div>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+  <div class="post-nav">
+    <a href="{{ '/' | relative_url }}" class="back-link">← 返回首页 / Back to Home</a>
+  </div>
+</article>

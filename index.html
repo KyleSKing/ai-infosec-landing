@@ -1,0 +1,92 @@
+---
+layout: default
+---
+
+<div class="homepage">
+  <section class="hero">
+    <div class="hero-grid">
+      <div class="hero-text">
+        <div class="hero-label">INTELLIGENCE FEED / 情报订阅</div>
+        <h1 class="hero-title">
+          <span class="hero-title-line">AI &amp;</span>
+          <span class="hero-title-line accent">INFOSEC</span>
+          <span class="hero-title-line">LANDING</span>
+        </h1>
+        <p class="hero-sub">每日AI与信息安全双语深度分析<br>Daily bilingual deep-dive on AI &amp; cybersecurity</p>
+        <div class="hero-stats">
+          <div class="stat">
+            <span class="stat-num">2</span>
+            <span class="stat-label">Articles/Day</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">双语</span>
+            <span class="stat-label">Bilingual</span>
+          </div>
+          <div class="stat">
+            <span class="stat-num">AI</span>
+            <span class="stat-label">Powered</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal-block">
+          <div class="terminal-bar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">ai-infosec-landing.sh</span>
+          </div>
+          <div class="terminal-body">
+            <div class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">fetch --source tavily</span></div>
+            <div class="t-line"><span class="t-prompt">></span> <span class="t-out">scanning AI news... ✓</span></div>
+            <div class="t-line"><span class="t-prompt">></span> <span class="t-out">scanning infosec feeds... ✓</span></div>
+            <div class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">generate --model deepseek-v4-flash</span></div>
+            <div class="t-line"><span class="t-prompt">></span> <span class="t-out">writing bilingual articles... ✓</span></div>
+            <div class="t-line"><span class="t-prompt">$</span> <span class="t-cmd">publish --target github-pages</span></div>
+            <div class="t-line t-blink"><span class="t-prompt">></span> <span class="t-out">deploying... <span class="cursor">▋</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="posts-section">
+    <div class="section-header">
+      <h2 class="section-title">最新情报 <span class="en">/ Latest Intelligence</span></h2>
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">全部</button>
+        <button class="filter-btn" data-filter="ai">AI</button>
+        <button class="filter-btn" data-filter="infosec">InfoSec</button>
+      </div>
+    </div>
+
+    <div class="posts-grid">
+      {% for post in site.posts %}
+      <article class="post-card cat-{{ post.category }}" data-category="{{ post.category }}">
+        <div class="card-meta">
+          <span class="card-category cat-{{ post.category }}">{{ post.category | upcase }}</span>
+          <span class="card-date">{{ post.date | date: "%m.%d" }}</span>
+        </div>
+        <h3 class="card-title-cn">
+          <a href="{{ post.url | relative_url }}">{{ post.title_cn }}</a>
+        </h3>
+        <p class="card-title-en">{{ post.title_en }}</p>
+        <p class="card-summary">{{ post.summary_cn }}</p>
+        <div class="card-tags">
+          {% for tag in post.tags limit:3 %}
+          <span class="tag">#{{ tag }}</span>
+          {% endfor %}
+        </div>
+        <a href="{{ post.url | relative_url }}" class="card-read-more">阅读全文 →</a>
+      </article>
+      {% endfor %}
+
+      {% if site.posts.size == 0 %}
+      <div class="no-posts">
+        <p>📡 正在初始化情报系统...</p>
+        <p>First articles will be published tomorrow at 08:00 CST</p>
+      </div>
+      {% endif %}
+    </div>
+  </section>
+</div>
