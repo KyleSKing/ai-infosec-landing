@@ -46,6 +46,16 @@ def tavily_search(query: str, max_results: int = 5) -> list[dict]:
 
 def call_llm(system: str, user: str) -> str:
     """Call DeepSeek V4 Flash via OpenRouter"""
+    payload = {
+        "model": MODEL,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+        "temperature": 0.7,
+        "max_tokens": 4000,
+    }
+    print("🔎 Using model:", payload["model"])
     resp = requests.post(
         "https://openrouter.ai/api/v1/chat/completions",
         headers={
@@ -53,15 +63,7 @@ def call_llm(system: str, user: str) -> str:
             "HTTP-Referer": "https://ai-infosec-landing.github.io",
             "X-Title": "AI Infosec Landing",
         },
-        json={
-            "model": MODEL,
-            "messages": [
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
-            ],
-            "temperature": 0.7,
-            "max_tokens": 4000,
-        },
+        json=payload,
         timeout=120,
     )
     resp.raise_for_status()
