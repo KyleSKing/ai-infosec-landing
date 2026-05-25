@@ -7,6 +7,7 @@ Uses Tavily for search + DeepSeek V4 Flash via OpenRouter for writing
 import os
 import json
 import requests
+import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
@@ -45,7 +46,7 @@ def tavily_search(query: str, max_results: int = 5) -> list[dict]:
 
 
 def call_llm(system: str, user: str) -> str:
-    """Call DeepSeek V4 Flash via OpenRouter"""
+    """Call DeepSeek V4 Flash via OpenRouter with retry/backoff"""
     payload = {
         "model": MODEL,
         "messages": [
@@ -56,18 +57,29 @@ def call_llm(system: str, user: str) -> str:
         "max_tokens": 4000,
     }
     print("🔎 Using model:", payload["model"])
-    resp = requests.post(
-        "https://openrouter.ai/api/v1/chat/completions",
-        headers={
-            "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-            "HTTP-Referer": "https://ai-infosec-landing.github.io",
-            "X-Title": "AI Infosec Landing",
-        },
-        json=payload,
-        timeout=120,
-    )
-    resp.raise_for_status()
-    return resp.json()["choices"][0]["message"]["content"]
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            resp = requests.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+                    "HTTP-Referer": "https://ai-infosec-landing.github.io",
+                    "X-Title": "AI Infosec Landing",
+                },
+                json=payload,
+                timeout=120,
+            )
+            resp.raise_for_status()
+            return resp.json()["choices"][0]["message"]["content"]
+        except requests.exceptions.HTTPError as e:
+            if resp.status_code == 429 and attempt < max_retries - 1:
+                wait = 2 ** attempt  # 1,2,4 seconds
+                print(f"⏳ Rate‑limited (429), retrying in {wait}s…")
+                time.sleep(wait)
+                continue
+            else:
+                raise
 
 
 def generate_article(topic: str, category: str, search_queries: list[str]) -> dict:
