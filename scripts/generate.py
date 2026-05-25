@@ -54,7 +54,7 @@ def call_llm(system: str, user: str) -> str:
             {"role": "user", "content": user},
         ],
         "temperature": 0.7,
-        "max_tokens": 4000,
+        "max_tokens": 2000,
     }
     print("Using model:", payload["model"])
     max_retries = 3
