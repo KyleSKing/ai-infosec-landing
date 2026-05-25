@@ -7,14 +7,13 @@ Uses Tavily for search + DeepSeek V4 Flash via OpenRouter for writing
 import os
 import json
 import requests
-import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
 # Config
 OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
 TAVILY_API_KEY = os.environ["TAVILY_API_KEY"]
-MODEL = "deepseek/deepseek-v4-flash"
+MODEL = "deepseek/deepseek-v4-flash:free"
 POSTS_DIR = Path("_posts")
 POSTS_DIR.mkdir(exist_ok=True)
 
@@ -46,40 +45,27 @@ def tavily_search(query: str, max_results: int = 5) -> list[dict]:
 
 
 def call_llm(system: str, user: str) -> str:
-    """Call DeepSeek V4 Flash via OpenRouter with retry/backoff"""
-    payload = {
-        "model": MODEL,
-        "messages": [
-            {"role": "system", "content": system},
-            {"role": "user", "content": user},
-        ],
-        "temperature": 0.7,
-        "max_tokens": 4000,
-    }
-    print("🔎 Using model:", payload["model"])
-    max_retries = 3
-    for attempt in range(max_retries):
-        try:
-            resp = requests.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {OPENROUTER_API_KEY}",
-                    "HTTP-Referer": "https://ai-infosec-landing.github.io",
-                    "X-Title": "AI Infosec Landing",
-                },
-                json=payload,
-                timeout=120,
-            )
-            resp.raise_for_status()
-            return resp.json()["choices"][0]["message"]["content"]
-        except requests.exceptions.HTTPError as e:
-            if resp.status_code == 429 and attempt < max_retries - 1:
-                wait = 2 ** attempt  # 1,2,4 seconds
-                print(f"⏳ Rate‑limited (429), retrying in {wait}s…")
-                time.sleep(wait)
-                continue
-            else:
-                raise
+    """Call DeepSeek V4 Flash via OpenRouter"""
+    resp = requests.post(
+        "https://openrouter.ai/api/v1/chat/completions",
+        headers={
+            "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+            "HTTP-Referer": "https://ai-infosec-landing.github.io",
+            "X-Title": "AI Infosec Landing",
+        },
+        json={
+            "model": MODEL,
+            "messages": [
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+            "temperature": 0.7,
+            "max_tokens": 4000,
+        },
+        timeout=120,
+    )
+    resp.raise_for_status()
+    return resp.json()["choices"][0]["message"]["content"]
 
 
 def generate_article(topic: str, category: str, search_queries: list[str]) -> dict:
@@ -105,7 +91,7 @@ def generate_article(topic: str, category: str, search_queries: list[str]) -> di
 
     # Build context
     context_parts = []
-    for i, r in enumerate(unique_results[:3], 1):
+    for i, r in enumerate(unique_results[:6], 1):
         context_parts.append(
             f"[{i}] {r['title']}\nURL: {r['url']}\n{r.get('content', '')[:500]}"
         )
@@ -153,12 +139,50 @@ Return ONLY valid JSON in this exact structure:
 
     # Extract JSON from response
     raw = raw.strip()
-    if raw.startswith("```"):
-        raw = raw.split("```")[1]
-        if raw.startswith("json"):
-            raw = raw[4:]
-    raw = raw.strip().rstrip("```").strip()
+    # Strip markdown code fences
+    if "```" in raw:
+        parts = raw.split("```")
+        for part in parts:
+            part = part.strip()
+            if part.startswith("json"):
+                part = part[4:].strip()
+            if part.startswith("{"):
+                raw = part
+                break
+    raw = raw.strip()
+    # Find JSON boundaries
+    start = raw.find("{")
+    end = raw.rfind("}") + 1
+    if start != -1 and end > start:
+        raw = raw[start:end]
+    # Fix invalid control characters (unescaped newlines inside strings)
+    import re
+    def fix_control_chars(s):
+        # Replace literal newlines/tabs inside JSON string values
+        result = []
+        in_string = False
+        escape_next = False
+        for ch in s:
+            if escape_next:
+                result.append(ch)
+                escape_next = False
+            elif ch == '\\' and in_string:
+                result.append(ch)
+                escape_next = True
+            elif ch == '"':
+                result.append(ch)
+                in_string = not in_string
+            elif in_string and ch == '\n':
+                result.append('\\n')
+            elif in_string and ch == '\r':
+                result.append('\\r')
+            elif in_string and ch == '\t':
+                result.append('\\t')
+            else:
+                result.append(ch)
+        return ''.join(result)
 
+    raw = fix_control_chars(raw)
     return json.loads(raw)
 
 
