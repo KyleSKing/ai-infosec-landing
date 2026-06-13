@@ -6,6 +6,7 @@ Uses Tavily for search + DeepSeek V4 Flash via OpenRouter for writing
 
 import os
 import json
+import re
 import requests
 import time
 from datetime import datetime, timezone, timedelta
@@ -54,7 +55,7 @@ def call_llm(system: str, user: str) -> str:
             {"role": "user", "content": user},
         ],
         "temperature": 0.7,
-        "max_tokens": 2000,
+        "max_tokens": 3000,
     }
     print("Using model:", payload["model"])
     max_retries = 3
@@ -80,6 +81,111 @@ def call_llm(system: str, user: str) -> str:
                 continue
             else:
                 raise
+
+
+def _extract_and_parse_json(raw: str, llm_func, system_prompt: str, user_prompt: str) -> dict:
+    """Extract JSON from LLM response, fix common issues, retry on failure."""
+    import json as _json
+
+    # Try up to 2 times (first attempt + one regeneration)
+    for attempt in range(2):
+        text = raw.strip()
+
+        # Strip markdown code fences
+        if "```" in text:
+            parts = text.split("```")
+            for part in parts:
+                part = part.strip()
+                if part.startswith("json"):
+                    part = part[4:].strip()
+                if part.startswith("{"):
+                    text = part
+                    break
+        text = text.strip()
+        # Find JSON boundaries
+        start = text.find("{")
+        end = text.rfind("}") + 1
+        if start != -1 and end > start:
+            text = text[start:end]
+
+        # Fix unescaped control characters inside JSON strings
+        sanitized = []
+        in_string = False
+        escape_next = False
+        for ch in text:
+            if escape_next:
+                sanitized.append(ch)
+                escape_next = False
+            elif ch == '\\' and in_string:
+                sanitized.append(ch)
+                escape_next = True
+            elif ch == '"':
+                sanitized.append(ch)
+                in_string = not in_string
+            elif in_string and ch == '\n':
+                sanitized.append('\\n')
+            elif in_string and ch == '\r':
+                sanitized.append('\\r')
+            elif in_string and ch == '\t':
+                sanitized.append('\\t')
+            else:
+                sanitized.append(ch)
+        text = ''.join(sanitized)
+
+        # Fix unescaped double quotes inside strings (e.g., 说"你好" -> 说\"你好\")
+        # Strategy: within strings, any " that is preceded by a non-structural char
+        # is likely an unescaped quote. We try parsing first; fall back to heuristic fix.
+        try:
+            return _json.loads(text)
+        except _json.JSONDecodeError as e:
+            # Try to fix unescaped quotes: find all " positions in string context
+            # and escape those that are likely content quotes
+            fixed = []
+            in_str = False
+            prev_char = None
+            i = 0
+            while i < len(text):
+                ch = text[i]
+                if ch == '\\' and in_str:
+                    fixed.append(ch)
+                    if i + 1 < len(text):
+                        fixed.append(text[i + 1])
+                        i += 2
+                    continue
+                elif ch == '"':
+                    # Check if this is a structural quote (colon/comma/brace before/after)
+                    if not in_str:
+                        in_str = True
+                        fixed.append(ch)
+                    else:
+                        # Look ahead: if next non-space char is : , ] } then it's structural
+                        j = i + 1
+                        while j < len(text) and text[j] in ' \t\n\r':
+                            j += 1
+                        next_structural = j < len(text) and text[j] in ':,'']}'
+                        if next_structural or prev_char in ('{', ',', '['):
+                            in_str = False
+                            fixed.append(ch)
+                        else:
+                            # Likely unescaped content quote — escape it
+                            fixed.append('\\"')
+                else:
+                    fixed.append(ch)
+                prev_char = ch
+                i += 1
+            text = ''.join(fixed)
+
+            try:
+                return _json.loads(text)
+            except _json.JSONDecodeError:
+                if attempt == 0:
+                    print(f"⚠️  JSON parse failed, re-asking LLM... ({e})")
+                    print(f"  Raw preview: {raw[:200]}")
+                    # Re-ask the LLM with stricter instruction
+                    retry_prompt = user_prompt + "\n\nIMPORTANT: Your previous response had invalid JSON. Please output ONLY valid JSON with all strings properly escaped. No markdown, no code fences."
+                    raw = llm_func(system_prompt, retry_prompt)
+                else:
+                    raise
 
 
 def generate_article(topic: str, category: str, search_queries: list[str]) -> dict:
@@ -151,53 +257,7 @@ Return ONLY valid JSON in this exact structure:
 
     raw = call_llm(system_prompt, user_prompt)
 
-    # Extract JSON from response
-    raw = raw.strip()
-    # Strip markdown code fences
-    if "```" in raw:
-        parts = raw.split("```")
-        for part in parts:
-            part = part.strip()
-            if part.startswith("json"):
-                part = part[4:].strip()
-            if part.startswith("{"):
-                raw = part
-                break
-    raw = raw.strip()
-    # Find JSON boundaries
-    start = raw.find("{")
-    end = raw.rfind("}") + 1
-    if start != -1 and end > start:
-        raw = raw[start:end]
-    # Fix invalid control characters (unescaped newlines inside strings)
-    import re
-    def fix_control_chars(s):
-        # Replace literal newlines/tabs inside JSON string values
-        result = []
-        in_string = False
-        escape_next = False
-        for ch in s:
-            if escape_next:
-                result.append(ch)
-                escape_next = False
-            elif ch == '\\' and in_string:
-                result.append(ch)
-                escape_next = True
-            elif ch == '"':
-                result.append(ch)
-                in_string = not in_string
-            elif in_string and ch == '\n':
-                result.append('\\n')
-            elif in_string and ch == '\r':
-                result.append('\\r')
-            elif in_string and ch == '\t':
-                result.append('\\t')
-            else:
-                result.append(ch)
-        return ''.join(result)
-
-    raw = fix_control_chars(raw)
-    return json.loads(raw)
+    return _extract_and_parse_json(raw, call_llm, system_prompt, user_prompt)
 
 
 def save_post(article: dict, category: str, slug: str):
