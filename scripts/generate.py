@@ -321,9 +321,10 @@ def main():
             "category": "ai",
             "slug": "ai-weekly",
             "queries": [
-                "AI artificial intelligence news this week 2026",
-                "large language model LLM release update 2026",
-                "AI research breakthrough 2026",
+                "AI artificial intelligence agent news this week 2026",
+                "large language model LLM release update agent harness loop 2026",
+                "AI research breakthrough agentic coding harness loop 2026",
+                "AI agent vibe coding news 2026",
             ],
         },
         {
@@ -331,9 +332,10 @@ def main():
             "category": "infosec",
             "slug": "infosec-weekly",
             "queries": [
-                "cybersecurity vulnerability exploit 2026",
-                "data breach ransomware attack news 2026",
-                "information security CVE zero-day 2026",
+                "cybersecurity vulnerability exploit compliance regulation regime 2026",
+                "data privacy breach ransomware attack news 2026",
+                "information security CVE zero-day zero trust DevSecOps 2026",
+                "security compliance regulation data privacy zero trust DevSecOps 2026",
             ],
         },
     ]
