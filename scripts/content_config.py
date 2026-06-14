@@ -1,4 +1,4 @@
-"""Content strategy, article styles, and search queries for daily publishing."""
+"""Content strategy, content types, and search queries for daily publishing."""
 
 SYSTEM_PROMPT = """You are a bilingual technology writer for Chinese and English readers.
 
@@ -41,7 +41,14 @@ Writing requirements:
 
 Output format: Strictly follow the requested JSON structure. No markdown outside JSON."""
 
-STYLE_USER_PROMPTS = {
+CONTENT_TYPE_LABELS = {
+    "tool_guide": {"cn": "工具攻略", "en": "Tool Guide"},
+    "trend_explainer": {"cn": "趋势分析", "en": "Trend Analysis"},
+    "defensive_playbook": {"cn": "防御实操", "en": "Defensive Playbook"},
+    "regulation_watch": {"cn": "法规追踪", "en": "Regulation Watch"},
+}
+
+CONTENT_TYPE_PROMPTS = {
     "tool_guide": """Write a bilingual tool/API/open-source project guide.
 
 Requirements:
@@ -130,7 +137,7 @@ DAILY_ARTICLE_ROTATION = [
         "topic": "Practical AI tools, model APIs, and developer-facing AI infrastructure worth trying now",
         "category": "ai",
         "slug": "ai-tool-guide",
-        "style": "tool_guide",
+        "content_type": "tool_guide",
         "queries": [
             "free LLM API OpenAI compatible long context model tutorial",
             "AI coding agent CLI GitHub open source VS Code extension",
@@ -143,7 +150,7 @@ DAILY_ARTICLE_ROTATION = [
         "topic": "Emerging AI agent workflows, coding loops, harnesses, and engineering practices",
         "category": "ai",
         "slug": "ai-trend-explainer",
-        "style": "trend_explainer",
+        "content_type": "trend_explainer",
         "queries": [
             "AI agent loop recurring agent loop coding workflow",
             "AI harness eval harness agent governance workflow tutorial",
@@ -156,7 +163,7 @@ DAILY_ARTICLE_ROTATION = [
         "topic": "Practical security, privacy, and DevSecOps risks that teams can detect and fix",
         "category": "infosec",
         "slug": "security-playbook",
-        "style": "defensive_playbook",
+        "content_type": "defensive_playbook",
         "queries": [
             "DevSecOps GitHub Actions tutorial security scanning open source",
             "SBOM open source scanner software supply chain security guide",
@@ -169,7 +176,7 @@ DAILY_ARTICLE_ROTATION = [
         "topic": "China data regulation, cross-border data transfer, privacy, and compliance changes for engineering teams",
         "category": "infosec",
         "slug": "regulation-watch",
-        "style": "regulation_watch",
+        "content_type": "regulation_watch",
         "queries": [
             "中国 数据出境 安全评估 个人信息保护法 PIPL 合规 清单",
             "网络安全法 数据安全法 个人信息保护法 CSL DSL PIPL 数据跨境",
@@ -182,5 +189,5 @@ DAILY_ARTICLE_ROTATION = [
 ]
 
 def select_daily_article(day_ordinal: int) -> dict:
-    """Select exactly one article per day across the four-style rotation."""
+    """Select exactly one article per day across the four-content-type rotation."""
     return DAILY_ARTICLE_ROTATION[day_ordinal % len(DAILY_ARTICLE_ROTATION)]

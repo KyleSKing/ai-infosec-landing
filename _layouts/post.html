@@ -8,6 +8,11 @@ layout: default
       <span class="cat-chip {% if page.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">
         {{ page.category | upcase }}
       </span>
+      {% if page.content_type %}
+      <span class="type-chip">
+        <span class="zh">{{ page.content_type_cn }}</span><span class="en">{{ page.content_type_en }}</span>
+      </span>
+      {% endif %}
       <span class="art-date">{{ page.date | date: "%Y.%m.%d" }}</span>
     </div>
 

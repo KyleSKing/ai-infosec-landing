@@ -1,6 +1,6 @@
 # AI Infosec Landing Content Strategy Plan
 
-> **For Hermes:** Use this plan as the source of truth for search strategy, article styles, and writing prompts.
+> **For Hermes:** Use this plan as the source of truth for search strategy, content types, and writing prompts.
 
 **Goal:** Move the project from generic AI/security news summaries to bilingual practical intelligence: tools, trends, defensive playbooks, and regulation tracking.
 
@@ -8,9 +8,9 @@
 
 ---
 
-## Final article style rotation
+## Final content type rotation
 
-Publish exactly **one article per day**. Rotate across all four styles:
+Publish exactly **one article per day**. Rotate across all four content types:
 
 ```text
 Day 1: tool_guide
@@ -284,9 +284,9 @@ regulatory news without engineering impact
 
 - `scripts/content_config.py` stores:
   - shared bilingual system prompt
-  - style-specific prompts
-  - one-article-per-day four-style rotation
-  - search queries by style
+  - content-type-specific prompts
+  - one-article-per-day four-content-type rotation
+  - search queries by content type
 - `scripts/generate.py` imports this config and chooses exactly one daily article by date.
 - Current Tavily search remains the source fetcher for now.
 

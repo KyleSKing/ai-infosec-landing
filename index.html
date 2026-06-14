@@ -9,12 +9,12 @@ layout: default
     <span class="hero-date en">{{ 'now' | date: "%b %d, %Y" }} · Daily Intel</span>
   </div>
   <h1 class="hero-headline">
-    <span class="zh">人工智能与<em>信息安全</em><br>每日双语深度情报</span>
-    <span class="en">AI & <em>InfoSec</em><br>Daily Intelligence</span>
+    <span class="zh">AI / 安全 / 合规<br><em>实用情报</em></span>
+    <span class="en">AI, Security & <em>Compliance</em><br>Practical Intelligence</span>
   </h1>
   <p class="hero-sub">
-    <span class="zh">自动抓取全球最新动态，AI 深度撰写，中英双语呈现。每天北京时间 08:00 准时更新。</span>
-    <span class="en">Automated global intelligence on AI & cybersecurity. Deep analysis, bilingual. Published daily at 08:00 CST.</span>
+    <span class="zh">每天追踪一个前沿工具、趋势、风险或法规，讲清楚为什么重要，并给出可执行步骤。</span>
+    <span class="en">One practical bilingual brief per day: frontier tools, trends, risks, and regulations with actionable next steps.</span>
   </p>
 </div>
 
@@ -29,13 +29,18 @@ layout: default
 
       {% for post in site.posts %}
         {% if forloop.first %}
-        <a class="article featured" href="{{ post.url | relative_url }}" data-cat="{{ post.category }}">
+        <a class="article featured" href="{{ post.url | relative_url }}" data-cat="{{ post.category }}" data-content-type="{{ post.content_type }}">
           <span class="featured-badge zh">最新</span>
           <span class="featured-badge en">Latest</span>
           <div class="article-meta">
             <span class="cat-chip {% if post.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">
               {{ post.category | upcase }}
             </span>
+            {% if post.content_type %}
+            <span class="type-chip">
+              <span class="zh">{{ post.content_type_cn }}</span><span class="en">{{ post.content_type_en }}</span>
+            </span>
+            {% endif %}
             <span class="art-date">{{ post.date | date: "%Y.%m.%d" }}</span>
           </div>
           <div class="article-title zh">{{ post.title_cn }}</div>
@@ -49,12 +54,17 @@ layout: default
           </div>
         </a>
         {% else %}
-        <a class="article" href="{{ post.url | relative_url }}" data-cat="{{ post.category }}">
+        <a class="article" href="{{ post.url | relative_url }}" data-cat="{{ post.category }}" data-content-type="{{ post.content_type }}">
           <div class="article-left">
             <div class="article-meta">
               <span class="cat-chip {% if post.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">
                 {{ post.category | upcase }}
               </span>
+              {% if post.content_type %}
+              <span class="type-chip">
+                <span class="zh">{{ post.content_type_cn }}</span><span class="en">{{ post.content_type_en }}</span>
+              </span>
+              {% endif %}
               <span class="art-date">{{ post.date | date: "%Y.%m.%d" }}</span>
             </div>
             <div class="article-title zh">{{ post.title_cn }}</div>
@@ -93,7 +103,7 @@ layout: default
         <h3><span class="zh">站点数据</span><span class="en">Stats</span></h3>
         <div class="stat-grid">
           <div class="stat-cell">
-            <div class="stat-n">2<span>/天</span></div>
+            <div class="stat-n">1<span>/天</span></div>
             <div class="stat-l">Articles<br><span class="zh">每日发布</span><span class="en">Per Day</span></div>
           </div>
           <div class="stat-cell">
@@ -141,18 +151,14 @@ layout: default
       </div>
 
       <div class="sidebar-block">
-        <h3><span class="zh">热门标签</span><span class="en">Tags</span></h3>
+        <h3><span class="zh">内容类型</span><span class="en">Content Types</span></h3>
         <div class="tag-cloud">
-          <button class="cloud-tag ai-tag">LLM</button>
-          <button class="cloud-tag sec-tag">CVE</button>
-          <button class="cloud-tag ai-tag">Agent</button>
-          <button class="cloud-tag sec-tag">Ransomware</button>
-          <button class="cloud-tag ai-tag">Alignment</button>
-          <button class="cloud-tag sec-tag">APT</button>
-          <button class="cloud-tag ai-tag">Multimodal</button>
-          <button class="cloud-tag sec-tag">Zero-Day</button>
-          <button class="cloud-tag ai-tag">RAG</button>
-          <button class="cloud-tag sec-tag">Supply Chain</button>
+          <button class="cloud-tag ai-tag">工具攻略</button>
+          <button class="cloud-tag ai-tag">趋势分析</button>
+          <button class="cloud-tag sec-tag">防御实操</button>
+          <button class="cloud-tag sec-tag">法规追踪</button>
+          <button class="cloud-tag ai-tag">Tool Guide</button>
+          <button class="cloud-tag sec-tag">Regulation Watch</button>
         </div>
       </div>
 

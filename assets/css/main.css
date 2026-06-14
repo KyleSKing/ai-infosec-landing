@@ -135,6 +135,7 @@ header,main,footer,nav,.hero-strip,.container{position:relative;z-index:1}
 .cat-chip{font-family:var(--f-mono);font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.18rem .55rem;border-radius:4px;}
 .chip-ai{background:var(--coral-lo);color:var(--coral);border:1px solid rgba(217,79,13,.15);}
 .chip-sec{background:var(--amber-lo);color:var(--amber);border:1px solid rgba(184,124,10,.15);}
+.type-chip{font-family:var(--f-mono);font-size:.58rem;font-weight:500;letter-spacing:.04em;padding:.18rem .55rem;border-radius:4px;background:var(--sage-lo);color:var(--sage);border:1px solid rgba(61,110,80,.15);}
 .art-date{font-family:var(--f-mono);font-size:.6rem;color:var(--ink4);}
 .art-read{font-family:var(--f-mono);font-size:.6rem;color:var(--ink4);}
 .art-read::before{content:'·';margin-right:.4rem}
