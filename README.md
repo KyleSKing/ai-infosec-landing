@@ -1,11 +1,12 @@
 # AI Infosec Landing
 
-每日AI与信息安全双语深度分析 / Daily bilingual AI & cybersecurity intelligence
+每日 AI / 安全 / 合规中英双语实用情报 / Daily bilingual practical intelligence for AI, security, and compliance
 
 ## 功能特性
 
-- 每天自动发布2篇文章（AI + 信息安全）
-- 中英双语，技术深度分析 + 热点摘要 + 点评
+- 每天自动发布 1 篇文章，四种内容类型轮换
+- 中英双语，聚焦趋势追踪、教程实操、工具分享、法规合规分析
+- 内容类型：工具攻略、趋势分析、防御实操、法规追踪
 - DeepSeek V4 Flash 驱动写作
 - Tavily 搜索最新热点
 - GitHub Actions 全自动运行，无需服务器
