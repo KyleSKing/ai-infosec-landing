@@ -2,6 +2,8 @@
 
 每日 AI / 安全 / 合规中英双语实用情报 / Daily bilingual practical intelligence for AI, security, and compliance
 
+主页 / Landing Page: https://kylesking.github.io/ai-infosec-landing/
+
 ## 功能特性
 
 - 每天自动发布 1 篇文章，四种内容类型轮换
