@@ -125,55 +125,62 @@ Chinese body structure:
 English body: a concise brief with what happened, who is affected, engineering/security actions, China data compliance angle, and take.""",
 }
 
-ARTICLES = [
+DAILY_ARTICLE_ROTATION = [
     {
-        "topic": "Practical AI tools, agent workflows, model APIs, and emerging AI engineering practices",
+        "topic": "Practical AI tools, model APIs, and developer-facing AI infrastructure worth trying now",
         "category": "ai",
-        "slug": "ai-weekly",
-        "style_cycle": ["tool_guide", "trend_explainer"],
-        "queries_by_style": {
-            "tool_guide": [
-                "free LLM API OpenAI compatible long context model tutorial",
-                "AI coding agent CLI GitHub open source VS Code extension",
-                "MCP server GitHub open source AI agent workflow docs",
-                "Cline OpenRouter Claude Code Cursor alternative API pricing guide",
-                "LLM evaluation eval harness AI agent tutorial GitHub",
-            ],
-            "trend_explainer": [
-                "AI agent loop recurring agent loop coding workflow",
-                "AI harness eval harness agent governance workflow tutorial",
-                "vibe coding risks coding agent safety guardrails",
-                "Claude Code workflow subagents code review loop",
-                "agent orchestration MCP AI workflow best practices",
-            ],
-        },
+        "slug": "ai-tool-guide",
+        "style": "tool_guide",
+        "queries": [
+            "free LLM API OpenAI compatible long context model tutorial",
+            "AI coding agent CLI GitHub open source VS Code extension",
+            "MCP server GitHub open source AI agent workflow docs",
+            "Cline OpenRouter Claude Code Cursor alternative API pricing guide",
+            "LLM evaluation eval harness AI agent tutorial GitHub",
+        ],
     },
     {
-        "topic": "Security, privacy, DevSecOps, data compliance, and regulation changes with practical actions",
+        "topic": "Emerging AI agent workflows, coding loops, harnesses, and engineering practices",
+        "category": "ai",
+        "slug": "ai-trend-explainer",
+        "style": "trend_explainer",
+        "queries": [
+            "AI agent loop recurring agent loop coding workflow",
+            "AI harness eval harness agent governance workflow tutorial",
+            "vibe coding risks coding agent safety guardrails",
+            "Claude Code workflow subagents code review loop",
+            "agent orchestration MCP AI workflow best practices",
+        ],
+    },
+    {
+        "topic": "Practical security, privacy, and DevSecOps risks that teams can detect and fix",
         "category": "infosec",
-        "slug": "infosec-weekly",
-        "style_cycle": ["defensive_playbook", "regulation_watch"],
-        "queries_by_style": {
-            "defensive_playbook": [
-                "DevSecOps GitHub Actions tutorial security scanning open source",
-                "SBOM open source scanner software supply chain security guide",
-                "secret scanning GitHub Actions CI/CD remediation guide",
-                "LLM security prompt injection defense checklist",
-                "container scanner CVE scanner SAST DAST open source workflow",
-            ],
-            "regulation_watch": [
-                "中国 数据出境 安全评估 个人信息保护法 PIPL 合规 清单",
-                "网络安全法 数据安全法 个人信息保护法 CSL DSL PIPL 数据跨境",
-                "China data export CAC security assessment PIPL standard contract personal information export",
-                "重要数据 关键信息基础设施 CIIO 等保 MLPS 数据合规",
-                "生成式人工智能 服务 管理 暂行办法 算法推荐 深度合成 合规",
-                "EU AI Act GDPR NIS2 DORA SOC 2 ISO 27001 compliance engineering checklist",
-            ],
-        },
+        "slug": "security-playbook",
+        "style": "defensive_playbook",
+        "queries": [
+            "DevSecOps GitHub Actions tutorial security scanning open source",
+            "SBOM open source scanner software supply chain security guide",
+            "secret scanning GitHub Actions CI/CD remediation guide",
+            "LLM security prompt injection defense checklist",
+            "container scanner CVE scanner SAST DAST open source workflow",
+        ],
+    },
+    {
+        "topic": "China data regulation, cross-border data transfer, privacy, and compliance changes for engineering teams",
+        "category": "infosec",
+        "slug": "regulation-watch",
+        "style": "regulation_watch",
+        "queries": [
+            "中国 数据出境 安全评估 个人信息保护法 PIPL 合规 清单",
+            "网络安全法 数据安全法 个人信息保护法 CSL DSL PIPL 数据跨境",
+            "China data export CAC security assessment PIPL standard contract personal information export",
+            "重要数据 关键信息基础设施 CIIO 等保 MLPS 数据合规",
+            "生成式人工智能 服务 管理 暂行办法 算法推荐 深度合成 合规",
+            "EU AI Act GDPR NIS2 DORA SOC 2 ISO 27001 compliance engineering checklist",
+        ],
     },
 ]
 
-def select_style(article: dict, day_ordinal: int) -> str:
-    """Rotate article styles by date for predictable daily variety."""
-    cycle = article.get("style_cycle") or ["tool_guide"]
-    return cycle[day_ordinal % len(cycle)]
+def select_daily_article(day_ordinal: int) -> dict:
+    """Select exactly one article per day across the four-style rotation."""
+    return DAILY_ARTICLE_ROTATION[day_ordinal % len(DAILY_ARTICLE_ROTATION)]

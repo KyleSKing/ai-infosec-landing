@@ -12,7 +12,7 @@ import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
-from content_config import ARTICLES, STYLE_USER_PROMPTS, SYSTEM_PROMPT, select_style
+from content_config import STYLE_USER_PROMPTS, SYSTEM_PROMPT, select_daily_article
 
 # Config
 OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
@@ -314,25 +314,22 @@ def main():
     print(f"AI Infosec Landing — Daily Publisher [{TODAY}]")
     print("=" * 50)
 
-    articles = ARTICLES
+    item = select_daily_article(datetime.now(BJT).toordinal())
+    try:
+        style = item["style"]
+        print(f"🧭 Style: {style}")
+        article = generate_article(
+            topic=item["topic"],
+            category=item["category"],
+            style=style,
+            search_queries=item["queries"],
+        )
+        save_post(article, item["category"], item["slug"])
+    except Exception as e:
+        print(f"❌ Error generating {item['category']} article: {e}")
+        raise
 
-    for item in articles:
-        try:
-            style = select_style(item, datetime.now(BJT).toordinal())
-            queries = item["queries_by_style"][style]
-            print(f"🧭 Style: {style}")
-            article = generate_article(
-                topic=item["topic"],
-                category=item["category"],
-                style=style,
-                search_queries=queries,
-            )
-            save_post(article, item["category"], item["slug"])
-        except Exception as e:
-            print(f"❌ Error generating {item['category']} article: {e}")
-            raise
-
-    print("\n✨ Done! All articles generated successfully.")
+    print("\n✨ Done! Daily article generated successfully.")
 
 
 if __name__ == "__main__":

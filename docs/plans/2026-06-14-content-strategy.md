@@ -10,6 +10,18 @@
 
 ## Final article style rotation
 
+Publish exactly **one article per day**. Rotate across all four styles:
+
+```text
+Day 1: tool_guide
+Day 2: trend_explainer
+Day 3: defensive_playbook
+Day 4: regulation_watch
+Repeat
+```
+
+This keeps the feed focused and avoids publishing one AI post plus one security post every day.
+
 ### 1. `tool_guide`
 
 Tools, APIs, open-source projects, plugins, CLIs, GitHub Actions, MCP servers.
@@ -273,9 +285,9 @@ regulatory news without engineering impact
 - `scripts/content_config.py` stores:
   - shared bilingual system prompt
   - style-specific prompts
-  - article style rotation
+  - one-article-per-day four-style rotation
   - search queries by style
-- `scripts/generate.py` imports this config and chooses article style by date.
+- `scripts/generate.py` imports this config and chooses exactly one daily article by date.
 - Current Tavily search remains the source fetcher for now.
 
 ### Future migration
