@@ -12,6 +12,8 @@ import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 
+from content_config import ARTICLES, STYLE_USER_PROMPTS, SYSTEM_PROMPT, select_style
+
 # Config
 OPENROUTER_API_KEY = os.environ["OPENROUTER_API_KEY"]
 TAVILY_API_KEY = os.environ["TAVILY_API_KEY"]
@@ -188,7 +190,7 @@ def _extract_and_parse_json(raw: str, llm_func, system_prompt: str, user_prompt:
                     raise
 
 
-def generate_article(topic: str, category: str, search_queries: list[str]) -> dict:
+def generate_article(topic: str, category: str, style: str, search_queries: list[str]) -> dict:
     """Generate a bilingual article on given topic"""
     print(f"🔍 Searching for: {topic}")
 
@@ -211,7 +213,7 @@ def generate_article(topic: str, category: str, search_queries: list[str]) -> di
 
     # Build context
     context_parts = []
-    for i, r in enumerate(unique_results[:3], 1):
+    for i, r in enumerate(unique_results[:5], 1):
         context_parts.append(
             f"[{i}] {r['title']}\nURL: {r['url']}\n{r.get('content', '')[:500]}"
         )
@@ -220,36 +222,33 @@ def generate_article(topic: str, category: str, search_queries: list[str]) -> di
 
     print(f"📝 Generating article with {len(unique_results)} sources...")
 
-    system_prompt = """You are an expert technology journalist and security researcher who writes for a bilingual (Chinese/English) tech publication. Your articles combine breaking news analysis with deep technical insight.
+    style_prompt = STYLE_USER_PROMPTS[style]
+    system_prompt = SYSTEM_PROMPT
 
-Writing style:
-- Sharp, incisive, and authoritative
-- Balance technical depth with accessibility
-- Include concrete examples and real-world implications
-- Chinese sections should feel natural and native, not translated
-- English sections should be crisp and professional
+    user_prompt = f"""Today is {TODAY_CN}. Write a bilingual practical technology article.
 
-Output format: Strictly follow the JSON structure requested. No markdown outside the JSON."""
-
-    user_prompt = f"""Today is {TODAY_CN}. Write a comprehensive bilingual article about: {topic}
-
+Topic: {topic}
 Category: {category}
+Article style: {style}
 
-Recent news and sources:
+Style-specific instructions:
+{style_prompt}
+
+Recent sources:
 {context}
 
-AI-generated summary:
+Search summary:
 {summary}
 
 Return ONLY valid JSON in this exact structure:
 {{
-  "title_en": "English title (compelling, SEO-friendly)",
-  "title_cn": "中文标题（吸引人，专业）",
+  "title_en": "English title",
+  "title_cn": "中文标题",
   "summary_en": "2-3 sentence English summary for meta description",
   "summary_cn": "2-3句中文摘要",
   "tags": ["tag1", "tag2", "tag3", "tag4"],
-  "body_cn": "完整中文正文（Markdown格式，800-1200字）\\n\\n包含：\\n- 热点摘要：本周/近期发生了什么\\n- 技术深度：核心技术原理或漏洞分析\\n- 行业影响：对企业/开发者/用户的影响\\n- 作者点评：独到见解和预判",
-  "body_en": "Full English article body (Markdown format, 600-900 words)\\n\\nInclude:\\n- News Brief: What happened\\n- Technical Deep-Dive: Core technical analysis\\n- Industry Impact: Implications for the field\\n- Editor's Take: Unique insights and predictions",
+  "body_cn": "中文主文，Markdown格式，1000-1800字。按当前article style要求组织，必须包含可执行步骤、适合人群、限制/风险、我的判断。",
+  "body_en": "Concise English brief, Markdown format, 300-600 words. Cover what it is, why it matters, practical next steps, risks, and take.",
   "sources": [
     {{"title": "source title", "url": "source url"}}
   ]
@@ -315,37 +314,18 @@ def main():
     print(f"AI Infosec Landing — Daily Publisher [{TODAY}]")
     print("=" * 50)
 
-    articles = [
-        {
-            "topic": "Latest AI model releases, research breakthroughs, and industry developments in artificial intelligence",
-            "category": "ai",
-            "slug": "ai-weekly",
-            "queries": [
-                "AI artificial intelligence agent news this week 2026",
-                "large language model LLM release update agent harness loop 2026",
-                "AI research breakthrough agentic coding harness loop 2026",
-                "AI agent vibe coding news 2026",
-            ],
-        },
-        {
-            "topic": "Latest cybersecurity threats, vulnerabilities, data breaches, and defensive strategies",
-            "category": "infosec",
-            "slug": "infosec-weekly",
-            "queries": [
-                "cybersecurity vulnerability exploit compliance regulation regime 2026",
-                "data privacy breach ransomware attack news 2026",
-                "information security CVE zero-day zero trust DevSecOps 2026",
-                "security compliance regulation data privacy zero trust DevSecOps 2026",
-            ],
-        },
-    ]
+    articles = ARTICLES
 
     for item in articles:
         try:
+            style = select_style(item, datetime.now(BJT).toordinal())
+            queries = item["queries_by_style"][style]
+            print(f"🧭 Style: {style}")
             article = generate_article(
                 topic=item["topic"],
                 category=item["category"],
-                search_queries=item["queries"],
+                style=style,
+                search_queries=queries,
             )
             save_post(article, item["category"], item["slug"])
         except Exception as e:
