@@ -3,18 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2026年网络安全危机：漏洞利用速度超越补丁，AI攻击碾压防御 | AI · InfoSec Landing</title>
+  <meta name="theme-color" content="#05070a">
+  <title>2026年网络安全危机：漏洞利用速度超越补丁，AI攻击碾压防御 | 东情局 · DONG INTEL BUREAU</title>
   <meta name="description" content="CVE-补丁时代正在崩溃：三分之一的新利用CVE在披露当天即被武器化。勒索软件持续冲击关键基础设施，AI驱动的攻击压垮传统防御。本文分析最新威胁态势，并提出在“补丁加速”不再可行的现实下的防御策略。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@300;400;500&family=Noto+Serif+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css">
   <!-- Begin Jekyll SEO tag v2.9.0 -->
 <title>Infosec Weekly | AI Infosec Landing</title>
 <meta name="generator" content="Jekyll v4.4.1" />
 <meta property="og:title" content="Infosec Weekly" />
 <meta property="og:locale" content="zh_CN" />
-<meta name="description" content="Daily AI &amp; Cybersecurity Intelligence — Bilingual 双语科技安全资讯" />
-<meta name="twitter:description" property="og:description" content="Daily AI &amp; Cybersecurity Intelligence — Bilingual 双语科技安全资讯" />
+<meta name="description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
 <link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/infosec/2026/05/25/infosec-weekly.html" />
 <meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/infosec/2026/05/25/infosec-weekly.html" />
 <meta property="og:site_name" content="AI Infosec Landing" />
@@ -24,40 +26,49 @@
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content="Infosec Weekly" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2026-05-25T00:00:00+08:00","datePublished":"2026-05-25T00:00:00+08:00","description":"Daily AI &amp; Cybersecurity Intelligence — Bilingual 双语科技安全资讯","headline":"Infosec Weekly","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/05/25/infosec-weekly.html"},"url":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/05/25/infosec-weekly.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2026-05-25T00:00:00+08:00","datePublished":"2026-05-25T00:00:00+08:00","description":"Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Infosec Weekly","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/05/25/infosec-weekly.html"},"url":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/05/25/infosec-weekly.html"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
 <body>
 
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
 <header class="site-header">
-  <nav class="nav">
-    <a href="/ai-infosec-landing/" class="logo">
-      <div class="logo-orb"></div>
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="东情局首页">
+      <div class="logo-mark"><span></span></div>
       <div>
-        <div class="logo-text">AI · INFOSEC</div>
-        <div class="logo-sub">Daily Intelligence</div>
+        <div class="logo-text">东情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
       </div>
     </a>
 
-    <div class="nav-cats">
+    <div class="nav-cats" aria-label="Category filters">
       <button class="cat-btn active" data-cat="all">
-        <span class="zh">全部</span><span class="en">All</span>
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
       </button>
       <button class="cat-btn" data-cat="ai">
-        <span class="zh">AI 情报</span><span class="en">AI Intel</span>
+        <span class="zh">AI</span><span class="en">AI</span>
       </button>
       <button class="cat-btn" data-cat="infosec">
-        <span class="zh">安全预警</span><span class="en">InfoSec</span>
+        <span class="zh">安全合规</span><span class="en">Security</span>
       </button>
     </div>
 
     <div class="nav-right">
-      <div class="live-pill">
+      <div class="live-pill" title="Live signal monitoring">
         <div class="live-dot"></div>
-        <span class="zh">每日更新</span><span class="en">DAILY</span>
+        <span>LIVE</span>
       </div>
-      <div class="lang-toggle">
+      <div class="lang-toggle" aria-label="Language switcher">
         <button class="lang-opt active" data-lang="zh">中文</button>
         <button class="lang-opt" data-lang="en">EN</button>
         <button class="lang-opt" data-lang="bi">双语</button>
@@ -66,101 +77,90 @@
   </nav>
 </header>
 
-<main>
+<main id="main-content">
   <div class="post-wrap">
-  <div class="post-head">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">东情局 / DONG INTEL BUREAU</div>
     <div class="post-head-meta">
-      <span class="cat-chip chip-sec">
-        INFOSEC
-      </span>
+      <span class="cat-chip chip-sec">INFOSEC</span>
+      
       <span class="art-date">2026.05.25</span>
     </div>
 
     <h1 class="post-title-cn zh">2026年网络安全危机：漏洞利用速度超越补丁，AI攻击碾压防御</h1>
-    <p class="post-title-en en">2026 Cybersecurity Crisis: When Exploits Outrun Patches, AI Attacks Overwhelm Defenses</p>
+    <h1 class="post-title-en en">2026 Cybersecurity Crisis: When Exploits Outrun Patches, AI Attacks Overwhelm Defenses</h1>
 
     <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
       <p class="zh">CVE-补丁时代正在崩溃：三分之一的新利用CVE在披露当天即被武器化。勒索软件持续冲击关键基础设施，AI驱动的攻击压垮传统防御。本文分析最新威胁态势，并提出在“补丁加速”不再可行的现实下的防御策略。</p>
       <p class="en">The CVE-and-patch era is collapsing. A third of newly exploited CVEs are weaponized before disclosure. Ransomware continues to target critical infrastructure, while AI-driven attacks overwhelm traditional defenses. This article analyzes the latest threat landscape and proposes defensive strategies for a reality where 'patch faster' is no longer viable.</p>
     </div>
 
     <div class="post-tags-row">
-      
-      <span class="tag">cybersecurity</span>
-      
-      <span class="tag">vulnerability exploitation</span>
-      
-      <span class="tag">ransomware</span>
-      
-      <span class="tag">AI attacks</span>
-      
-      <span class="tag">patch management</span>
-      
+      <span class="tag">cybersecurity</span><span class="tag">vulnerability exploitation</span><span class="tag">ransomware</span><span class="tag">AI attacks</span><span class="tag">patch management</span>
     </div>
-  </div>
+  </article>
 
   <div class="lang-switcher">
-    <button class="lsw-btn active" data-target="cn">
-      <span class="zh">中文</span><span class="en">Chinese</span>
-    </button>
-    <button class="lsw-btn" data-target="en">
-      <span class="zh">英文</span><span class="en">English</span>
-    </button>
-    <button class="lsw-btn" data-target="both">
-      <span class="zh">双语</span><span class="en">Bilingual</span>
-    </button>
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
   </div>
 
   <div class="post-body post-content">
     <!-- Chinese Version -->
 <div class="lang-cn">
 
-## 2026年网络安全危机：漏洞利用速度超越补丁，AI攻击碾压防御
+  <h2 id="ai">2026年网络安全危机：漏洞利用速度超越补丁，AI攻击碾压防御</h2>
 
-## 热点摘要
+  <h2 id="section">热点摘要</h2>
 
-2026年第一季度的安全报告揭示了一个令人不安的新常态：漏洞利用的速度已彻底超越防御者的反应时间。根据Kaspersky Securelist发布的《2026年Q1漏洞与利用报告》，尽管检测到的利用数量有所下降，但检测率同比大幅上升——这意味着攻击者正以更少的漏洞实现更高效的打击。更触目惊心的是VulnCheck发布的《2026年利用情报报告》和一份在社交媒体上广泛传播的《2026年漏洞利用现实报告》：**三分之一的新利用CVE在披露当天即被武器化**。对于许多组织而言，“尽快打补丁”已不再是运营策略，而是一个“统计上不可能完成的任务”。
+  <p>2026年第一季度的安全报告揭示了一个令人不安的新常态：漏洞利用的速度已彻底超越防御者的反应时间。根据Kaspersky Securelist发布的《2026年Q1漏洞与利用报告》，尽管检测到的利用数量有所下降，但检测率同比大幅上升——这意味着攻击者正以更少的漏洞实现更高效的打击。更触目惊心的是VulnCheck发布的《2026年利用情报报告》和一份在社交媒体上广泛传播的《2026年漏洞利用现实报告》：<strong>三分之一的新利用CVE在披露当天即被武器化</strong>。对于许多组织而言，“尽快打补丁”已不再是运营策略，而是一个“统计上不可能完成的任务”。</p>
 
-与此同时，勒索软件攻击并未停歇。DaVita、Citizens Financial Group等大型机构遭遇重大入侵，数据窃取成为勒索的主要筹码。人工智能的滥用进一步加剧了这一局面：攻击者利用生成式AI快速生成定制化钓鱼邮件、自动扫描漏洞、甚至自主设计绕过检测的恶意软件。
+  <p>与此同时，勒索软件攻击并未停歇。DaVita、Citizens Financial Group等大型机构遭遇重大入侵，数据窃取成为勒索的主要筹码。人工智能的滥用进一步加剧了这一局面：攻击者利用生成式AI快速生成定制化钓鱼邮件、自动扫描漏洞、甚至自主设计绕过检测的恶意软件。</p>
 
-## 技术深度
+  <h2 id="section-1">技术深度</h2>
 
-### 1. CVE补丁时代的终结
+  <h3 id="cve">1. CVE补丁时代的终结</h3>
 
-传统安全模型依赖漏洞披露（CVE）→ 补丁发布 → 组织部署的线性流程。但2026年的数据清晰地表明：攻击者不再等待补丁。VulnCheck的报告指出，超过30%的已利用漏洞在CVE公开的同一天甚至更早就被入侵利用。这意味着“零日漏洞”的概念正在模糊——许多漏洞在厂商意识到之前已被武器化。
+  <p>传统安全模型依赖漏洞披露（CVE）→ 补丁发布 → 组织部署的线性流程。但2026年的数据清晰地表明：攻击者不再等待补丁。VulnCheck的报告指出，超过30%的已利用漏洞在CVE公开的同一天甚至更早就被入侵利用。这意味着“零日漏洞”的概念正在模糊——许多漏洞在厂商意识到之前已被武器化。</p>
 
-Linux操作系统依然是安全补丁的焦点。Securelist报告强调，针对Linux的利用在Q1显著增加，尤其是用于云环境和容器基础设施。攻击者瞄准未及时修补的已知漏洞，例如内核提权漏洞和容器逃逸漏洞。
+  <p>Linux操作系统依然是安全补丁的焦点。Securelist报告强调，针对Linux的利用在Q1显著增加，尤其是用于云环境和容器基础设施。攻击者瞄准未及时修补的已知漏洞，例如内核提权漏洞和容器逃逸漏洞。</p>
 
-### 2. AI驱动攻击的规模效应
+  <h3 id="ai-1">2. AI驱动攻击的规模效应</h3>
 
-传统的检测规则系统和签名库在AI生成的变体面前不堪一击。攻击者使用生成式AI创建绕过模式识别的恶意文档、脚本和载荷。例如，在Q1出现了一种利用大型语言模型（LLM）自动定制钓鱼邮件的攻击链：AI根据目标社交媒体资料生成高度拟真且无语法错误的邮件，并自动调整附件或链接的内容以逃避沙盒检测。
+  <p>传统的检测规则系统和签名库在AI生成的变体面前不堪一击。攻击者使用生成式AI创建绕过模式识别的恶意文档、脚本和载荷。例如，在Q1出现了一种利用大型语言模型（LLM）自动定制钓鱼邮件的攻击链：AI根据目标社交媒体资料生成高度拟真且无语法错误的邮件，并自动调整附件或链接的内容以逃避沙盒检测。</p>
 
-### 3. 勒索软件Qilin与数据泄露的新玩法
+  <h3 id="qilin">3. 勒索软件Qilin与数据泄露的新玩法</h3>
 
-在2026年，勒索软件集团更加注重数据窃取和泄露，而非仅仅是加密。Qilin等变种采用“双重勒索”甚至“三重勒索”，在加密前窃取敏感数据，然后威胁公开或出售。Citizens Financial Group的入侵导致大量客户财务记录泄露，攻击者直接要求赎金换取数据删除。
+  <p>在2026年，勒索软件集团更加注重数据窃取和泄露，而非仅仅是加密。Qilin等变种采用“双重勒索”甚至“三重勒索”，在加密前窃取敏感数据，然后威胁公开或出售。Citizens Financial Group的入侵导致大量客户财务记录泄露，攻击者直接要求赎金换取数据删除。</p>
 
-## 行业影响
+  <h2 id="section-2">行业影响</h2>
 
-对于企业安全团队，消息是刺痛的：**“打补丁更快的时代”已经结束**。单纯依靠漏洞管理和补丁更新无法应对即时武器化的威胁。组织必须转向“假设突破”的安全模型：
+  <p>对于企业安全团队，消息是刺痛的：<strong>“打补丁更快的时代”已经结束</strong>。单纯依靠漏洞管理和补丁更新无法应对即时武器化的威胁。组织必须转向“假设突破”的安全模型：</p>
 
-- **实时威胁情报优先**：集成如VulnCheck、Kaspersky等提供的实时利用情报，自动调整防御策略。当新漏洞出现时，立即启用虚拟补丁规则（IDS/IPS）或WAF规则，而不是等待厂商发布补丁。
-- **AI对抗AI**：部署基于机器学习的检测系统（如异常行为分析、用户实体行为分析）来对抗AI生成的攻击。训练专用模型识别AI生成的钓鱼邮件和变种恶意软件。
-- **攻击面管理**：持续发现和减少暴露面，尤其关注容器、API和云基础设施。定期执行“红队”演练，模拟零日利用场景。
-- **数据隔离与备份**：针对勒索软件，强化3-2-1备份策略，并实施严格的网络分段以防止横向移动。
+  <ul>
+    <li><strong>实时威胁情报优先</strong>：集成如VulnCheck、Kaspersky等提供的实时利用情报，自动调整防御策略。当新漏洞出现时，立即启用虚拟补丁规则（IDS/IPS）或WAF规则，而不是等待厂商发布补丁。</li>
+    <li><strong>AI对抗AI</strong>：部署基于机器学习的检测系统（如异常行为分析、用户实体行为分析）来对抗AI生成的攻击。训练专用模型识别AI生成的钓鱼邮件和变种恶意软件。</li>
+    <li><strong>攻击面管理</strong>：持续发现和减少暴露面，尤其关注容器、API和云基础设施。定期执行“红队”演练，模拟零日利用场景。</li>
+    <li><strong>数据隔离与备份</strong>：针对勒索软件，强化3-2-1备份策略，并实施严格的网络分段以防止横向移动。</li>
+  </ul>
 
-## 作者点评
+  <h2 id="section-3">作者点评</h2>
 
-2026年见证了网络安全范式的根本性转移。过去我们依赖“CVE编号→补丁→部署”的流程，这是一种线性且可预测的模型。但现在，攻击者利用AI和自动化打破了这一线性。补丁管理不再是安全的核心，而是安全链中的一个环节——并且是一个速度不够的环节。
+  <p>2026年见证了网络安全范式的根本性转移。过去我们依赖“CVE编号→补丁→部署”的流程，这是一种线性且可预测的模型。但现在，攻击者利用AI和自动化打破了这一线性。补丁管理不再是安全的核心，而是安全链中的一个环节——并且是一个速度不够的环节。</p>
 
-我的预判是：
+  <p>我的预判是：</p>
 
-**第一，防御者必须学习攻击者的“非对称”优势。** 安全团队需要建立“狩猎”能力，主动寻找异常，而非被动响应告警。自动化编排与响应（SOAR）将成为标配。
+  <p><strong>第一，防御者必须学习攻击者的“非对称”优势。</strong> 安全团队需要建立“狩猎”能力，主动寻找异常，而非被动响应告警。自动化编排与响应（SOAR）将成为标配。</p>
 
-**第二，开源威胁情报和社区协作将至关重要。** 单打独斗无法对抗全球化的AI攻击。共享利用情报、IOC和攻击手法的联盟（如VulnCheck这类平台）会变得越来越有价值。
+  <p><strong>第二，开源威胁情报和社区协作将至关重要。</strong> 单打独斗无法对抗全球化的AI攻击。共享利用情报、IOC和攻击手法的联盟（如VulnCheck这类平台）会变得越来越有价值。</p>
 
-**第三，我们需要重新定义“补丁”。** 虚拟补丁、微隔离和运行时自我保护（RASP）可以即时阻断利用，而不需要停机重启。当补丁到来时，往往已经是亡羊补牢。
+  <p><strong>第三，我们需要重新定义“补丁”。</strong> 虚拟补丁、微隔离和运行时自我保护（RASP）可以即时阻断利用，而不需要停机重启。当补丁到来时，往往已经是亡羊补牢。</p>
 
-总而言之，2026年不再是“是否会被入侵”的问题，而是“何时被入侵”以及“如何快速恢复”的问题。防御者必须学会在敌人已经进入房间的情况下作战。
+  <p>总而言之，2026年不再是“是否会被入侵”的问题，而是“何时被入侵”以及“如何快速恢复”的问题。防御者必须学会在敌人已经进入房间的情况下作战。</p>
 
 </div>
 
@@ -169,54 +169,56 @@ Linux操作系统依然是安全补丁的焦点。Securelist报告强调，针�
 <!-- English Version -->
 <div class="lang-en">
 
-## 2026 Cybersecurity Crisis: When Exploits Outrun Patches, AI Attacks Overwhelm Defenses
+  <h2 id="cybersecurity-crisis-when-exploits-outrun-patches-ai-attacks-overwhelm-defenses">2026 Cybersecurity Crisis: When Exploits Outrun Patches, AI Attacks Overwhelm Defenses</h2>
 
-## News Brief
+  <h2 id="news-brief">News Brief</h2>
 
-The first quarter of 2026 has delivered a sobering reality check for cybersecurity professionals. The CVE-and-patch era—long the bedrock of vulnerability management—is collapsing in real time. According to the Kaspersky Securelist report "Vulnerabilities and Exploits in Q1 2026," while the number of detected exploits decreased, detection rates surged compared to the same period last year, indicating that attackers are weaponizing fewer, more targeted vulnerabilities with devastating efficiency.
+  <p>The first quarter of 2026 has delivered a sobering reality check for cybersecurity professionals. The CVE-and-patch era—long the bedrock of vulnerability management—is collapsing in real time. According to the Kaspersky Securelist report “Vulnerabilities and Exploits in Q1 2026,” while the number of detected exploits decreased, detection rates surged compared to the same period last year, indicating that attackers are weaponizing fewer, more targeted vulnerabilities with devastating efficiency.</p>
 
-A complementary report from VulnCheck, the "2026 Exploit Intelligence Report," draws on 500+ sources and reveals a jaw-dropping statistic: **one-third of newly exploited CVEs were weaponized on or before disclosure day**. In a social media post, cybersecurity firm Warden Secure captured the essence: "For many organizations, 'patch faster' is no longer an operational strategy. It is a statistical impossibility."
+  <p>A complementary report from VulnCheck, the “2026 Exploit Intelligence Report,” draws on 500+ sources and reveals a jaw-dropping statistic: <strong>one-third of newly exploited CVEs were weaponized on or before disclosure day</strong>. In a social media post, cybersecurity firm Warden Secure captured the essence: “For many organizations, ‘patch faster’ is no longer an operational strategy. It is a statistical impossibility.”</p>
 
-Ransomware attacks continue to hit critical infrastructure and enterprise software. Notable breaches included DaVita (healthcare) and Citizens Financial Group (banking), where data exfiltration—not just encryption—was the primary leverage. The ransomware landscape remains fragmented, with the Qilin variant emerging as a significant player.
+  <p>Ransomware attacks continue to hit critical infrastructure and enterprise software. Notable breaches included DaVita (healthcare) and Citizens Financial Group (banking), where data exfiltration—not just encryption—was the primary leverage. The ransomware landscape remains fragmented, with the Qilin variant emerging as a significant player.</p>
 
-## Technical Deep-Dive
+  <h2 id="technical-deep-dive">Technical Deep-Dive</h2>
 
-### 1. The Collapse of the Patch-Release Cycle
+  <h3 id="the-collapse-of-the-patch-release-cycle">1. The Collapse of the Patch-Release Cycle</h3>
 
-The traditional model—CVE disclosure, vendor patch, organizational deployment—has fractured. Attackers now weaponize vulnerabilities before patches are even drafted. The VulnCheck data shows that for a third of exploited CVEs, exploitation occurred on the same day the CVE was made public, or even earlier (predating disclosure through dark-web sales or private exploit trading).
+  <p>The traditional model—CVE disclosure, vendor patch, organizational deployment—has fractured. Attackers now weaponize vulnerabilities before patches are even drafted. The VulnCheck data shows that for a third of exploited CVEs, exploitation occurred on the same day the CVE was made public, or even earlier (predating disclosure through dark-web sales or private exploit trading).</p>
 
-The Linux operating system remains a critical battleground. Securelist reports a significant increase in Linux kernel exploits, targeting cloud environments and containerized deployments. Common vulnerabilities include privilege escalation flaws and container escape vulnerabilities, where unpatched systems are rapidly compromised.
+  <p>The Linux operating system remains a critical battleground. Securelist reports a significant increase in Linux kernel exploits, targeting cloud environments and containerized deployments. Common vulnerabilities include privilege escalation flaws and container escape vulnerabilities, where unpatched systems are rapidly compromised.</p>
 
-### 2. AI-Generated Attacks at Scale
+  <h3 id="ai-generated-attacks-at-scale">2. AI-Generated Attacks at Scale</h3>
 
-Traditional signature-based detection is crumbling under the weight of AI-generated variants. Attackers use generative AI to craft polymorphic malware, phishing emails with perfect grammar, and scripts that evade static analysis. For instance, in Q1 we observed an attack chain where a language model automatically scraped a LinkedIn profile, generated a personalized spear-phishing email, and inserted a malicious macro dynamically obfuscated to bypass sandbox detection.
+  <p>Traditional signature-based detection is crumbling under the weight of AI-generated variants. Attackers use generative AI to craft polymorphic malware, phishing emails with perfect grammar, and scripts that evade static analysis. For instance, in Q1 we observed an attack chain where a language model automatically scraped a LinkedIn profile, generated a personalized spear-phishing email, and inserted a malicious macro dynamically obfuscated to bypass sandbox detection.</p>
 
-### 3. Ransomware Evolution: Qilin and Beyond
+  <h3 id="ransomware-evolution-qilin-and-beyond">3. Ransomware Evolution: Qilin and Beyond</h3>
 
-The Qilin ransomware variant gained notoriety by combining encryption with aggressive data theft. After infiltrating a network, it exfiltrates sensitive data before encrypting, then threatens to leak or sell the data if the ransom isn't paid. The Citizens Financial Group breach exposed such a scenario—attackers demanded payment specifically for data deletion, not decryption.
+  <p>The Qilin ransomware variant gained notoriety by combining encryption with aggressive data theft. After infiltrating a network, it exfiltrates sensitive data before encrypting, then threatens to leak or sell the data if the ransom isn’t paid. The Citizens Financial Group breach exposed such a scenario—attackers demanded payment specifically for data deletion, not decryption.</p>
 
-## Industry Impact
+  <h2 id="industry-impact">Industry Impact</h2>
 
-For enterprise security teams, the message is blunt: **patching alone is no longer sufficient**. The speed of exploitation demands a fundamental shift to a "assume breach" posture. Key strategies include:
+  <p>For enterprise security teams, the message is blunt: <strong>patching alone is no longer sufficient</strong>. The speed of exploitation demands a fundamental shift to a “assume breach” posture. Key strategies include:</p>
 
-- **Real-time threat intelligence integration**: Services like VulnCheck and Securelist provide immediate exploit intelligence. Use this to deploy virtual patches (IDS/IPS rules, WAF signatures) within hours, not weeks.
-- **AI-powered defense**: Deploy machine learning models for behavioral anomaly detection, user and entity behavior analytics (UEBA), and automated response. Train systems to spot AI-generated phishing and malicious files.
-- **Attack surface management**: Continuously discover and reduce exposure, particularly in cloud, APIs, and containers. Run red-team exercises simulating zero-day exploitation scenarios.
-- **Data isolation and backup**: Implement the 3-2-1 backup rule with offline copies. Enforce strict network segmentation to slow lateral movement, which is critical in ransomware attacks.
+  <ul>
+    <li><strong>Real-time threat intelligence integration</strong>: Services like VulnCheck and Securelist provide immediate exploit intelligence. Use this to deploy virtual patches (IDS/IPS rules, WAF signatures) within hours, not weeks.</li>
+    <li><strong>AI-powered defense</strong>: Deploy machine learning models for behavioral anomaly detection, user and entity behavior analytics (UEBA), and automated response. Train systems to spot AI-generated phishing and malicious files.</li>
+    <li><strong>Attack surface management</strong>: Continuously discover and reduce exposure, particularly in cloud, APIs, and containers. Run red-team exercises simulating zero-day exploitation scenarios.</li>
+    <li><strong>Data isolation and backup</strong>: Implement the 3-2-1 backup rule with offline copies. Enforce strict network segmentation to slow lateral movement, which is critical in ransomware attacks.</li>
+  </ul>
 
-## Editor's Take
+  <h2 id="editors-take">Editor’s Take</h2>
 
-We are witnessing a paradigm shift. For years, security was a linear race: CVE → Patch → Deploy. Attackers, once slower than the patch cycle, have now leapfrogged it using automation and AI. The defense community must abandon the illusion of preemptive protection and accept that intrusions are inevitable.
+  <p>We are witnessing a paradigm shift. For years, security was a linear race: CVE → Patch → Deploy. Attackers, once slower than the patch cycle, have now leapfrogged it using automation and AI. The defense community must abandon the illusion of preemptive protection and accept that intrusions are inevitable.</p>
 
-My predictions:
+  <p>My predictions:</p>
 
-**First, defender asymmetry must be challenged.** Security teams need proactive hunting capabilities, not just reactive log analysis. SOAR (Security Orchestration, Automation, and Response) will become table stakes.
+  <p><strong>First, defender asymmetry must be challenged.</strong> Security teams need proactive hunting capabilities, not just reactive log analysis. SOAR (Security Orchestration, Automation, and Response) will become table stakes.</p>
 
-**Second, open-source threat intelligence and community collaboration are essential.** No single organization can track the dizzying pace of exploitation. Platforms that share IOCs, attack patterns, and exploit intelligence (like VulnCheck) are becoming indispensable.
+  <p><strong>Second, open-source threat intelligence and community collaboration are essential.</strong> No single organization can track the dizzying pace of exploitation. Platforms that share IOCs, attack patterns, and exploit intelligence (like VulnCheck) are becoming indispensable.</p>
 
-**Third, we must redefine "patching."** Virtual patching, micro-segmentation, and runtime application self-protection (RASP) can block exploitation instantly without downtime. By the time a vendor patch arrives, the horse has already bolted.
+  <p><strong>Third, we must redefine “patching.”</strong> Virtual patching, micro-segmentation, and runtime application self-protection (RASP) can block exploitation instantly without downtime. By the time a vendor patch arrives, the horse has already bolted.</p>
 
-In 2026, the question is no longer "if" you'll be breached, but "when." The only winning move is to operate as if the adversary is already inside—and build systems that contain and recover faster than they can spread.
+  <p>In 2026, the question is no longer “if” you’ll be breached, but “when.” The only winning move is to operate as if the adversary is already inside—and build systems that contain and recover faster than they can spread.</p>
 
 </div>
 
@@ -260,79 +262,28 @@ In 2026, the question is no longer "if" you'll be breached, but "when." The only
   </div>
 
   <div class="post-nav">
-    <a href="/ai-infosec-landing/" class="back-link">
-      <span class="zh">← 返回首页</span>
-      <span class="en">← Back to Home</span>
-    </a>
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
   </div>
 </div>
-
-<script>
-document.querySelectorAll('.lsw-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.lsw-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const t = btn.dataset.target;
-    const pc = document.querySelector('.post-content');
-    pc.classList.remove('show-en','show-both');
-    if (t === 'en') pc.classList.add('show-en');
-    if (t === 'both') pc.classList.add('show-both');
-  });
-});
-</script>
 
 </main>
 
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-left">
-      <div class="logo-name">AI · INFOSEC LANDING</div>
+      <div class="footer-brand">东情局 / DONG INTEL BUREAU</div>
       <p>
-        <span class="zh">每日 AI 与信息安全双语深度情报<br>由 DeepSeek V4 Flash + Tavily 驱动</span>
-        <span class="en">Daily bilingual AI & security intelligence<br>Powered by DeepSeek V4 Flash + Tavily</span>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
       </p>
     </div>
     <div class="footer-right">
-      <p class="zh">© 2026 AI Infosec Landing · 每天 08:00 CST 自动更新</p>
-      <p class="en">© 2026 AI Infosec Landing · Auto-published daily 08:00 CST</p>
+      <p>LIVE SIGNAL MONITORING · UPDATED DAILY 08:00 CST</p>
       <p>Jekyll · GitHub Actions · GitHub Pages</p>
     </div>
   </div>
 </footer>
 
-<script>
-// Lang switch
-const htmlEl = document.documentElement;
-document.querySelectorAll('.lang-opt').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.lang-opt').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    htmlEl.setAttribute('data-lang', btn.dataset.lang);
-    localStorage.setItem('lang', btn.dataset.lang);
-  });
-});
-// Restore lang preference
-const saved = localStorage.getItem('lang');
-if (saved) {
-  htmlEl.setAttribute('data-lang', saved);
-  document.querySelectorAll('.lang-opt').forEach(b => {
-    b.classList.toggle('active', b.dataset.lang === saved);
-  });
-}
-
-// Category filter (homepage only)
-document.querySelectorAll('.cat-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active','ai-active','sec-active'));
-    btn.classList.add('active');
-    const cat = btn.dataset.cat;
-    if (cat === 'ai') btn.classList.add('ai-active');
-    if (cat === 'infosec') btn.classList.add('sec-active');
-    document.querySelectorAll('.article[data-cat]').forEach(a => {
-      a.style.display = (cat === 'all' || a.dataset.cat === cat) ? '' : 'none';
-    });
-  });
-});
-</script>
+<script src="/ai-infosec-landing/assets/js/main.js"></script>
 </body>
 </html>

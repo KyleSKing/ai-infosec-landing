@@ -1,49 +1,46 @@
-// AI Infosec Landing — Main JS
+// 东情局 / DONG INTEL BUREAU — UI interactions
 
-// Language toggle
 document.addEventListener('DOMContentLoaded', () => {
-  // Lang toggle buttons
-  const langBtns = document.querySelectorAll('.lang-btn');
-  const postContent = document.querySelector('.post-content');
+  const htmlEl = document.documentElement;
 
-  if (langBtns.length && postContent) {
-    langBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        langBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const lang = btn.dataset.lang;
-        postContent.classList.remove('show-en', 'show-both');
-        if (lang === 'en') postContent.classList.add('show-en');
-        if (lang === 'both') postContent.classList.add('show-both');
-      });
+  document.querySelectorAll('.lang-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.lang-opt').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      htmlEl.setAttribute('data-lang', btn.dataset.lang);
+      localStorage.setItem('lang', btn.dataset.lang);
+    });
+  });
+
+  const saved = localStorage.getItem('lang');
+  if (saved) {
+    htmlEl.setAttribute('data-lang', saved);
+    document.querySelectorAll('.lang-opt').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === saved);
     });
   }
 
-  // Post filter
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const postCards = document.querySelectorAll('.post-card');
-
-  if (filterBtns.length) {
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        filterBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        postCards.forEach(card => {
-          if (filter === 'all' || card.dataset.category === filter) {
-            card.style.display = '';
-          } else {
-            card.style.display = 'none';
-          }
-        });
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const cat = btn.dataset.cat;
+      document.querySelectorAll('.article[data-cat]').forEach(a => {
+        a.style.display = (cat === 'all' || a.dataset.cat === cat) ? '' : 'none';
       });
     });
-  }
+  });
 
-  // Footer time
-  const timeEl = document.getElementById('footer-time');
-  if (timeEl) {
-    const now = new Date();
-    timeEl.textContent = `Last updated: ${now.toLocaleString('zh-CN', {timeZone: 'Asia/Shanghai'})} CST`;
-  }
+  document.querySelectorAll('.lsw-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.lsw-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.dataset.target;
+      const pc = document.querySelector('.post-content');
+      if (!pc) return;
+      pc.classList.remove('show-en', 'show-both');
+      if (target === 'en') pc.classList.add('show-en');
+      if (target === 'both') pc.classList.add('show-both');
+    });
+  });
 });
