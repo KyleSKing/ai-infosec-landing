@@ -15,7 +15,7 @@ summary_cn: "CVE-补丁时代正在崩溃：三分之一的新利用CVE在披露
 ---
 
 <!-- Chinese Version -->
-<div class="lang-cn">
+<div class="lang-cn" markdown="1">
 
 ## 2026年网络安全危机：漏洞利用速度超越补丁，AI攻击碾压防御
 
@@ -69,7 +69,7 @@ Linux操作系统依然是安全补丁的焦点。Securelist报告强调，针�
 ---
 
 <!-- English Version -->
-<div class="lang-en">
+<div class="lang-en" markdown="1">
 
 ## 2026 Cybersecurity Crisis: When Exploits Outrun Patches, AI Attacks Overwhelm Defenses
 

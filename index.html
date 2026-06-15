@@ -2,44 +2,70 @@
 layout: default
 ---
 
-<div class="hero-strip">
-  <div class="hero-meta">
-    <div class="hero-line"></div>
-    <span class="hero-date zh">{{ 'now' | date: "%Y年%m月%d日" }} · 每日情报</span>
-    <span class="hero-date en">{{ 'now' | date: "%b %d, %Y" }} · Daily Intel</span>
+<section class="hero-shell" id="top">
+  <div class="hero-content">
+    <div class="status-line">
+      <span class="status-dot"></span>
+      <span>LIVE SIGNAL MONITORING · UPDATED DAILY 08:00 CST</span>
+    </div>
+
+    <h1 class="hero-title">东情局</h1>
+    <div class="hero-en-title">DONG INTEL BUREAU</div>
+
+    <p class="hero-subtitle">硅仙人的 AI / 安全 / 合规情报站</p>
+    <p class="hero-subtitle hero-subtitle-en">AI / Security / Compliance Intel by Silicon Sage</p>
+
+    <p class="hero-slogan">过滤噪音，捕捉信号。</p>
+    <p class="hero-slogan hero-slogan-en">Signal over noise.</p>
+
+    <div class="hero-actions">
+      <a href="#today" class="btn btn-primary">
+        <span class="zh">查看今日情报</span><span class="en">Today's Brief</span>
+      </a>
+      <a href="{{ '/feed.xml' | relative_url }}" class="btn btn-ghost">RSS FEED</a>
+    </div>
   </div>
-  <h1 class="hero-headline">
-    <span class="zh">AI / 安全 / 合规<br><em>实用情报</em></span>
-    <span class="en">AI, Security & <em>Compliance</em><br>Practical Intelligence</span>
-  </h1>
-  <p class="hero-sub">
-    <span class="zh">每天追踪一个前沿工具、趋势、风险或法规，讲清楚为什么重要，并给出可执行步骤。</span>
-    <span class="en">One practical bilingual brief per day: frontier tools, trends, risks, and regulations with actionable next steps.</span>
-  </p>
-</div>
+
+  <aside class="radar-panel" aria-label="Signal radar">
+    <div class="radar-visual">
+      <div class="radar-ring r1"></div>
+      <div class="radar-ring r2"></div>
+      <div class="radar-ring r3"></div>
+      <div class="radar-sweep"></div>
+      <div class="radar-core"></div>
+    </div>
+    <div class="signal-list">
+      <div class="signal-row"><span>AI</span><strong>ACTIVE</strong></div>
+      <div class="signal-row"><span>SECURITY</span><strong>ACTIVE</strong></div>
+      <div class="signal-row"><span>POLICY</span><strong>MONITORING</strong></div>
+      <div class="signal-row"><span>GITHUB</span><strong>SCANNING</strong></div>
+    </div>
+  </aside>
+</section>
 
 <div class="container">
   <div class="layout">
-    <main>
-      <div class="feed-header">
-        <span class="feed-title zh">最新情报</span>
-        <span class="feed-title en">Latest Articles</span>
-        <span class="feed-count">{{ site.posts.size }} articles</span>
+    <div class="feed-main">
+      <div class="feed-header" id="today">
+        <div>
+          <span class="section-kicker">TODAY'S BRIEFING</span>
+          <h2><span class="zh">今日简报</span><span class="en">Today's Briefing</span></h2>
+        </div>
+        <span class="feed-count">{{ site.posts.size }} INTEL ITEMS</span>
       </div>
 
       {% for post in site.posts %}
+        {% assign intel_num = site.posts.size | minus: forloop.index0 %}
         {% if forloop.first %}
         <a class="article featured" href="{{ post.url | relative_url }}" data-cat="{{ post.category }}" data-content-type="{{ post.content_type }}">
-          <span class="featured-badge zh">最新</span>
-          <span class="featured-badge en">Latest</span>
+          <div class="article-topline">
+            <span class="intel-id">INTEL-{{ intel_num | prepend: '000' | slice: -3, 3 }}</span>
+            <span class="featured-badge">LATEST BRIEF</span>
+          </div>
           <div class="article-meta">
-            <span class="cat-chip {% if post.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">
-              {{ post.category | upcase }}
-            </span>
+            <span class="cat-chip {% if post.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">{{ post.category | upcase }}</span>
             {% if post.content_type %}
-            <span class="type-chip">
-              <span class="zh">{{ post.content_type_cn }}</span><span class="en">{{ post.content_type_en }}</span>
-            </span>
+            <span class="type-chip"><span class="zh">{{ post.content_type_cn }}</span><span class="en">{{ post.content_type_en }}</span></span>
             {% endif %}
             <span class="art-date">{{ post.date | date: "%Y.%m.%d" }}</span>
           </div>
@@ -47,130 +73,94 @@ layout: default
           <div class="article-title-en en">{{ post.title_en }}</div>
           <div class="article-excerpt zh">{{ post.summary_cn }}</div>
           <div class="article-excerpt-en en">{{ post.summary_en }}</div>
+          <div class="article-signal-grid">
+            <span><b>SIGNAL</b> HIGH</span>
+            <span><b>ACTION</b> MEDIUM</span>
+            <span><b>LANG</b> CN/EN</span>
+          </div>
           <div class="article-tags">
-            {% for tag in post.tags limit:5 %}
-            <span class="tag">{{ tag }}</span>
-            {% endfor %}
+            {% for tag in post.tags limit:5 %}<span class="tag">{{ tag }}</span>{% endfor %}
           </div>
         </a>
+
+        <div class="feed-header feed-header-secondary">
+          <div>
+            <span class="section-kicker">INTEL FEED</span>
+            <h2><span class="zh">情报流</span><span class="en">Intel Feed</span></h2>
+          </div>
+        </div>
         {% else %}
         <a class="article" href="{{ post.url | relative_url }}" data-cat="{{ post.category }}" data-content-type="{{ post.content_type }}">
+          <div class="timeline-dot"></div>
           <div class="article-left">
-            <div class="article-meta">
-              <span class="cat-chip {% if post.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">
-                {{ post.category | upcase }}
-              </span>
-              {% if post.content_type %}
-              <span class="type-chip">
-                <span class="zh">{{ post.content_type_cn }}</span><span class="en">{{ post.content_type_en }}</span>
-              </span>
-              {% endif %}
+            <div class="article-topline">
+              <span class="intel-id">INTEL-{{ intel_num | prepend: '000' | slice: -3, 3 }}</span>
               <span class="art-date">{{ post.date | date: "%Y.%m.%d" }}</span>
+            </div>
+            <div class="article-meta">
+              <span class="cat-chip {% if post.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">{{ post.category | upcase }}</span>
+              {% if post.content_type %}
+              <span class="type-chip"><span class="zh">{{ post.content_type_cn }}</span><span class="en">{{ post.content_type_en }}</span></span>
+              {% endif %}
             </div>
             <div class="article-title zh">{{ post.title_cn }}</div>
             <div class="article-title-en en">{{ post.title_en }}</div>
             <div class="article-excerpt zh">{{ post.summary_cn }}</div>
             <div class="article-excerpt-en en">{{ post.summary_en }}</div>
             <div class="article-tags">
-              {% for tag in post.tags limit:4 %}
-              <span class="tag">{{ tag }}</span>
-              {% endfor %}
+              {% for tag in post.tags limit:4 %}<span class="tag">{{ tag }}</span>{% endfor %}
             </div>
           </div>
           <div class="article-right">
             <div class="article-arrow">↗</div>
-            <span class="article-num">{{ forloop.index | prepend: '00' | slice: -3, 3 }}</span>
           </div>
         </a>
         {% endif %}
       {% endfor %}
 
       {% if site.posts.size == 0 %}
-      <div style="padding:4rem 0;text-align:center;color:var(--ink4)">
-        <p style="font-family:var(--f-mono);font-size:.8rem;margin-bottom:.5rem">
-          <span class="zh">📡 正在初始化情报系统...</span>
-          <span class="en">📡 Initializing intelligence pipeline...</span>
-        </p>
-        <p style="font-family:var(--f-mono);font-size:.7rem">
-          First articles will be published at 08:00 CST
-        </p>
+      <div class="empty-state">
+        <p>NO SIGNAL YET</p>
+        <small>First briefing will be published at 08:00 CST.</small>
       </div>
       {% endif %}
-    </main>
+    </div>
 
     <aside class="sidebar">
-      <div class="sidebar-block">
-        <h3><span class="zh">站点数据</span><span class="en">Stats</span></h3>
+      <div class="sidebar-block control-panel">
+        <h3>SIGNAL BOARD</h3>
         <div class="stat-grid">
-          <div class="stat-cell">
-            <div class="stat-n">1<span>/天</span></div>
-            <div class="stat-l">Articles<br><span class="zh">每日发布</span><span class="en">Per Day</span></div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-n">08<span>:00</span></div>
-            <div class="stat-l">Update CST<br><span class="zh">更新时间</span><span class="en">Daily</span></div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-n">双<span>语</span></div>
-            <div class="stat-l">Bilingual<br><span class="zh">语言</span><span class="en">Lang</span></div>
-          </div>
-          <div class="stat-cell">
-            <div class="stat-n">{{ site.posts.size }}</div>
-            <div class="stat-l">Total<br><span class="zh">总文章数</span><span class="en">Articles</span></div>
-          </div>
+          <div class="stat-cell"><div class="stat-n">{{ site.posts.size }}</div><div class="stat-l">Intel<br>Items</div></div>
+          <div class="stat-cell"><div class="stat-n">08<span>:00</span></div><div class="stat-l">CST<br>Daily</div></div>
+          <div class="stat-cell"><div class="stat-n">CN<span>/EN</span></div><div class="stat-l">Bilingual<br>Briefs</div></div>
+          <div class="stat-cell"><div class="stat-n">4</div><div class="stat-l">Signal<br>Types</div></div>
+        </div>
+      </div>
+
+      <div class="sidebar-block terminal-block">
+        <h3>OPS TERMINAL</h3>
+        <div class="terminal-lines">
+          <p>&gt; scanning feeds...</p>
+          <p>&gt; parsing policy updates...</p>
+          <p>&gt; ranking security signals...</p>
+          <p>&gt; briefing generated<span class="cursor">_</span></p>
         </div>
       </div>
 
       <div class="sidebar-block">
-        <h3><span class="zh">技术栈</span><span class="en">Pipeline</span></h3>
-        <div class="pipeline">
-          <div class="pipe-row">
-            <div class="pipe-icon">🔍</div>
-            <div class="pipe-text">
-              <span class="zh">热点搜索</span><span class="en">Search</span>
-              <small>Tavily Search API</small>
-            </div>
-          </div>
-          <div class="pipe-arrow">↓</div>
-          <div class="pipe-row">
-            <div class="pipe-icon">✍️</div>
-            <div class="pipe-text">
-              <span class="zh">AI 写作</span><span class="en">AI Writing</span>
-              <small>DeepSeek V4 Flash</small>
-            </div>
-          </div>
-          <div class="pipe-arrow">↓</div>
-          <div class="pipe-row">
-            <div class="pipe-icon">🚀</div>
-            <div class="pipe-text">
-              <span class="zh">自动发布</span><span class="en">Deploy</span>
-              <small>GitHub Actions · Pages</small>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="sidebar-block">
-        <h3><span class="zh">内容类型</span><span class="en">Content Types</span></h3>
+        <h3><span class="zh">情报类型</span><span class="en">Signal Types</span></h3>
         <div class="tag-cloud">
-          <button class="cloud-tag ai-tag">工具攻略</button>
-          <button class="cloud-tag ai-tag">趋势分析</button>
-          <button class="cloud-tag sec-tag">防御实操</button>
-          <button class="cloud-tag sec-tag">法规追踪</button>
-          <button class="cloud-tag ai-tag">Tool Guide</button>
-          <button class="cloud-tag ai-tag">Trend Analysis</button>
-          <button class="cloud-tag sec-tag">Defensive Playbook</button>
-          <button class="cloud-tag sec-tag">Regulation Watch</button>
+          <button class="cloud-tag ai-tag">TOOL GUIDE</button>
+          <button class="cloud-tag ai-tag">TREND</button>
+          <button class="cloud-tag sec-tag">DEFENSE</button>
+          <button class="cloud-tag sec-tag">POLICY</button>
         </div>
       </div>
 
-      <div class="sidebar-block">
-        <h3><span class="zh">订阅</span><span class="en">Subscribe</span></h3>
-        <p style="font-size:.8rem;color:var(--ink3);margin-bottom:.75rem;line-height:1.6">
-          <span class="zh">通过 RSS 订阅每日情报推送。</span>
-          <span class="en">Subscribe via RSS for daily updates.</span>
-        </p>
-        <a href="{{ '/feed.xml' | relative_url }}" class="rss-link">📡 RSS Feed →</a>
+      <div class="sidebar-block subscribe-block">
+        <h3>SUBSCRIBE</h3>
+        <p><span class="zh">订阅 RSS，接收每日情报。</span><span class="en">Subscribe via RSS for daily intel.</span></p>
+        <a href="{{ '/feed.xml' | relative_url }}" class="rss-link">RSS FEED →</a>
       </div>
     </aside>
   </div>

@@ -3,44 +3,36 @@ layout: default
 ---
 
 <div class="post-wrap">
-  <div class="post-head">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">东情局 / DONG INTEL BUREAU</div>
     <div class="post-head-meta">
-      <span class="cat-chip {% if page.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">
-        {{ page.category | upcase }}
-      </span>
+      <span class="cat-chip {% if page.category == 'ai' %}chip-ai{% else %}chip-sec{% endif %}">{{ page.category | upcase }}</span>
       {% if page.content_type %}
-      <span class="type-chip">
-        <span class="zh">{{ page.content_type_cn }}</span><span class="en">{{ page.content_type_en }}</span>
-      </span>
+      <span class="type-chip"><span class="zh">{{ page.content_type_cn }}</span><span class="en">{{ page.content_type_en }}</span></span>
       {% endif %}
       <span class="art-date">{{ page.date | date: "%Y.%m.%d" }}</span>
     </div>
 
     <h1 class="post-title-cn zh">{{ page.title_cn }}</h1>
-    <p class="post-title-en en">{{ page.title_en }}</p>
+    <h1 class="post-title-en en">{{ page.title_en }}</h1>
 
     <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
       <p class="zh">{{ page.summary_cn }}</p>
       <p class="en">{{ page.summary_en }}</p>
     </div>
 
     <div class="post-tags-row">
-      {% for tag in page.tags %}
-      <span class="tag">{{ tag }}</span>
-      {% endfor %}
+      {% for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
     </div>
-  </div>
+  </article>
 
   <div class="lang-switcher">
-    <button class="lsw-btn active" data-target="cn">
-      <span class="zh">中文</span><span class="en">Chinese</span>
-    </button>
-    <button class="lsw-btn" data-target="en">
-      <span class="zh">英文</span><span class="en">English</span>
-    </button>
-    <button class="lsw-btn" data-target="both">
-      <span class="zh">双语</span><span class="en">Bilingual</span>
-    </button>
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
   </div>
 
   <div class="post-body post-content">
@@ -48,23 +40,6 @@ layout: default
   </div>
 
   <div class="post-nav">
-    <a href="{{ '/' | relative_url }}" class="back-link">
-      <span class="zh">← 返回首页</span>
-      <span class="en">← Back to Home</span>
-    </a>
+    <a href="{{ '/' | relative_url }}" class="back-link">← BACK TO INTEL BOARD</a>
   </div>
 </div>
-
-<script>
-document.querySelectorAll('.lsw-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.lsw-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const t = btn.dataset.target;
-    const pc = document.querySelector('.post-content');
-    pc.classList.remove('show-en','show-both');
-    if (t === 'en') pc.classList.add('show-en');
-    if (t === 'both') pc.classList.add('show-both');
-  });
-});
-</script>

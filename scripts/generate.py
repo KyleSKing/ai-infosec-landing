@@ -285,7 +285,7 @@ summary_cn: "{article['summary_cn']}"
 ---
 
 <!-- Chinese Version -->
-<div class="lang-cn">
+<div class="lang-cn" markdown="1">
 
 ## {article['title_cn']}
 
@@ -296,7 +296,7 @@ summary_cn: "{article['summary_cn']}"
 ---
 
 <!-- English Version -->
-<div class="lang-en">
+<div class="lang-en" markdown="1">
 
 ## {article['title_en']}
 
