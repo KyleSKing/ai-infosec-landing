@@ -61,8 +61,11 @@ def call_llm(system: str, user: str) -> str:
             {"role": "system", "content": system},
             {"role": "user", "content": user},
         ],
-        "temperature": 0.7,
-        "max_tokens": 3000,
+        "temperature": 0.5,
+        # The requested Chinese + English article routinely exceeds 3000 output
+        # tokens. A too-low cap truncates the JSON and breaks the daily workflow.
+        "max_tokens": 7000,
+        "response_format": {"type": "json_object"},
     }
     print("Using model:", payload["model"])
     max_retries = 3
@@ -246,15 +249,15 @@ Recent sources:
 Search summary:
 {summary}
 
-Return ONLY valid JSON in this exact structure:
+Return ONLY valid JSON in this exact structure. Keep the Chinese body concise enough that the complete JSON fits within 6500 output tokens:
 {{
   "title_en": "English title",
   "title_cn": "中文标题",
   "summary_en": "2-3 sentence English summary for meta description",
   "summary_cn": "2-3句中文摘要",
   "tags": ["tag1", "tag2", "tag3", "tag4"],
-  "body_cn": "中文主文，Markdown格式，1000-1800字。按当前content type要求组织，必须包含可执行步骤、适合人群、限制/风险、我的判断。",
-  "body_en": "Concise English brief, Markdown format, 300-600 words. Cover what it is, why it matters, practical next steps, risks, and take.",
+  "body_cn": "中文主文，Markdown格式，900-1400字。按当前content type要求组织，必须包含可执行步骤、适合人群、限制/风险、我的判断。",
+  "body_en": "Concise English brief, Markdown format, 250-450 words. Cover what it is, why it matters, practical next steps, risks, and take.",
   "sources": [
     {{"title": "source title", "url": "source url"}}
   ]
