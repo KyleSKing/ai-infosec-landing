@@ -1,0 +1,35 @@
+---
+layout: null
+permalink: /feed.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/"
+  xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>{{ site.title | xml_escape }}</title>
+    <link>{{ '/' | absolute_url }}</link>
+    <atom:link href="{{ '/feed.xml' | absolute_url }}" rel="self" type="application/rss+xml" />
+    <description>{{ site.description | xml_escape }}</description>
+    <language>{{ site.lang | default: 'zh-CN' }}</language>
+    <lastBuildDate>{{ site.time | date_to_rfc822 }}</lastBuildDate>
+    <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
+    <ttl>60</ttl>
+
+    {% for post in site.posts limit: 30 %}
+    <item>
+      <title>{% if post.title_cn %}{{ post.title_cn | strip | xml_escape }}{% endif %}{% if post.title_cn and post.title_en %} — {% endif %}{% if post.title_en %}{{ post.title_en | strip | xml_escape }}{% else %}{{ post.title | strip | xml_escape }}{% endif %}</title>
+      <link>{{ post.url | absolute_url }}</link>
+      <guid isPermaLink="true">{{ post.url | absolute_url }}</guid>
+      <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      {% if post.category %}<category domain="category">{{ post.category | xml_escape }}</category>{% endif %}
+      {% if post.content_type_en %}<category domain="content_type">{{ post.content_type_en | xml_escape }}</category>{% endif %}
+      {% for tag in post.tags %}<category domain="tag">{{ tag | xml_escape }}</category>{% endfor %}
+      <description>{{ post.summary_cn | default: post.excerpt | strip_html | normalize_whitespace | xml_escape }}{% if post.summary_en %}&#10;&#10;{{ post.summary_en | strip_html | normalize_whitespace | xml_escape }}{% endif %}</description>
+      <content:encoded>{{ post.content | xml_escape }}</content:encoded>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>

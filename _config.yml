@@ -1,7 +1,8 @@
-title: "AI Infosec Landing"
+title: "東情局 · DONG INTEL BUREAU"
 description: "Daily AI, Security & Compliance Practical Intelligence — 中英双语实用技术情报"
 baseurl: "/ai-infosec-landing"
 url: "https://KyleSKing.github.io"
+author: "東情局 / DONG INTEL BUREAU"
 
 # Build settings
 markdown: kramdown
@@ -10,13 +11,8 @@ theme: null  # custom theme
 
 # Plugins
 plugins:
-  - jekyll-feed
   - jekyll-sitemap
   - jekyll-seo-tag
-
-# Pagination
-paginate: 10
-paginate_path: "/page:num/"
 
 # Collections
 defaults:
