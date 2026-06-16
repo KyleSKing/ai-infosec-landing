@@ -1,133 +1,117 @@
 ---
 layout: post
-title_en: "China Cross-Border Data Transfer Compliance: A Practical Engineering Guide (June 2026 Update)"
-title_cn: "中国数据出境合规实操指南：工程团队需知的五月关键变化与行动清单（2026年6月更新）"
+title_en: "China's Cross-Border Data Transfer Compliance in 2026: Engineering Teams' Practical Playbook"
+title_cn: "2026年中国数据出境合规：工程团队实操手册"
 date: 2026-06-16
 category: infosec
 content_type: regulation_watch
 content_type_cn: "法规追踪"
 content_type_en: "Regulation Watch"
 tags:
-  - China data regulation
-  - cross-border data transfer
+  - 数据出境
   - PIPL
   - DSL
   - CSL
-  - 数据出境安全评估
-  - 个人信息保护影响评估
-  - engineering compliance
-summary_en: "This article summarizes the latest regulatory requirements for China cross-border data transfers under PIPL, DSL, and CSL, translating legal obligations into actionable steps for engineering, security, and data teams. It covers data classification, impact assessments, contractual paths, and technical controls."
-summary_cn: "本文梳理 PIPL、DSL、CSL 等法规下中国数据出境的最新监管要求，将法律义务转化为工程、安全与数据团队的实操步骤，涵盖数据分类、影响评估、合同路径及技术管控措施。"
+  - 数据安全评估
+  - 标准合同
+  - CIIO
+  - 重要数据
+  - 合规工程
+  - 跨境数据
+summary_en: "With China’s PIPL, DSL, and CSL enforcement maturing, plus 2025-2026 regulatory clarifications on data exports, engineering teams face new practical requirements. This article covers exemptions, scenarios (data transit, shared services), and actionable steps for security, data, and product teams."
+summary_cn: "随着《个人信息保护法》《数据安全法》《网络安全法》执法日趋成熟，加上2025-2026年数据出境监管细则的明确，工程团队面临新的实操要求。本文覆盖豁免场景、典型出境情形（数据过境、共享服务等），以及安全、数据、产品团队的可执行步骤。"
 ---
 
 <!-- Chinese Version -->
 <div class="lang-cn" markdown="1">
 
-## 中国数据出境合规实操指南：工程团队需知的五月关键变化与行动清单（2026年6月更新）
+## 2026年中国数据出境合规：工程团队实操手册
 
 ## 发生了什么
 
-2026年6月，中国数据出境合规进入常态化执行阶段。自2022年《数据出境安全评估办法》施行以来，国家网信办（CAC）不断细化申报流程、数据分类分级标准及个人信息保护影响评估（PIA/PIPIA）要求。近期监管部门明确强化对“重要数据”和“个人信息”出境的双重管控，同时促进标准合同（SCC）和个人信息保护认证（CCRC认证）的落地应用。汽车、金融、医疗、云服务等行业的负面清单陆续发布，进一步明确了哪些数据无需或不能通过简化路径出境。
+2025-2026年，中国数据出境监管体系进入稳定期。CAC（国家网信办）明确了《促进和规范数据跨境流动规定》中的豁免场景，上海自贸区临港新片区发布了智能网联汽车、公募基金、生物医药三大领域的场景化数据出境一般数据清单。关键变化是：
+
+1. **数据过境明确豁免**：在境外收集、在中国境内处理、未引入境内个人信息或重要数据的数据，无需申报安全评估、签订标准合同或通过认证。
+2. **小型企业豁免**：预计一年内向境外提供个人信息少于1万人（不含敏感个人信息）的，免予上述义务。
+3. **场景化清单落地**：临港清单给出了可出境的字段范围，并明确“反映国家经济运行情况”的数据属于重要数据，不得出境。
+4. **执法常态化**：CAC已公布多批数据出境安全评估结果，驳回比例高（初期约30%），企业需实质性整改。
 
 ## 为什么现在重要
 
-- **监管力度常态化**：安全评估申报已非一次性动作，要求每两年或在发生重大变更时重新申报。监管机构对存量违规出境的抽查与执法力度显著增强。
-- **数据分类复杂化**：重要数据的识别不再仅依赖行业目录，企业需基于业务场景自行判定，如CIIO（关键信息基础设施运营者）处理的重要数据、超过100万人个人信息、10万人敏感个人信息等触发出境安全评估。
-- **出境路径清晰化**：三条主要路径——安全评估、SCC备案、认证——各有适用场景，企业不能随意选择，必须首先判断是否属于必须走安全评估的情形。
-- **国际监管趋同与冲突**：欧盟GDPR、EU AI Act对跨境数据处理提出额外要求，NIS2在欧盟落地，SOC 2和ISO 27001认证在中国数据出境合规中可作为辅助证据但不等同于消解中国监管义务。
+- 2026年是企业数据出境合规的“关键年”：三年过渡期结束（原2022年出台的《数据出境安全评估办法》有效期2年，续期1年），大量企业面临重新申报或整改。
+- 国际合作需求激增：中国SaaS出海、外企入华、跨境研发、供应链协同场景激增，数据流动合规直接影响业务连续性。
+- 监管颗粒度变细：不再是“一刀切”，而是基于数据分类分级、出境场景、体量、行业的具体要求。工程团队需要将法律要求转化为技术控制。
 
 ## 影响谁
 
-- **AI产品团队**：训练数据跨境、模型微调涉及多源数据混合时，需明确数据来源与出境法律基础。
-- **SaaS出海中企**：境内收集的中国用户数据需本地存储，提供境外服务需走合规出境路径。
-- **跨国公司内部共享**：HR数据、客户数据、运营数据在跨国体系内的传输。
-- **安全团队**：实施数据分类、加密、去标识化、访问控制、日志审计等技术管控。
-- **数据团队**：数据资产盘点、分类分级、出境数据范围识别。
-- **法务/合规团队**：文件起草、申报、对接监管。
-- **产品团队**：涉及用户同意的交互设计、最小化收集原则落地。
+- **AI产品团队**：训练数据若含中国境内个人信息或重要数据，出境需合规。模型部署在海外、云端推理涉及数据回流，需评估。
+- **SaaS公司**：尤其是中国海外业务（如跨境CRM、协同工具），数据存储在中国但海外员工访问，或中国客户数据出海。
+- **外企中国团队**：HR数据、客户数据、财务数据出境至全球总部场景。
+- **安全与数据团队**：需部署数据分类分级、数据脱敏、审计日志、访问控制等工程能力。
+- **合规/法务**：负责申报、备案，但需要工程配合完成技术验证。
 
 ## 工程/安全/数据团队要做什么
 
-### 第一阶段：数据资产盘点与分类分级（立即开始）
+### 1. 建立数据分类分级自动化
+   - 工具推荐：使用CASB（如Netskope，McAfee MVISION）、DLP（如Symantec，Forcepoint）+ 自建NLP分类引擎。
+   - 至少区分：个人信息、敏感个人信息、重要数据（参照行业标准）、一般数据。
+   - 行动：在每个数据源（数据库、对象存储、API）上打标签，嵌入字段级元数据。
 
-1. **识别重要数据**：参考行业目录（如工信部《工业数据安全管理办法》、金融数据分级指南），结合公司数据流转图谱，识别可能被认定为重要数据的字段（如位置轨迹、生物特征、行业特定敏感数据）。
-2. **识别个人信息**：统计处理的个人用户数，是否超过100万人（触发安全评估门槛）；是否处理敏感个人信息（生物识别、金融账户、行踪轨迹、不满14周岁未成年人信息）。
-3. **标记CIIO身份**：确认企业是否已被认定为CIIO，或是否可能被认定为CIIO（关键信息基础设施运营者）。
+### 2. 部署数据出境监控
+   - 在出口网关（如API Gateway、CDN出口、VPN出口）部署DPI（深度包检测）或流量审计。
+   - 监控：是否符合豁免条件（数据过境、数量阈值）。
+   - 记录：出境数据全量日志（时间、字段、目的IP、用户、协议），保留至少6个月。
 
-### 第二阶段：出境场景评估（每季度审核）
+### 3. 实施数据脱敏/去标识化
+   - 对出境数据集：静态脱敏（如替换、遮蔽、加密）+ 动态脱敏（基于角色的实时脱敏）。
+   - 重要：脱敏后的数据若仍可关联到个人（间接识别），仍属于个人信息出境。
+   - 参考：GB/T 37973-2019（大数据脱敏）。
 
-1. **列出所有出境场景**：包括API调用、数据湖跨境查询、SaaS后台访问、员工出差远程访问、供应商数据处理等。
-2. **判断触发路径**：
-   - 如果涉及重要数据 → 必须走安全评估。
-   - 如果涉及CIIO数据 → 必须走安全评估。
-   - 如果涉及100万以上个人信息或10万以上敏感个人信息 → 必须走安全评估。
-   - 其他个人信息出境 → SCC或认证（二者选一，不能同时备案两种）。
-3. **记录“无需出境”情形**：已依法公开数据、已脱敏至无法重新识别个体的数据、已履行出口管制义务的数据等。
+### 4. 更新标准合同(SCC)签约流程
+   - 将SCC纳入采购合同管理：每笔数据出境都要有对应法律依据（SCC备案、安全评估结果、豁免）。
+   - 工程侧：在数据共享API中嵌入“法律依据ID”字段，自动校验。
 
-### 第三阶段：合规前置技术措施（中长期建设）
-
-1. **数据去标识化与匿名化**：部署动态脱敏工具，对出境数据做最小字段处理。匿名化要求高，需证明不可逆转（目前标准仍模糊，建议留好技术文档）。
-2. **数据本地化存储**：确保中国境内收集的数据优先存储于境内，境外访问需通过安全加密通道（APN/VPN须由持牌供应商提供）。
-3. **日志审计与留存**：所有数据出境操作需有日志，保留至少3年（建议5年以防争议）。
-4. **个人信息保护影响评估（PIA/PIPIA）**：自动生成PIA报告系统，每次出境场景变更时重新评估。
-5. **用户同意管理平台**：为每类数据处理目的获取单独同意，支持撤回且不违反最小化原则。
-
-### 第四阶段：合同与认证准备（根据路径推进）
-
-- **安全评估路径**：准备自评估报告、申报材料（数据规模、出境目的、接收方情况、保护措施等），通过省级网信部门完备性查验后提交CAC。
-- **SCC路径**：采用CAC发布的标准合同模板，签署后10个工作日内向省级网信部门备案，每次数据规模或场景变更需重新签约或补充。
-- **认证路径**：通过国家认可的认证机构（如CCRC）进行个人信息保护认证，有效期3年，期间需接受监督。
+### 5. 定期内部审计与演练
+   - 每季度模拟一次CAC问询：提供出境数据目录、安全评估/备案编号、数据映射图。
+   - 工具：使用数据映射工具（如Securiti，BigID，OneTrust）维护DPIA（数据保护影响评估）。
 
 ## 中国数据监管重点
 
-1. **重要数据出境安全评估**：CAC对安全评估有实质审核权，并非形式审查。不符合的将要求停止出境。
-2. **PIPL下的PIA**：PIA必须包含处理目的合法正当必要性、对个人权益影响及风险、保护措施有效性三项核心内容。评估报告需保存至少3年。
-3. **数据本地化与“视同出境”场景**：即使数据物理存储在中国，境外主体通过API/远程访问获取数据也属于出境行为。
-4. **行业监管加强**：汽车、金融、医疗、云服务有专项法规，如《汽车数据安全管理若干规定（试行）》明确负面清单，自动驾驶相关数据不适用简化路径。
-5. **国际条约与互认**：中国正在参与全球数据跨境流动规则谈判，但短期内不会承认他国认证替代本国合规。
+- **重要数据出境的严控**：任何可能反映国家经济运行、行业运行、公共安全的数据，即使符合豁免数量，也不能自由出境。需先识别（参照《数据安全技术 重要数据识别规则》征求意见稿）。
+- **CIIO义务**：关键信息基础设施运营者（CIIO）的数据出境一律需安全评估，无豁免。
+- **SCM（标准合同）vs 认证**：2026年，CAC简化了SCC备案流程（改为在线提交），但审核深度增加。
+- **行业清单**：临港清单可能扩展至其他自贸区，企业需关注所在行业是否已出清单。
 
 ## 国际规则对照
 
-| 中国监管 | 对应国际规则 | 差异与应对 |
-|---------|-------------|----------|
-| 安全评估 | GDPR第45条充分性认定 | 中国安全评估是国别+个案审核，GDPR充分性认定是国家层面整体评估；企业需同时满足两者 |
-| SCC（中国版）| EU SCC（欧盟版）| EU SCC需监管备案即可生效，中国SCC需向网信办备案；内容条款差异大，不可混用 |
-| PIA | GDPR DPIA | 中国PIA必须包含处理必要性，GDPR不强制要求必要性论证；两者可部分复用文档，但需分别调整 |
-| 数据本地化 | 欧盟无普遍数据本地化要求（除GDPR第45条补充措施外）| 中国CIIO和重要数据强制本地存储 |
-| CIIO认定 | NIS2关键实体认定 | 范围不同，中国企业需注意多重认定可能 |
-| SOC 2 / ISO 27001 | 可作为技术控制证据 | 不能替代中国法律要求的合规路径 |
+| 中国规则 | 对应国际规则 | 差异点 |
+|---|---|---|
+| 数据出境安全评估 | GDPR 第46条（充分性认定 + 标准合同条款） | 中国侧重国家安全审查，GDPR侧重个人权利保护 |
+| 个人信息保护认证 | 欧盟BCR (Binding Corporate Rules) | 认证门槛更高，适用范围窄 |
+| 场景化一般数据清单 | 欧盟SCC附加条款（补充措施） | 中国用正清单（可出境的字段），欧盟用负清单/风险评估 |
+| 重要数据概念 | NIS2 的“关键数据” | 中国定义更模糊，范围更广 |
 
 ## 可以提前准备的检查清单
 
-- [ ] 数据资产盘点清单（按业务系统、数据库、API、SaaS工具分类）
-- [ ] 出境场景矩阵（场景、数据类别、字段、数量、接收方、所在国、路径判断）
-- [ ] 个人信息保护影响评估模板（中文，符合PIPL要求）
-- [ ] 数据去标识化/匿名化技术方案（至少包括动态脱敏、k-匿名、差分隐私）
-- [ ] 用户同意采集与管理平台（支持单独同意、撤回、记录）
-- [ ] CIIO认定自查与上报准备（如适用）
-- [ ] 数据安全事件应急响应预案（含跨境数据泄露场景）
-- [ ] 第三方数据处理者管理清单（每个供应商的数据处理范围和合规状态）
-- [ ] 年度数据安全与个人信息保护合规自查报告（格式参考KPMG等第三方建议）
+- [ ] 数据分类分级是否已完成并嵌入所有数据平台？
+- [ ] 所有数据出境链路是否已标注法律依据（豁免/安全评估/SCC/认证）？
+- [ ] 是否已部署实时出境监控告警？
+- [ ] 是否已对所有出境数据集进行脱敏/去标识化（若适用）？
+- [ ] 是否已确认企业是否属于CIIO？（联系行业主管机关确认）
+- [ ] 是否已与律所/合规顾问完成DPIA？
+- [ ] 是否已完成年度数据出境安全评估？（若需）
+- [ ] 是否已准备数据映射图，含字段级元数据？
 
 ## 风险和不确定性
 
-- **重要数据的定义仍不清晰**：行业目录未全面覆盖，企业需承担“合理判断”责任，误判可能导致严重处罚。
-- **安全评估周期长**：受理、补充、评审流程可能耗时6个月以上，期间出境活动必须暂停（除非已获批）。
-- **SCC备案后监管复查**：备案并非终点，网信部门可要求补充材料或启动安全评估。
-- **“隐私盾”类互认协议缺位**：短期内中国不会与美国或欧盟签署类似Privacy Shield的跨境转移互认协议。
-- **执法力度波动**：监管资源有限，大型企业是重点审查对象，中小企业可能三年内不被关注，但一旦违规罚款可达5000万元或上一年度营业额的5%。
+- **监管解释动态变化**：CAC对“重要数据”的认定标准仍在演进（征求意见稿未正式发布），企业可能误判。
+- **执法加严**：2026年CAC加强了违规处罚，最高可达企业上一年度营收5%或5000万人民币。
+- **技术不能解决法律问题**：脱敏不等于豁免，如果数据本身落入重要数据范畴，技术上脱敏后仍需申报。
+- **跨境诉讼风险**：如违反PIPL，个人有可诉权（包括集团诉讼），企业面临声誉与赔偿双重压力。
 
 ## 我的判断
 
-- **合规是硬约束，不是可选项**：中国数据出境合规是前置性要求，而非事后补救。所有涉及中国用户或重要数据的境外业务，必须在设计阶段（Privacy by Design）即嵌入合规逻辑。
-- **标准合同路径是当前最稳妥选择**：对于非CIIO、非重要数据、未超量个人信息的出场景，SCC路径门槛最低、成本适中，应作为首选。安全评估路径应当只用于必须情况。
-- **技术管控比法律文件更关键**：监管执法的焦点是数据是否真实受控，而非仅合同条款。工程团队必须落地日志、加密、访问控制、脱敏等基础能力。
-- **监管将更关注AI模型训练数据跨境**：随着生成式AI发展，训练数据中涉及的个人信息、重要数据出境将成为新一轮监管重点，建议团队提前储备合规认知。
-
-## 适合与不适合人群
-
-- **适合**：需要将中国用户数据或业务数据向境外传输的所有企业的工程、安全、数据、法务和产品团队；SaaS、AI、云服务、金融、汽车、医疗等行业的系统架构师与合规经理。
-- **不适合**：完全不涉及中国用户或数据的企业；仅使用境外服务的个人；需要法律代理意见的场合（请咨询持牌律所）。
+**从现在到2027年，中国数据出境合规会从“政策学习”进入“工程审计”阶段。** 企业不能再靠一份PPT合规。工程团队必须成为合规的核心执行者：将数据分类分级、脱敏、审计、监控工程化。对大多数SaaS和外企团队来说，最务实的路径是：先用临港清单或行业清单确定可出境字段范围，然后对不确定的数据走安全评估，其余通过SCC备案。不要过度规避（比如把所有数据都放在中国境内），因为业务需要；也不要侥幸豁免（比如认为人数少就不是PIPL对象）。2026年，合规即是产品竞争力。
 
 </div>
 
@@ -136,57 +120,44 @@ summary_cn: "本文梳理 PIPL、DSL、CSL 等法规下中国数据出境的最�
 <!-- English Version -->
 <div class="lang-en" markdown="1">
 
-## China Cross-Border Data Transfer Compliance: A Practical Engineering Guide (June 2026 Update)
+## China's Cross-Border Data Transfer Compliance in 2026: Engineering Teams' Practical Playbook
 
-## What Changed
+## What Happened
 
-China's cross-border data transfer compliance is now in its routine enforcement phase. Since the 2022 Data Export Security Assessment Measures, the CAC has refined the application process, data classification standards, and the Personal Information Protection Impact Assessment (PIPIA) requirements. Three clearance paths exist: government-led security assessment, standard contractual clauses (SCC) filing, and personal information protection certification. Recent industry-specific negative lists (auto, finance, healthcare) clarify which data cannot use simplified paths.
+In 2025-2026, China's cross-border data transfer regulatory system entered a stabilization phase. The CAC (Cyberspace Administration) clarified exemption scenarios in the "Regulations on Promoting and Regulating Cross-Border Data Flow" — notably data transit (collected abroad, processed in China, without introducing domestic PI or important data) is exempt. Shanghai Lingang FTZ published scenario-based positive data lists for three sectors: intelligent connected vehicles, public funds, and biomedicine. Enforcement has normalized: CAC has published multiple batches of security assessment results, with early rejection rates around 30%.
 
 ## Who Is Affected
 
-- **AI product teams**: training data cross-border transfers and model fine-tuning with multi-source data.
-- **SaaS outbound teams**: China-originated user data must be stored locally; service delivery abroad requires a compliant path.
-- **Multinational internal sharing**: HR, customer, and operational data within global systems.
-- **Security, data, legal/compliance, and product teams**: all need coordinated action.
+- **AI product teams**: training data containing Chinese PI or important data requires compliance; model inference overseas can involve data re-export.
+- **SaaS companies** with cross-border operations: CRM, collaboration tools, customer data.
+- **Foreign companies in China**: HR, finance, customer data transferred to global HQ.
+- **Security/data teams**: need to implement classification, masking, audit logging, access controls.
+- **Legal/compliance**: need engineering support to operationalize requirements.
 
-## What Engineering/Security/Data Teams Must Do Now
+## Engineering & Security Actions
 
-1. **Data Asset Inventory and Classification** (immediate)
-   - Identify important data against industry catalogs; flag if it may be CIIO-related.
-   - Count personal data subjects—>1M triggers security assessment; >100K sensitive personal info triggers it too.
-2. **Outbound Scenario Mapping** (quarterly review)
-   - List every data flow: API calls, cross-border queries, remote access, vendor processing.
-   - Determine the applicable path: security assessment (if important data, CIIO data, or volume threshold exceeded) vs. SCC or certification.
-3. **Preventive Technical Controls** (ongoing)
-   - Deploy dynamic masking and anonymization; ensure irreversible for “public data” exemption.
-   - Enforce data localization with encryption for transmission; only use licensed VPN/APN providers.
-   - Log all outbound operations; retain logs for at least 3 years (preferably 5).
-   - Automate PIPIA generation for each change scenario.
-   - Implement consent management supporting separate consent, withdrawal, and audit trails.
-4. **Contractual and Certification Preparation**
-   - Security assessment path: prepare self-assessment report, apply through provincial CAC, then national CAC.
-   - SCC path: use CAC’s standard template, file within 10 days after signing.
-   - Certification path: obtain CCRC certification (valid 3 years, subject to supervision).
+1. **Automate data classification**: use DLP/CASB + custom NLP classifiers. Tag all data sources at field level.
+2. **Monitor data export**: deploy traffic analysis (DPI) at API gateways, CDN edges, VPN exits. Log all cross-border transfers for at least 6 months.
+3. **Deploy data masking**: static & dynamic masking for outbound datasets. Note: de-identified data that can still be re-linked to individuals is still considered PI.
+4. **Embed legal basis in data flows**: attach SCC filing number or exemption ID to each export API call.
+5. **Run internal audits quarterly**: simulate CAC inquiries, maintain data mapping (field-level metadata).
 
 ## China Data Compliance Angle
 
-- Important data export requires security assessment regardless of volume.
-- Even data physically stored in China is considered “exported” if accessed by foreign entities via API/remote query.
-- PIPIA must include necessity, impact on individuals, and protection measures; reports require 3-year retention.
-- Industry-specific rules: auto sector bans export of certain data (e.g., driving behavior for autonomous vehicles).
-- International certifications (SOC 2, ISO 27001) support technical controls but do not replace Chinese legal paths.
+- **Important data** is defined vaguely; any data reflecting national economic operations cannot be exported even under exemption.
+- **CIIOs** must undergo security assessment for all exports — no exemptions.
+- **SCC filing** moved online in 2026, but scrutiny increased.
+- **Sector lists** (Lingang model) may expand; check if your industry is covered.
 
-## Risks and Uncertainty
+## Risks & Uncertainties
 
-- Definition of “important data” remains vague in many industries; companies bear judgment risk.
-- Security assessment timeline is 6+ months; outbound activities must stop during review.
-- SCC filing does not shield against subsequent CAC escalation to security assessment.
-- No US-China or EU-China Privacy Shield-like mutual recognition exists.
-- Penalty max: RMB 50 million or 5% of prior year revenue.
+- **Dynamic interpretation**: CAC's important data identification standard is still draft — misclassification risk is real.
+- **Penalties**: up to 5% of annual revenue or 50 million RMB. Private right of action also exists.
+- **Technology ≠ legal compliance**: masked data may still be restricted data.
 
-## My Take
+## Bottom Line
 
-Compliance is a design prerequisite, not a fix. Use SCC as the default path for most scenarios unless forced into security assessment. Engineering teams must invest in logging, encryption, de-identification, and access control—technical measures matter more than legal contracts. AI-model training data cross-border transfers will become the next enforcement hotspot.
+**2026 marks the shift from policy study to engineering audit.** Engineering teams must operationalize classification, masking, monitoring, and audit. The practical path: use sector-specific positive lists for known fields, apply for security assessment for uncertain categories, and file SCCs for the rest. Compliance is now product competitiveness — don't over- or under-react.
 
 </div>
 
@@ -194,8 +165,8 @@ Compliance is a design prerequisite, not a fix. Use SCC as the default path for 
 
 ### 参考来源 / Sources
 
-- [数据出境安全评估管理建议](https://assets.kpmg.com/content/dam/kpmg/cn/pdf/zh/2022/07/practical-guidelines-for-managing-cross-border-data-transfer-in-china.pdf)
+- [新规视角下的企业数据出境合规思路解读](http://mch.wuhai.gov.cn/whsmycjh/tzcj/902709/1719944/index.html)
+- [数据出境安全评估: 背景和要点 - PCPD](https://www.pcpd.org.hk/english/whatsnew/files/professor_hong.pdf)
 - [三尺之律四海之人——数据出境监管政策体系结构及实务操作指南](https://www.kingandwood.com/cn/zh/insights/latest-thinking/china-s-cross-border-data-transfer-supervision-system-and-the-measures-for-certification-of-personal-information-export.html)
-- [What You Need to Know About China's Personal Information Protection Law - Kirton McConkie](https://www.kirtonmcconkie.com/zh/%E6%96%B0%E9%97%BB/what-you-need-to-know-about-chinas-personal-information-protection-law)
-- [中国的数据隐私法规：对移动应用的影响](https://capgo.app/zh/blog/chinas-data-privacy-laws-impact-on-mobile-apps)
 - [数据主权和中国法规 - Microsoft Learn](https://learn.microsoft.com/zh-cn/azure/china/overview-sovereignty-and-regulations)
+- [数据安全法和个人信息保护法：三法联动开启企业新一轮数据合规](https://www.jiayuan-law.com/cn/news_content.aspx?Lan=CN&MenuID=00000000000000000006&KeyID=00000000000000002065&Type=00000000000000000081)
