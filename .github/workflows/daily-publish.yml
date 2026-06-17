@@ -31,6 +31,11 @@ jobs:
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
         run: python scripts/generate.py
 
+      - name: Update article archive index
+        run: |
+          pip install python-frontmatter
+          python3 scripts/update_archive.py
+
       - name: Set up Ruby and Jekyll
         uses: ruby/setup-ruby@v1
         with:
@@ -44,17 +49,16 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _posts/
+          git add _posts/ archive/
           if git diff --cached --quiet; then
-            echo "No generated article changes to commit."
+            echo "No generated article or archive changes to commit."
           else
-            git commit -m "chore: publish daily article"
+            git commit -m "chore: publish daily article + update archive"
             git push origin HEAD:main
           fi
 
       - name: Build Jekyll site
         run: bundle exec jekyll build --destination _site
-
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
