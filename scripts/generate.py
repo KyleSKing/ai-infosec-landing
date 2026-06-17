@@ -357,15 +357,28 @@ def yaml_scalar(value: object) -> str:
 
 
 def save_post(article: dict, category: str, content_type: str, slug: str) -> Path:
-    """Save article as a Jekyll post."""
+    """Save article as a Jekyll post. Avoid overwrites: add suffix if exists."""
     tags = article.get("tags", []) or [category, content_type]
     tags_str = "\n".join(f"  - {yaml_scalar(tag)}" for tag in tags)
+
+    # Beijing time with HH:MM:SS
+    now = datetime.now(BJT)
+    today_date = now.strftime("%Y-%m-%d")
+    datetime_full = now.strftime("%Y-%m-%d %H:%M:%S +0800")
+
+    # find unique filename
+    base_name = f"{today_date}-{slug}"
+    filepath = POSTS_DIR / f"{base_name}.md"
+    suffix_num = 2
+    while filepath.exists():
+        filepath = POSTS_DIR / f"{base_name}-{suffix_num}.md"
+        suffix_num += 1
 
     content = f"""---
 layout: post
 title_en: {yaml_scalar(article['title_en'])}
 title_cn: {yaml_scalar(article['title_cn'])}
-date: {TODAY}
+date: {datetime_full}
 category: {category}
 content_type: {content_type}
 content_type_cn: {yaml_scalar(CONTENT_TYPE_LABELS[content_type]['cn'])}
@@ -402,9 +415,8 @@ summary_cn: {yaml_scalar(article['summary_cn'])}
 
 """
     for src in article.get("sources", []):
-        content += f"- [{src['title']}]({src['url']})\n"
+        content += "- [{title}]({url})\n".format(title=src["title"], url=src["url"])
 
-    filepath = POSTS_DIR / f"{TODAY}-{slug}.md"
     filepath.write_text(content, encoding="utf-8")
     print(f"✅ Saved: {filepath}")
     return filepath
