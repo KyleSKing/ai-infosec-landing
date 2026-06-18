@@ -35,8 +35,15 @@ def parse_post(post_path: Path) -> Tuple[datetime, frontmatter.Post, Path]:
     dt = post.get("date")
     if dt is None:
         dt = datetime(year, month, day, 8, 0, 0, tzinfo=BJT)
-    elif isinstance(dt, datetime) and dt.tzinfo is None:
-        dt = dt.replace(tzinfo=BJT)
+    elif isinstance(dt, str):
+        # frontmatter returns string if date not parsed as datetime
+        dt = datetime.strptime(dt, "%Y-%m-%d %H:%M:%S%z")
+    elif isinstance(dt, datetime):
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=BJT)
+    elif type(dt).__name__ == "date":
+        # handles raw date objects from YAML parsing
+        dt = datetime.combine(dt, datetime.min.time()).replace(tzinfo=BJT)
 
     return dt, post, post_path
 
