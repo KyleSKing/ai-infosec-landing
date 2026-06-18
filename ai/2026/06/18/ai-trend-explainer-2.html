@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#05070a">
+  <title>Agent 循环与 Harness：生产级 AI 工作流的缺失层 | 東情局 · DONG INTEL BUREAU</title>
+  <meta name="description" content="AI Agent 正在从单次提示转向“感知-推理-规划-执行-观察”的迭代循环，但生产可靠性依赖于 Harness（数据治理、权限、评估、护栏）。本文分析这一趋势，对比旧有模式，并给出立即尝试的实操步骤。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css?v=radar-dot-brightness-v1">
+  <link rel="alternate" type="application/rss+xml" title="東情局 · DONG INTEL BUREAU RSS" href="https://kylesking.github.io/ai-infosec-landing/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Ai Trend Explainer 2 | 東情局 · DONG INTEL BUREAU</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Ai Trend Explainer 2" />
+<meta name="author" content="東情局 / DONG INTEL BUREAU" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/06/18/ai-trend-explainer-2.html" />
+<meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/ai/2026/06/18/ai-trend-explainer-2.html" />
+<meta property="og:site_name" content="東情局 · DONG INTEL BUREAU" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-06-18T11:31:25+08:00" />
+<meta property="article:modified_time" content="2026-06-18T11:31:25+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Ai Trend Explainer 2" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"東情局 / DONG INTEL BUREAU"},"dateModified":"2026-06-18T11:31:25+08:00","datePublished":"2026-06-18T11:31:25+08:00","description":"Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Ai Trend Explainer 2","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/ai/2026/06/18/ai-trend-explainer-2.html"},"url":"https://kylesking.github.io/ai-infosec-landing/ai/2026/06/18/ai-trend-explainer-2.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="東情局首页">
+      <div class="logo-mark"><span></span></div>
+      <div>
+        <div class="logo-text">東情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
+      </div>
+    </a>
+
+    <div class="nav-cats" aria-label="Category filters">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI</span><span class="en">AI</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全合规</span><span class="en">Security</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="live-pill" title="Live signal monitoring">
+        <div class="live-dot"></div>
+        <span>LIVE</span>
+      </div>
+      <div class="lang-toggle" aria-label="Language switcher">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="post-wrap">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">東情局 / DONG INTEL BUREAU</div>
+    <div class="post-head-meta">
+      <span class="cat-chip chip-ai">AI</span>
+      
+      <span class="type-chip"><span class="zh">趋势分析</span><span class="en">Trend Analysis</span></span>
+      
+      <span class="art-date">2026.06.18</span>
+    </div>
+
+    <h1 class="post-title-cn zh">Agent 循环与 Harness：生产级 AI 工作流的缺失层</h1>
+    <h1 class="post-title-en en">Agent Loops and Harnesses: The Missing Layer for Production AI Workflows</h1>
+
+    <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
+      <p class="zh">AI Agent 正在从单次提示转向“感知-推理-规划-执行-观察”的迭代循环，但生产可靠性依赖于 Harness（数据治理、权限、评估、护栏）。本文分析这一趋势，对比旧有模式，并给出立即尝试的实操步骤。</p>
+      <p class="en">AI agents are moving from single-shot prompts to iterative perceive-reason-plan-act-observe loops, but production reliability requires a harness: governed data, permissions, evals, and guardrails. This trend analysis explains the architecture, compares it with older prompt-and-call patterns, and gives practical steps to build or adopt agent loops today.</p>
+    </div>
+
+    <div class="post-tags-row">
+      <span class="tag">AI Agent Loop</span><span class="tag">Loop Engineering</span><span class="tag">Agent Harness</span><span class="tag">Production AI Workflow</span>
+    </div>
+  </article>
+
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
+  </div>
+
+  <div class="post-body post-content">
+    <!-- Chinese Version -->
+<div class="lang-cn">
+
+  <h2 id="agent--harness-ai-">Agent 循环与 Harness：生产级 AI 工作流的缺失层</h2>
+
+  <h1 id="agent--harness-ai--1">Agent 循环与 Harness：生产级 AI 工作流的缺失层</h1>
+
+  <h2 id="section">这个趋势是什么</h2>
+
+  <p><strong>Agent loop 和 harness</strong> 正在成为生产级 AI 工作流的标准架构，解决从原型到可靠自动化的最后一公里问题。</p>
+
+  <p>Agent loop 是一套迭代执行的五阶段模式：感知 (Perceive) → 推理 (Reason) → 规划 (Plan) → 行动 (Act) → 观察 (Observe)。Loop 结束后，根据结果决定是否终止或继续循环。这个模式最早由 Oracle 在其 agent 架构文档中系统化提出[1]，现在已被广泛采用。</p>
+
+  <p>AI harness 是“围绕 Agent 的一切基础设施”：包括 loop 编排、工具注册、状态管理、权限控制、数据层、评估基准和监控。它正式化了一个概念：AI 模型本身不可信，可信的是它被使用的环境。BlueFlame 将 harness 定义为“连接 AI agent 到工作流、工具、数据、记忆和治理控制的编排层”[5]，没有 harness 的 agent 只能生成回答，无法真正执行任务。</p>
+
+  <h2 id="section-1">为什么现在重要</h2>
+
+  <p>2025 年“vibe coding”和“agent coding”的流行让大量团队能快速构建原型，但生产部署时遇到相同瓶颈：AI 生成的代码不可控、无限循环浪费 Token、工具调用失败、缺少审计日志。YouTube 上一个具体的演示展示了用 Claude Code 和 Codex 构建的实际系统：管理 loop 从 backlog 中分类任务，工作 loop 根据风险级别执行代码、生成子 agent 审查 diff、运行检查并自动开 PR，而人只需要在最后审查结果[3]。这种系统可以无人值守运行，前提是必须有 guardrails（护栏）和 evaluations（评估）。</p>
+
+  <p>更系统的数据来自 Atlan 对企业查询的调研：在 522 条真实查询中，使用治理元数据层的 harness 将 AI SQL 准确性提升了 38%，中等复杂度的查询提升达 2.15 倍[4]。这说明 harness 不是可选项，而是质量保障的前提。</p>
+
+  <p>此外，MindStudio 为 agent 开发的 <code class="language-plaintext highlighter-rouge">@mindstudio-ai/agent</code> npm SDK 提供了一个现成的 harness 实现：agent 可以通过 <code class="language-plaintext highlighter-rouge">agent.runWorkflow()</code>、<code class="language-plaintext highlighter-rouge">agent.searchGoogle()</code>、<code class="language-plaintext highlighter-rouge">agent.sendEmail()</code> 等 120+ 类型化方法调用基础设施，而不用自己处理 API 认证、重试和日志[2]。Harness 的标准化正在加速。</p>
+
+  <h2 id="section-2">它和旧做法的区别</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>维度</th>
+        <th>旧方式</th>
+        <th>Agent Loop + Harness</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>工作流</td>
+        <td>单个 LLM 调用或简单 chain</td>
+        <td>迭代循环，直到终止条件</td>
+      </tr>
+      <tr>
+        <td>工具调用</td>
+        <td>手动写 API 请求，自己处理错误、超时、重试</td>
+        <td>通过统一 harness 注册和调用（如 <code class="language-plaintext highlighter-rouge">agent.runWorkflow()</code>）</td>
+      </tr>
+      <tr>
+        <td>状态</td>
+        <td>无状态或框架自带的有限内存</td>
+        <td>persistent 状态（数据库、文件、缓存）</td>
+      </tr>
+      <tr>
+        <td>权限</td>
+        <td>无或硬编码</td>
+        <td>细粒度权限，每个工具调用可审计</td>
+      </tr>
+      <tr>
+        <td>评估</td>
+        <td>靠主观判断</td>
+        <td>自动评估基准（准确率、完成度、安全性）</td>
+      </tr>
+      <tr>
+        <td>部署</td>
+        <td>直接暴露模型 endpoint</td>
+        <td>先封装为 harness agent，再暴露 API</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>旧做法适合演示和 RAG，但不适合需要自主执行、多步推理、与外部系统交互的生产任务。</p>
+
+  <h2 id="section-3">可以怎么开始试</h2>
+
+  <p>以下是参考 Atlan 的 10 步指南和行业实践总结的可执行步骤[4]：</p>
+
+  <ol>
+    <li>
+      <p><strong>选定一个 loop 框架</strong>：LangGraph、CrewAI、Mastra、OpenAI Agents SDK。优先选择具备状态管理和子 agent 能力的框架。</p>
+    </li>
+    <li>
+      <p><strong>定义任务的终止条件</strong>：明确什么情况下 loop 应该停止（空动作、达到最大轮次、时间超时、用户中断）。</p>
+    </li>
+    <li>
+      <p><strong>建立工具注册表</strong>：不要在 agent 提示词里硬编码工具；定义清晰的“工具接口”（输入输出 schema、权限等级、幂等性标记）。</p>
+    </li>
+    <li>
+      <p><strong>实现观察阶段的“自检”</strong>：在 agent 执行动作后，评估结果是否合理（例如 SQL 查询返回空结果，应触发重试还是停止）。</p>
+    </li>
+    <li>
+      <p><strong>加入子 agent 审查</strong>：模仿 YouTube 中的做法——工作 agent 写代码，另一个 agent 审查 diff，只有通过检查才自动合并[3]。</p>
+    </li>
+    <li>
+      <p><strong>添加持久化状态层</strong>：将 loop 的上下文存入数据库，防止失忆和重启丢失。</p>
+    </li>
+    <li>
+      <p><strong>添加权限与数据隔离</strong>：每个工具调用记录 agent ID、用户 ID、访问时间，确保可审计。</p>
+    </li>
+    <li>
+      <p><strong>建立离线评估管道</strong>：用历史任务测试 agent 效果，监控准确率、完成率、循环轮数、异常次数。</p>
+    </li>
+    <li>
+      <p><strong>限制运行范围</strong>：为 agent 设置资源上限（Token 预算、调用次数、执行时长）。</p>
+    </li>
+    <li>
+      <p><strong>部署前通过“done test”</strong>：创建一个涵盖典型任务、边界情况和错误恢复的测试集，只有全部通过才能上线。</p>
+    </li>
+  </ol>
+
+  <h2 id="section-4">风险和限制</h2>
+
+  <ul>
+    <li><strong>无限循环 / 失控成本</strong>：如果没有周密的终止条件，agent 可能无限调用工具或产生大量 Token。必须设置硬上限并监控。</li>
+    <li><strong>工具权限泄露</strong>：harness 若未严格限制工具访问范围，agent 可能调用非授权接口。示例：搜索工具不应该写入数据库。</li>
+    <li><strong>评估误导</strong>：离线评估无法覆盖所有生产场景，上线后仍可能失败。需要持续观察和人工抽检。</li>
+    <li><strong>构建成本</strong>：一个生产级 harness 需要 4 到 12 周时间和 5000 到 20000 行基础设施代码[4]。小团队或简单任务可能不值得。</li>
+    <li><strong>不适合纯知识问答</strong>：如果任务只需单轮回答，加 loop 和 harness 是过度设计。</li>
+  </ul>
+
+  <h2 id="section-5">适合人群</h2>
+
+  <ul>
+    <li>AI 工程师：正在把 agent 从概念验证推向生产。</li>
+    <li>SaaS 团队：计划在产品中嵌入自主 agent 功能。</li>
+    <li>数据团队：需要 agent 执行数据库查询、ETL 自动化。</li>
+    <li>安全与合规团队：需要审计和控制 agent 行为的人。</li>
+    <li>不适合：仅用 AI 写代码的个人开发者、简单问答机器人项目。</li>
+  </ul>
+
+  <h2 id="section-6">我的判断</h2>
+
+  <p>Agent loop + harness 是当前 AI 工作流工程化中最有价值的模式之一。它把 LLM 从“聪明但不可靠的对话者”转变为“可管理的数字员工”。Oracle 的 loop 定义、MindStudio 的 SDK 抽象、Atlan 的 harness 指南和 BlueFlame 的金融场景案例，都朝同一个方向走：让 agent 的行为可预测、可审计、可重复。</p>
+
+  <p>工具层面，<code class="language-plaintext highlighter-rouge">@mindstudio-ai/agent</code> 这类 SDK 和 LangGraph 的进化会降低入门门槛。但在 2026 年中期，生产级 harness 仍然需要团队自己投入基础设施工作，尤其是数据治理和权限模型。对于中高复杂度的自动化任务，这是绕不过去的投入。</p>
+
+  <hr />
+
+  <h2 id="english-brief">English Brief</h2>
+
+  <p><strong>Trend</strong>: Agent loops (perceive → reason → plan → act → observe) and AI harnesses (orchestration + state + permissions + evaluations) are becoming the standard architecture for production AI workflows.</p>
+
+  <p><strong>Why now</strong>: Vibe coding and agent demos hit reliability and control walls in production. Real examples (YouTube’s automated PR system, Atlan’s 38% SQL accuracy improvement with governed metadata) prove that harnesses are not optional.</p>
+
+  <p><strong>Difference from old practice</strong>: Old: single LLM call / chain, manual tool wiring, no state or audit. New: iterative loop, unified tool calls (e.g. <code class="language-plaintext highlighter-rouge">agent.runWorkflow()</code>), persistent state, fine-grained permissions, automated eval pipeline, sub-agent review.</p>
+
+  <p><strong>First steps</strong>: Choose a loop framework (LangGraph, CrewAI, Mastra). Define stop conditions. Register tools with schema and permissions. Add observation-level self-check. Implement sub-agent review. Add persistent state. Build offline eval dataset. Limit runtime budget. Pass a “done test” before deployment.</p>
+
+  <p><strong>Risks</strong>: Infinite loops &amp; token waste, tool permission leaks, eval false negatives, 4–12 weeks build cost. Not suited for simple Q&amp;A.</p>
+
+  <p><strong>Take</strong>: Agent loop + harness is the missing layer between AI model capability and safe, auditable production deployment. The pattern is converging across Oracle, MindStudio, Atlan, and BlueFlame. Teams should invest now if they operate autonomous agents in business-critical contexts.</p>
+
+</div>
+
+<hr />
+
+<!-- English Version -->
+<div class="lang-en">
+
+  <h2 id="agent-loops-and-harnesses-the-missing-layer-for-production-ai-workflows">Agent Loops and Harnesses: The Missing Layer for Production AI Workflows</h2>
+
+  <h2 id="agent-loops-and-harnesses-the-missing-layer-for-production-ai-workflows-1">Agent Loops and Harnesses: The Missing Layer for Production AI Workflows</h2>
+
+  <p>AI agent loops and harnesses are becoming the critical infrastructure for moving autonomous agents from proof-of-concept to production. An agent loop is the iterative cycle—perceive, reason, plan, act, observe—that lets an agent tackle complex, multi-step tasks autonomously. A harness is everything around the model: the loop, tool definitions, state management, permissions, evaluation metrics, and a governed data layer. Frameworks like LangGraph, CrewAI, Mastra, and the OpenAI Agents SDK provide orchestration scaffolding, but they don’t deliver the certified data and governance that production demands.</p>
+
+  <h3 id="why-it-matters-now">Why It Matters Now</h3>
+
+  <p>We’re past the hype. Teams are running AI agents that write code, manage backlogs, query databases, and interact with APIs. Without a harness, these agents operate blind—no audit trail, no permission boundaries, no reliable data grounding. Vibe coding (letting an LLM generate code with minimal supervision) introduces security risks: insecure dependencies, logic flaws, and unvalidated diffs. Loop engineering is the discipline that adds guardrails, evaluations, and error recovery to make these autonomous cycles safe to run unattended.</p>
+
+  <h3 id="practical-next-steps">Practical Next Steps</h3>
+
+  <ol>
+    <li><strong>Design your loop</strong> with clear stopping conditions. Use a manager-worker pattern: a manager classifies tasks by risk and delegability; workers execute and sub-agents review results.</li>
+    <li><strong>Build a harness</strong> with governed metadata. Research shows that governed data lifts AI SQL accuracy by 38% and 2.15x on medium-complexity queries. Allocate 4–12 weeks and 5k–20k lines of infrastructure code for a production harness.</li>
+    <li><strong>Implement automated guardrails</strong>: permission checks, output validation, dependency scanning, and human-in-the-loop approval for high-risk actions.</li>
+    <li><strong>Use typed tool interfaces</strong> like MindStudio’s <code class="language-plaintext highlighter-rouge">@mindstudio-ai/agent</code> SDK that expose capabilities as method calls—this keeps loop logic clean and reduces tool management overhead.</li>
+  </ol>
+
+  <h3 id="risks">Risks</h3>
+
+  <ul>
+    <li><strong>Insecure code generation</strong>: LLMs can produce vulnerable code. Always run static analysis and manual review before merging.</li>
+    <li><strong>Ungoverned data</strong>: If agents query uncurated databases, results can be wrong or leak sensitive information.</li>
+    <li><strong>Observability debt</strong>: Without logging each perceive-reason-act step, debugging failures becomes impossible.</li>
+    <li><strong>Compliance gaps</strong>: In regulated industries (finance, healthcare, cross-border data), every agent action must be auditable and permissioned under frameworks like SOC 2, GDPR, or China’s PIPL.</li>
+  </ul>
+
+  <h3 id="the-take">The Take</h3>
+
+  <p>Agent loops without a harness are toys. Loop engineering is the next devops for AI—treat it as infrastructure, not experimentation. Invest in governed data, build observability from day one, and enforce guardrails before letting agents run. The teams that get this right will deploy autonomous systems that are safe, compliant, and actually useful.</p>
+
+</div>
+
+<hr />
+
+<h3 id="参考来源--sources">参考来源 / Sources</h3>
+
+<ul>
+  <li><a href="https://blogs.oracle.com/developers/what-is-the-ai-agent-loop-the-core-architecture-behind-autonomous-ai-systems">What Is the AI Agent Loop? The Core Architecture Behind …</a></li>
+  <li><a href="https://www.mindstudio.ai/blog/what-is-loop-engineering-ai-coding-agents">What Is Loop Engineering? The New Meta for AI Coding Agents</a></li>
+  <li><a href="https://www.youtube.com/watch?v=RVEaDvh6f5A">Loop Engineering: How To Build Autonomous AI Agents - YouTube</a></li>
+  <li><a href="https://atlan.com/know/how-to-build-ai-agent-harness">How to Build an AI Agent Harness: Step-by-Step Tutorial (2026)</a></li>
+  <li><a href="https://blueflame.ai/blog/ai-harnesses-explained">AI Harnesses Explained: The Missing Layer Between AI Models and Investment Workflows</a></li>
+</ul>
+
+  </div>
+
+  <div class="post-nav">
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
+    <a href="/ai-infosec-landing/feed.xml" class="back-link rss-back-link">RSS FEED</a>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">東情局 / DONG INTEL BUREAU</div>
+      <p>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p>LIVE SIGNAL MONITORING · UPDATED DAILY 08:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/ai-infosec-landing/assets/js/main.js"></script>
+</body>
+</html>
