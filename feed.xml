@@ -10,10 +10,205 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Wed, 17 Jun 2026 14:28:19 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 18 Jun 2026 09:04:49 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>循环工程与Agent Harness：可靠AI编程代理的新架构 — Loop Engineering &amp; Agent Harnesses: The New Architecture for Reliable AI Coding Agents</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/06/18/ai-trend-explainer.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/06/18/ai-trend-explainer.html</guid>
+      <pubDate>Thu, 18 Jun 2026 09:04:39 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">ai</category>
+      <category domain="content_type">Trend Analysis</category>
+      <category domain="tag">agent-loop</category><category domain="tag">loop-engineering</category><category domain="tag">agent-harness</category><category domain="tag">ai-coding</category><category domain="tag">autonomous-agents</category>
+      <description>循环工程是一种设计AI代理系统的方法，让代理在推理、行动和观察的迭代循环中工作。Agent Harness是增加安全、审计和数据约束的治理层，使自主编程工作流达到生产级可靠性。&#10;&#10;Loop engineering is the practice of designing AI agent systems that operate in iterative cycles of reasoning, action, and observation. An agent harness is the governance layer that adds safety, auditing, and data grounding to these loops, enabling production-ready autonomous coding workflows.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;agent-harnessai&quot;&gt;循环工程与Agent Harness：可靠AI编程代理的新架构&lt;/h2&gt;
+
+  &lt;h1 id=&quot;agent-harnessai-1&quot;&gt;循环工程与Agent Harness：可靠AI编程代理的新架构&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;这个趋势是什么&lt;/h2&gt;
+
+  &lt;p&gt;“循环工程”（Loop Engineering）是指围绕AI代理设计迭代执行周期的系统性实践。核心思路是让代理进入一个“推理→行动→观察→再推理”的闭环，直到任务完成。一个典型的编码代理循环包含：读取积压工单、分类风险、编写代码、生成子代理审查diff、运行测试、最终创建PR——整个过程由多个代理相互调用，人类只需在末尾审查。&lt;/p&gt;
+
+  &lt;p&gt;“Agent Harness”则是代理外部的支撑层，包括循环编排、工具注册、状态管理、权限控制、数据层、可观测性、评估与合规审计。Harness把模型能力转换为可执行、可审计的生产动作。Atlan的研究指出，一个生产级Harness需要4到12周构建，约5000到20000行基础设施代码。&lt;/p&gt;
+
+  &lt;p&gt;简言之：&lt;strong&gt;循环工程定义了代理“怎么想”，Harness定义了代理“怎么做且不出事”&lt;/strong&gt;。两者结合，是AI编程代理从demo走向生产的关键架构。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;为什么现在重要&lt;/h2&gt;
+
+  &lt;p&gt;2025年下半年到2026年，AI编程代理进入了“规模化部署”的临界点。Claude Code、Codex、CrewAI等工具让单任务代理的效率已经很高，但企业关心的不是“能不能写一段代码”，而是“能不能安全地、可靠地处理整个开发流程中的100个任务”。&lt;/p&gt;
+
+  &lt;p&gt;障碍有三个：&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;可靠性&lt;/strong&gt;：单次调用可以写对，但连续数十步后状态容易漂移、死循环或产生不可逆操作。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;治理&lt;/strong&gt;：金融、医疗等受监管行业要求每一步都有日志、权限和数据溯源，原生模型无法保证。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;成本&lt;/strong&gt;：不节制的循环会快速消耗token，甚至比开发人员手工改代码还贵。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;循环工程+Harness正是为解决这些问题诞生。Oracle在其Agent Loop博客中展示了如何用编译型Agent Graph管理循环状态，并通过ACID事务保证工具调用全成功或全回滚。MindStudio则发布&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@mindstudio-ai/agent&lt;/code&gt; SDK，让任何Agent（Claude Code、LangChain、CrewAI等）以一行&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;agent.searchGoogle()&lt;/code&gt;调用120+种类型工具，把基础设施细节剥离出循环逻辑。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;它和旧做法的区别&lt;/h2&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;维度&lt;/th&gt;
+        &lt;th&gt;旧做法&lt;/th&gt;
+        &lt;th&gt;新做法（循环工程+Harness）&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;工作模式&lt;/td&gt;
+        &lt;td&gt;单次Prompt或简单Chain-of-Thought&lt;/td&gt;
+        &lt;td&gt;多步迭代，带状态记忆和路由&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;工具调用&lt;/td&gt;
+        &lt;td&gt;硬编码API调用，每次失败需手动重试&lt;/td&gt;
+        &lt;td&gt;由Harness统一管理注册、依赖、重试、回滚&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;安全性&lt;/td&gt;
+        &lt;td&gt;无护栏，模型可能执行危险操作&lt;/td&gt;
+        &lt;td&gt;权限分层：子代理仅能操作低风险任务，高风险由人类审批&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;可观测性&lt;/td&gt;
+        &lt;td&gt;只有输入输出日志&lt;/td&gt;
+        &lt;td&gt;完整trace，每个循环步骤记录推理、工具调用、状态变更&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;数据层&lt;/td&gt;
+        &lt;td&gt;分散存储，无治理&lt;/td&gt;
+        &lt;td&gt;统一数据目录，认证后的元数据提升SQL准确率38%（Atlan 522企业查询研究）&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p&gt;具体到编码流程：过去开发者用Claude Code写一段代码，复制粘贴，然后手动测试。新范式下，一个Manager Loop读取项目积压，自动将工单按风险、类型分类，指派给Worker Loop，Worker Loop写代码→子Agent审查→跑测试→提PR，人类只需看最终结果。这就是视频[2]里演示的工作流。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-3&quot;&gt;可以怎么开始试&lt;/h2&gt;
+
+  &lt;p&gt;如果你是一个技术团队负责人或独立开发者，想从明天开始尝试验证这个架构，以下三步是低成本的切入点：&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;第一步：选择循环编排框架&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;简单实验&lt;/strong&gt;：直接使用Claude Code的循环控制（通过system prompt要求它重复“思考-执行-验证”直到通过测试）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;结构化方案&lt;/strong&gt;：LangGraph（LangChain）或CrewAI的层级任务。例如用CrewAI定义Manager Agent和Worker Agent，Manager负责分派，Worker负责执行。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;生产级&lt;/strong&gt;：OpenAI Agents SDK或Mastra，它们内置了循环管理和终止条件。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-5&quot;&gt;第二步：给代理一个“安全作业范围”&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;定义一组低风险的编码任务（如重构内部函数、更新文档、修lint错误）。&lt;/li&gt;
+    &lt;li&gt;用MindStudio Agent Skills或自定义Tool Server包装所有API调用，加上速率限制、重试策略和幂等性。&lt;/li&gt;
+    &lt;li&gt;在Worker Loop每次执行前，让Manager Agent做风险评级（如“是否涉及生产数据库”），触达红线则暂停并通知人类。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;第三步：添加可观测性&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;在每个循环步骤输出结构化日志：prompt、tool call、result、token消耗。&lt;/li&gt;
+    &lt;li&gt;用LangSmith或自家ELK栈收集，设置异常检测（如连续3次trial失败、token超阈值）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;如果团队有资源，可以按Atlan的10步指南（[4]）构建完整Harness：定义数据源→认证元数据→搭建向量库→实现状态持久化→集成CI/CD→写eval。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-7&quot;&gt;风险和限制&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;无限循环与成本爆炸&lt;/strong&gt;：循环没有合理终止条件的后果。即使有max step限制，仍然可能因为重复失败而消耗大量token。需要设置更细粒度的“进步检测”（例如：最后5步是否在修复相同错误）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;代理决策质量不均&lt;/strong&gt;：当前模型在复杂路径推理中仍会犯逻辑错误，且难以事后归因。Harness只能限制行动，不能提高模型智商。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;治理不等于安全&lt;/strong&gt;：Harness可以审计，但无法完全阻止代理通过合规API执行有害操作。权限最小化原则必须强制执行。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;构建Harness本身是重投入&lt;/strong&gt;：小团队可能负担不起4-12周的开发周期。建议先使用现成Harness平台（如MindStudio、BlueFlame）验证价值，再决定自建。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;法规风险&lt;/strong&gt;：代理自动生成的代码如果有版权问题或合规漏洞（如PIPL数据处理代码），责任仍在公司。循环工程不能替代法律审查。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;section-8&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;循环工程和Agent Harness是2025-2026年AI工程化最值得投入的方向，没有之一。它们把AI代理从“聪明的玩具”变成了“可信的队友”。但当前市场上80%的“自动编码代理”仍然只是单轮工具调用，停留在POC阶段。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;谁应该关注&lt;/strong&gt;：需要规模化交付代码、维护大型代码库的开发团队；SaaS产品接入AI功能的工程团队；金融、医疗等合规敏感行业的技术架构师。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;谁可以暂缓&lt;/strong&gt;：只需处理简单任务（如写README、格式转换）的个人开发者；团队小于3人且无基础设施预算的初创公司。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;我的建议&lt;/strong&gt;：不要一开始就追求完全无人值守。从“半自主模式”开始——让代理做初稿，人类检查后再合并。先跑通一个受控的Manager/Worker Loop，积累运行数据后，再逐步放宽权限。循环工程的关键不是让代理更快，而是让失败更快被发现、成本更可控。Harness的最终价值不是“模型更强”，而是“系统更稳”。&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;loop-engineering--agent-harnesses-the-new-architecture-for-reliable-ai-coding-agents&quot;&gt;Loop Engineering &amp;amp; Agent Harnesses: The New Architecture for Reliable AI Coding Agents&lt;/h2&gt;
+
+  &lt;h1 id=&quot;loop-engineering--agent-harnesses-the-new-architecture-for-reliable-ai-coding-agents-1&quot;&gt;Loop Engineering &amp;amp; Agent Harnesses: The New Architecture for Reliable AI Coding Agents&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
+
+  &lt;p&gt;Two concepts are converging to define how production AI agents are built:&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Loop engineering&lt;/strong&gt; is the practice of designing AI agents that operate in iterative cycles—reason, act, observe, repeat—until a goal is reached. A common pattern is a two-loop architecture: a manager loop classifies tasks by risk and type, then a worker loop executes low-risk tasks, writes code, reviews diffs, runs checks, and opens pull requests. The agent graph manages the while loop internally, invoking the LLM, evaluating tool calls, executing them, appending results, and repeating until a stopping condition.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Agent harnesses&lt;/strong&gt; are the orchestration and governance layer around the model that makes it reliable: the loop logic, tool definitions, state management, permissions, evaluations, and governed data. Frameworks like LangGraph, CrewAI, Mastra, and OpenAI Agents SDK provide orchestration scaffolding, but they don’t provide the governed data layer. Building a production harness typically takes 4–12 weeks and 5,000–20,000 lines of infrastructure code.&lt;/p&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
+
+  &lt;p&gt;Current AI coding agents work well in demos but fail in production. The missing pieces are:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Reliability&lt;/strong&gt;: Without structured loops, agents hallucinate or get stuck in infinite retries.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Governance&lt;/strong&gt;: Financial services, healthcare, and regulated industries require auditability, permissions, and grounded context—none of which agents have on their own.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Data quality&lt;/strong&gt;: Research across 522 enterprise queries found that governed metadata lifts AI SQL accuracy by 38%, and 2.15x on medium-complexity queries.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;The shift is from “can the model answer?” to “can the agent reliably complete a task inside an organization’s workflows?”&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;Start with a simple loop&lt;/strong&gt;: Implement a manager-worker pattern. The manager reads a backlog, classifies tickets by risk (low/medium/high), and only passes low-risk items to the worker.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Add guardrails early&lt;/strong&gt;: Include subagent review of diffs, automated test execution, and explicit rollback logic before running unattended.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Use a harness SDK&lt;/strong&gt;: Tools like MindStudio’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@mindstudio-ai/agent&lt;/code&gt; provide typed method calls (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;agent.runWorkflow()&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;agent.searchGoogle()&lt;/code&gt;) that handle infrastructure plumbing, letting you focus on loop logic.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Build the data layer&lt;/strong&gt;: Ensure your harness has certified, governed data underneath. Vector search for semantic retrieval, relational tables for structured data, and ACID transactions for tool call consistency.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Measure reliability&lt;/strong&gt;: Track loop completion rate, error recovery time, and false positive/negative rates in classification.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;risks--limitations&quot;&gt;Risks &amp;amp; Limitations&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Security&lt;/strong&gt;: Agents with tool access can execute destructive commands. Always sandbox agent environments and use read-only permissions by default.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Cost&lt;/strong&gt;: Iterative loops multiply LLM calls. A single task can cost $0.50–$5.00 in API fees if not carefully bounded.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Hallucination propagation&lt;/strong&gt;: Errors in early loop iterations compound. Implement checkpointing and human-in-the-loop for high-risk decisions.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Vendor lock-in&lt;/strong&gt;: Harness SDKs tie you to specific providers. Prefer open-source orchestration frameworks for portability.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
+
+  &lt;p&gt;Loop engineering and agent harnesses are not hype—they are the necessary infrastructure layer for AI agents to move from demo to production. The teams that will win are those that invest in the loop architecture and governance layer now, not those that keep optimizing model prompts. Start with a simple two-loop pattern, add guardrails, and build the data layer before scaling. The model is commodity; the harness is the moat.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.mindstudio.ai/blog/what-is-loop-engineering-ai-coding-agents&quot;&gt;What Is Loop Engineering? The New Meta for AI Coding Agents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=RVEaDvh6f5A&quot;&gt;Loop Engineering: How To Build Autonomous AI Agents - YouTube&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blogs.oracle.com/developers/what-is-the-ai-agent-loop-the-core-architecture-behind-autonomous-ai-systems&quot;&gt;What Is the AI Agent Loop? The Core Architecture Behind …&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://atlan.com/know/how-to-build-ai-agent-harness&quot;&gt;How to Build an AI Agent Harness: Step-by-Step Tutorial (2026)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blueflame.ai/blog/ai-harnesses-explained&quot;&gt;AI Harnesses Explained: The Missing Layer Between AI Models and Investment Workflows&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>2026年中值得试的免费LLM API和开源AI编程工具 — Free LLM APIs &amp; Open-Source AI Coding Tools: What to Try in Mid-2026</title>
