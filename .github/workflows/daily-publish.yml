@@ -23,7 +23,7 @@ jobs:
           python-version: '3.11'
 
       - name: Install Python dependencies
-        run: pip install requests python-dateutil
+        run: pip install requests python-dateutil python-frontmatter
 
       - name: Generate articles
         env:
@@ -32,9 +32,7 @@ jobs:
         run: python scripts/generate.py
 
       - name: Update article archive index
-        run: |
-          pip install python-frontmatter
-          python3 scripts/update_archive.py
+        run: python3 scripts/update_archive.py
 
       - name: Set up Ruby and Jekyll
         uses: ruby/setup-ruby@v1
