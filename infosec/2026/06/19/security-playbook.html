@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#05070a">
+  <title>DevSecOps防御实操：SBOM与CI/CD安全缺口排查 | 東情局 · DONG INTEL BUREAU</title>
+  <meta name="description" content="面向团队的CI/CD安全防御实操指南，聚焦SBOM生成、漏洞扫描与供应链风险，结合GitHub Actions与开源工具给出可落地的检测与修复步骤。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css?v=radar-dot-brightness-v1">
+  <link rel="alternate" type="application/rss+xml" title="東情局 · DONG INTEL BUREAU RSS" href="https://kylesking.github.io/ai-infosec-landing/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Security Playbook | 東情局 · DONG INTEL BUREAU</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Security Playbook" />
+<meta name="author" content="東情局 / DONG INTEL BUREAU" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/19/security-playbook.html" />
+<meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/19/security-playbook.html" />
+<meta property="og:site_name" content="東情局 · DONG INTEL BUREAU" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-06-19T11:29:32+08:00" />
+<meta property="article:modified_time" content="2026-06-19T11:29:32+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Security Playbook" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"東情局 / DONG INTEL BUREAU"},"dateModified":"2026-06-19T11:29:32+08:00","datePublished":"2026-06-19T11:29:32+08:00","description":"Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Security Playbook","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/19/security-playbook.html"},"url":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/19/security-playbook.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="東情局首页">
+      <div class="logo-mark"><span></span></div>
+      <div>
+        <div class="logo-text">東情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
+      </div>
+    </a>
+
+    <div class="nav-cats" aria-label="Category filters">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI</span><span class="en">AI</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全合规</span><span class="en">Security</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="live-pill" title="Live signal monitoring">
+        <div class="live-dot"></div>
+        <span>LIVE</span>
+      </div>
+      <div class="lang-toggle" aria-label="Language switcher">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="post-wrap">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">東情局 / DONG INTEL BUREAU</div>
+    <div class="post-head-meta">
+      <span class="cat-chip chip-sec">INFOSEC</span>
+      
+      <span class="type-chip"><span class="zh">防御实操</span><span class="en">Defensive Playbook</span></span>
+      
+      <span class="art-date">2026.06.19</span>
+    </div>
+
+    <h1 class="post-title-cn zh">DevSecOps防御实操：SBOM与CI/CD安全缺口排查</h1>
+    <h1 class="post-title-en en">DevSecOps Playbook: Detect and Fix SBOM & CI/CD Security Gaps</h1>
+
+    <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
+      <p class="zh">面向团队的CI/CD安全防御实操指南，聚焦SBOM生成、漏洞扫描与供应链风险，结合GitHub Actions与开源工具给出可落地的检测与修复步骤。</p>
+      <p class="en">A practical guide for teams to detect and fix common security gaps in CI/CD pipelines, focusing on SBOM generation, vulnerability scanning, and supply chain risks using GitHub Actions and open-source tools.</p>
+    </div>
+
+    <div class="post-tags-row">
+      <span class="tag">DevSecOps</span><span class="tag">SBOM</span><span class="tag">CI/CD</span><span class="tag">GitHub Actions</span><span class="tag">supply chain security</span><span class="tag">vulnerability scanning</span><span class="tag">defensive playbook</span>
+    </div>
+  </article>
+
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
+  </div>
+
+  <div class="post-body post-content">
+    <!-- Chinese Version -->
+<div class="lang-cn">
+
+  <h2 id="devsecopssbomcicd">DevSecOps防御实操：SBOM与CI/CD安全缺口排查</h2>
+
+  <h1 id="devsecopssbomcicd-1">DevSecOps防御实操：SBOM与CI/CD安全缺口排查</h1>
+
+  <h2 id="section">风险是什么</h2>
+
+  <p>2026年6月的今天，软件供应链攻击已经不是“会不会发生”的问题，而是“什么时候轮到你的CI/CD管道被投毒”。SBOM（软件物料清单）和CI/CD安全扫描是当前最被低估的两个防御环节。</p>
+
+  <p><strong>核心风险</strong>：</p>
+  <ul>
+    <li>你的CI/CD管道里跑着大量第三方依赖，但没人知道这些依赖里藏着什么。</li>
+    <li>依赖的版本锁定、签名验证、来源追溯几乎为零。</li>
+    <li>攻击者通过投毒上游包（如PyPI、npm、GitHub Actions的第三方action）就能直接进入你的生产环境。</li>
+  </ul>
+
+  <p><strong>真实案例</strong>：2024-2026年间，多个开源项目被通过依赖混淆和恶意commit投毒，受害者包括金融科技公司和SaaS平台。这些攻击的共性：CI/CD管道没有SBOM，没有依赖签名验证。</p>
+
+  <h2 id="section-1">谁会受影响</h2>
+
+  <ul>
+    <li><strong>任何使用第三方依赖的团队</strong>：Python、JavaScript、Go、Java、Rust项目都中招。</li>
+    <li><strong>CI/CD管道中有GitHub Actions、自建Jenkins、GitLab CI的团队</strong>：尤其是那些直接拉取第三方action或镜像的。</li>
+    <li><strong>SaaS和B2B团队</strong>：客户要求你提供SBOM和供应链安全报告，你拿不出来。</li>
+    <li><strong>合规团队</strong>：PIPL、EU AI Act、SOC 2、ISO 27001都开始要求软件供应链透明度。</li>
+  </ul>
+
+  <h2 id="section-2">怎么检查</h2>
+
+  <h3 id="section-3">检查清单（可立即执行）</h3>
+
+  <p><strong>1. 你的CI/CD管道有SBOM吗？</strong></p>
+
+  <ul>
+    <li>检查方式：在CI/CD中加入SBOM生成步骤。</li>
+    <li>工具：CycloneDX插件、SPDX工具、Trivy、Syft。</li>
+    <li>命令示例（GitHub Actions）：</li>
+  </ul>
+
+  <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Generate SBOM</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">anchore/sbom-action@v0</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">./</span>
+    <span class="na">format</span><span class="pi">:</span> <span class="s">cyclonedx-json</span>
+</code></pre></div>  </div>
+
+  <p><strong>2. 你的依赖有签名验证吗？</strong></p>
+
+  <ul>
+    <li>检查方式：看你的<code class="language-plaintext highlighter-rouge">npm install</code>或<code class="language-plaintext highlighter-rouge">pip install</code>是否用了<code class="language-plaintext highlighter-rouge">--verify</code>或<code class="language-plaintext highlighter-rouge">--require-hashes</code>。</li>
+    <li>大多数团队没有。这是缺口。</li>
+    <li>修复：在CI中加入<code class="language-plaintext highlighter-rouge">pip install --require-hashes</code>或<code class="language-plaintext highlighter-rouge">npm audit</code>。</li>
+  </ul>
+
+  <p><strong>3. 你的CI/CD安全扫描覆盖了哪些层？</strong></p>
+
+  <ul>
+    <li>SAST（静态分析）：CodeQL、Semgrep、SonarQube。</li>
+    <li>SCA（软件组成分析）：Dependabot、Trivy、Snyk。</li>
+    <li>DAST（动态分析）：OWASP ZAP。</li>
+    <li>容器扫描：Docker Scout、Trivy镜像扫描。</li>
+    <li>基础设施即代码扫描：Checkov、tfsec。</li>
+  </ul>
+
+  <p><strong>4. 你的第三方Actions有审计吗？</strong></p>
+
+  <ul>
+    <li>检查：<code class="language-plaintext highlighter-rouge">actions/checkout</code>、<code class="language-plaintext highlighter-rouge">actions/setup-python</code>这些官方action没问题。</li>
+    <li>风险：第三方action如<code class="language-plaintext highlighter-rouge">docker/login-action</code>、<code class="language-plaintext highlighter-rouge">aws-actions/configure-aws-credentials</code>。</li>
+    <li>修复：只使用经过GitHub验证的action，或自建镜像。</li>
+  </ul>
+
+  <h2 id="section-4">怎么修 / 怎么接入流程</h2>
+
+  <h3 id="section-5">立即行动：三步修复</h3>
+
+  <p><strong>第一步：在CI/CD中嵌入SBOM生成</strong></p>
+
+  <ul>
+    <li>每个构建都生成SBOM。</li>
+    <li>存储SBOM到制品库（如GitHub Releases、Artifactory）。</li>
+    <li>示例工作流：</li>
+  </ul>
+
+  <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">CI with SBOM</span>
+<span class="na">on</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">push</span><span class="pi">,</span> <span class="nv">pull_request</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Generate SBOM</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">anchore/sbom-action@v0</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./</span>
+          <span class="na">format</span><span class="pi">:</span> <span class="s">cyclonedx-json</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload SBOM</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">sbom</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">sbom.json</span>
+</code></pre></div>  </div>
+
+  <p><strong>第二步：加入依赖签名验证</strong></p>
+
+  <ul>
+    <li>使用<code class="language-plaintext highlighter-rouge">pip install --require-hashes</code>或<code class="language-plaintext highlighter-rouge">npm ci --only=production</code>。</li>
+    <li>对GitHub Actions的第三方action，使用<code class="language-plaintext highlighter-rouge">actions/checkout</code>的<code class="language-plaintext highlighter-rouge">ref</code>参数锁定版本。</li>
+  </ul>
+
+  <p><strong>第三步：加入安全扫描</strong></p>
+
+  <ul>
+    <li>加入CodeQL、Dependabot、Trivy。</li>
+    <li>加入OWASP ZAP做DAST。</li>
+    <li>加入Checkov扫描IaC。</li>
+  </ul>
+
+  <h3 id="section-6">适合人群</h3>
+
+  <ul>
+    <li><strong>DevOps/DevSecOps工程师</strong>：直接操作CI/CD。</li>
+    <li><strong>安全工程师</strong>：需要审计和报告。</li>
+    <li><strong>SaaS团队</strong>：需要向客户提供SBOM。</li>
+    <li><strong>合规团队</strong>：需要满足PIPL、SOC 2、ISO 27001。</li>
+  </ul>
+
+  <h3 id="section-7">不适合人群</h3>
+
+  <ul>
+    <li><strong>纯前端团队</strong>：如果项目不涉及后端依赖，SBOM价值有限。</li>
+    <li><strong>没有CI/CD的团队</strong>：先搭CI/CD再谈。</li>
+  </ul>
+
+  <h2 id="section-8">注意事项</h2>
+
+  <h3 id="section-9">工具限制</h3>
+
+  <ul>
+    <li><strong>Trivy</strong>：基础扫描，但缺乏可达性分析（reachability analysis）。无法告诉你“这个漏洞是否真的被代码调用”。</li>
+    <li><strong>Dependabot</strong>：只做版本更新，不做漏洞优先级排序。容易产生大量噪音。</li>
+    <li><strong>CodeQL</strong>：需要配置语言，对Python和JavaScript支持好，但对Rust和Go支持有限。</li>
+    <li><strong>OWASP ZAP</strong>：DAST扫描只对API有效，对前端SPA效果差。</li>
+  </ul>
+
+  <h3 id="section-10">误报和漏报</h3>
+
+  <ul>
+    <li><strong>误报</strong>：SBOM中的依赖版本和实际运行版本可能不一致。依赖树解析错误会导致SBOM不准确。</li>
+    <li><strong>漏报</strong>：SBOM只覆盖直接依赖，不覆盖间接依赖（transitive dependency）。这是最大的缺口。</li>
+    <li><strong>操作风险</strong>：SBOM生成过程本身可能被篡改。需要签名SBOM。</li>
+  </ul>
+
+  <h3 id="section-11">我的判断</h3>
+
+  <p><strong>SBOM是2026年最被低估的防御工具</strong>。不是因为SBOM能解决所有问题，而是因为：</p>
+
+  <ol>
+    <li><strong>合规要求</strong>：PIPL、EU AI Act、SOC 2都开始要求SBOM。没有SBOM，审计过不去。</li>
+    <li><strong>攻击面</strong>：2024-2026年供应链攻击集中在“依赖投毒”。没有SBOM，你根本不知道你用了什么。</li>
+    <li><strong>成本</strong>：SBOM生成是免费的（CycloneDX、SPDX）。不做的成本是审计失败和客户流失。</li>
+  </ol>
+
+  <p><strong>但SBOM不是银弹</strong>。它需要配合：</p>
+  <ul>
+    <li>依赖签名验证（<code class="language-plaintext highlighter-rouge">require-hashes</code>）</li>
+    <li>可达性分析（Snyk、Endor Labs）</li>
+    <li>运行时监控（Falco、Tetragon）</li>
+  </ul>
+
+  <p><strong>建议</strong>：先做SBOM生成和上传，再做依赖签名验证，最后加入安全扫描。顺序不能错。</p>
+
+  <h2 id="english-brief">English Brief</h2>
+
+  <p><strong>Risk</strong>: CI/CD pipelines without SBOM and dependency verification are the primary attack surface for software supply chain attacks in 2026. Most teams have no visibility into their third-party dependencies.</p>
+
+  <p><strong>Affected Teams</strong>: DevOps, security, SaaS, compliance, and B2B teams using GitHub Actions, Jenkins, or GitLab CI.</p>
+
+  <p><strong>Checks</strong>:</p>
+  <ol>
+    <li>Does your pipeline generate SBOM (CycloneDX/SPDX)?</li>
+    <li>Are dependencies verified with <code class="language-plaintext highlighter-rouge">--require-hashes</code> or <code class="language-plaintext highlighter-rouge">--verify</code>?</li>
+    <li>Are security scans (SAST, SCA, DAST, container) in place?</li>
+    <li>Are third-party GitHub Actions audited?</li>
+  </ol>
+
+  <p><strong>Remediation Workflow</strong>:</p>
+  <ol>
+    <li>Add SBOM generation to every build.</li>
+    <li>Add dependency signature verification.</li>
+    <li>Add security scans (CodeQL, Trivy, OWASP ZAP).</li>
+  </ol>
+
+  <p><strong>Caveats</strong>:</p>
+  <ul>
+    <li>SBOM only covers direct dependencies, not transitive ones.</li>
+    <li>Tools like Trivy lack reachability analysis.</li>
+    <li>SBOM generation itself must be signed.</li>
+  </ul>
+
+  <p><strong>Take</strong>: SBOM is the most underrated defense in 2026. It’s free, required by regulations (PIPL, SOC 2, EU AI Act), and directly addresses the supply chain attack vector. Start with SBOM generation, then add verification and scanning.</p>
+
+</div>
+
+<hr />
+
+<!-- English Version -->
+<div class="lang-en">
+
+  <h2 id="devsecops-playbook-detect-and-fix-sbom--cicd-security-gaps">DevSecOps Playbook: Detect and Fix SBOM &amp; CI/CD Security Gaps</h2>
+
+  <h1 id="devsecops-playbook-detect-and-fix-sbom--cicd-security-gaps-1">DevSecOps Playbook: Detect and Fix SBOM &amp; CI/CD Security Gaps</h1>
+
+  <h2 id="what-it-is">What It Is</h2>
+
+  <p>This playbook addresses two interconnected security gaps in modern software delivery: <strong>SBOM (Software Bill of Materials) management</strong> and <strong>CI/CD pipeline security</strong>. SBOMs provide a machine-readable inventory of all software components—names, versions, suppliers, licenses, and dependency relationships—typically in SPDX 2.3 or CycloneDX 1.5 formats. CI/CD security gaps arise when pipelines lack automated scanning for vulnerabilities, misconfigurations, or supply chain risks. Tools like GitHub Actions, CodeQL, Dependabot, OWASP ZAP, and Docker Scout can be integrated to detect these issues early.</p>
+
+  <h2 id="why-it-matters-now">Why It Matters Now</h2>
+
+  <p>Software supply chain attacks are escalating. A single vulnerable dependency can compromise an entire organization. Regulatory pressure is mounting: U.S. Executive Order 14028 mandates SBOMs for federal software, and frameworks like SOC 2 and ISO 27001 increasingly expect supply chain visibility. Without automated detection in CI/CD, teams ship vulnerabilities unknowingly. The shift-left approach—catching issues during development rather than post-deployment—reduces remediation costs and breach risk.</p>
+
+  <h2 id="practical-next-steps">Practical Next Steps</h2>
+
+  <ol>
+    <li>
+      <p><strong>Generate SBOMs automatically</strong> in your CI pipeline. Use tools like <code class="language-plaintext highlighter-rouge">syft</code> or <code class="language-plaintext highlighter-rouge">trivy</code> to produce CycloneDX or SPDX files on every build. Store them alongside artifacts.</p>
+    </li>
+    <li>
+      <p><strong>Integrate static analysis (SAST)</strong> with GitHub CodeQL or ESLint security plugins. Add a workflow step that runs on every push and pull request.</p>
+    </li>
+    <li>
+      <p><strong>Add dependency scanning</strong> via Dependabot or Trivy. Configure alerts for critical vulnerabilities and auto-create pull requests for fixes.</p>
+    </li>
+    <li>
+      <p><strong>Run dynamic analysis (DAST)</strong> on staging environments using OWASP ZAP. Focus on API endpoints—use the <code class="language-plaintext highlighter-rouge">zaproxy/action-api-scan</code> GitHub Action for REST APIs.</p>
+    </li>
+    <li>
+      <p><strong>Enforce policy gates</strong>: Fail builds if SBOM reveals components with known critical CVEs or license violations. Use tools like Docker Scout for containerized apps.</p>
+    </li>
+    <li>
+      <p><strong>Audit pipeline secrets</strong>: Scan for hardcoded credentials using <code class="language-plaintext highlighter-rouge">truffleHog</code> or <code class="language-plaintext highlighter-rouge">git-secrets</code> in a pre-commit hook or CI step.</p>
+    </li>
+  </ol>
+
+  <h2 id="risks--limitations">Risks &amp; Limitations</h2>
+
+  <ul>
+    <li><strong>False positives</strong> from SAST/DAST tools can desensitize teams—tune rulesets and prioritize reachable vulnerabilities.</li>
+    <li><strong>SBOM completeness</strong> depends on accurate dependency resolution; transitive dependencies may be missed.</li>
+    <li><strong>Open-source scanners</strong> (Trivy, Grype) lack reachability analysis and automated remediation guidance found in commercial platforms (Snyk, Checkmarx).</li>
+    <li><strong>Pipeline complexity</strong> increases maintenance burden; start with critical paths (e.g., production builds) before expanding.</li>
+    <li><strong>No tool catches everything</strong>—combine SAST, DAST, SCA, and manual review for defense in depth.</li>
+  </ul>
+
+  <h2 id="take">Take</h2>
+
+  <p>Start with SBOM generation and dependency scanning—they provide the highest visibility-to-effort ratio. Add SAST and DAST incrementally. For most teams, open-source tools cover 80% of needs; invest in commercial platforms only when policy management, SSO, or advanced remediation become bottlenecks. The goal is not zero vulnerabilities but a repeatable process that catches critical issues before production.</p>
+
+</div>
+
+<hr />
+
+<h3 id="参考来源--sources">参考来源 / Sources</h3>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[DevSecOps Tutorial for Beginners</td>
+          <td>CI Pipeline with GitHub Actions and Docker Scout](https://www.youtube.com/watch?v=gLJdrXPn0ns)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[DevSecOps with GitHub Action and SaaS Tools</td>
+          <td>cicd-github-action-example](https://judebantony.github.io/cicd-github-action-example)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://devsecopsschool.com/blog/github-actions-in-devsecops-a-comprehensive-tutorial">GitHub Actions in DevSecOps: A Comprehensive Tutorial - DevSecOps School</a></li>
+  <li><a href="https://checkmarx.com/learn/supply-chain-security/software-supply-chain-security-guide">Software Supply Chain Security Ultimate Guide</a></li>
+  <li><a href="https://www.endorlabs.com/learn/best-software-supply-chain-security-tools-a816d">Best Software Supply Chain Security Tools for AppSec Teams</a></li>
+</ul>
+
+  </div>
+
+  <div class="post-nav">
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
+    <a href="/ai-infosec-landing/feed.xml" class="back-link rss-back-link">RSS FEED</a>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">東情局 / DONG INTEL BUREAU</div>
+      <p>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p>LIVE SIGNAL MONITORING · UPDATED DAILY 08:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/ai-infosec-landing/assets/js/main.js"></script>
+</body>
+</html>
