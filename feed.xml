@@ -10,10 +10,334 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Sat, 20 Jun 2026 01:48:20 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 21 Jun 2026 01:16:56 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>2026年免费LLM API与AI编程工具实测指南 — Top Free LLM APIs &amp; AI Coding Agents to Try Now (2026 Guide)</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/06/21/ai-tool-guide.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/06/21/ai-tool-guide.html</guid>
+      <pubDate>Sun, 21 Jun 2026 01:16:47 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">ai</category>
+      <category domain="content_type">Tool Guide</category>
+      <category domain="tag">Free LLM API</category><category domain="tag">AI Coding Agent</category><category domain="tag">OpenRouter</category><category domain="tag">AIHubMix</category><category domain="tag">Kilo Code</category>
+      <description>对比OpenRouter、AIHubMix、Google AI Studio等免费LLM API，以及Kilo Code、GitHub Copilot Agent HQ等开源编程工具。涵盖注册、集成步骤、速率限制与生产风险，帮你避免意外费用。&#10;&#10;This guide compares truly free LLM APIs (OpenRouter, AIHubMix, Google AI Studio, Groq) and open-source coding agents (Kilo Code, GitHub Copilot Agent HQ), covering setup, limits, and production risks. It helps developers pick the right tools without unexpected costs.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;llm-apiai&quot;&gt;2026年免费LLM API与AI编程工具实测指南&lt;/h2&gt;
+
+  &lt;h1 id=&quot;llm-apiai-1&quot;&gt;2026年免费LLM API与AI编程工具实测指南&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;这是什么&lt;/h2&gt;
+
+  &lt;p&gt;2026年，AI开发者的免费工具生态已经成熟到可以&lt;strong&gt;真正投入生产&lt;/strong&gt;。本文实测了三个核心方向：&lt;strong&gt;免费LLM API&lt;/strong&gt;（OpenRouter、Google AI Studio、Groq等）、&lt;strong&gt;统一API网关&lt;/strong&gt;（AIHubMix），以及&lt;strong&gt;开源AI编程代理&lt;/strong&gt;（Kilo Code）。这些工具的共同特点是：不需要绑定信用卡、有永久免费层、且支持OpenAI兼容接口。如果你正在搭建AI原型、做自动化脚本、或给团队选型，这些是2026年最值得先试的免费基础设施。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;怎么用&lt;/h2&gt;
+
+  &lt;h3 id=&quot;llm-api&quot;&gt;一、免费LLM API：三分钟跑通第一个请求&lt;/h3&gt;
+
+  &lt;p&gt;&lt;strong&gt;推荐入口：OpenRouter（首选）&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;p&gt;OpenRouter是目前最成熟的免费LLM聚合平台。它不训练模型，而是把各家免费模型（包括Google Gemini、Mistral、Cohere、Groq等）统一成OpenAI兼容接口。你只需要一个API Key，就能在同一个代码里切换模型。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;注册与配置：&lt;/strong&gt;&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;访问 &lt;a href=&quot;https://openrouter.ai&quot;&gt;openrouter.ai&lt;/a&gt; → 用GitHub或Google账号登录&lt;/li&gt;
+    &lt;li&gt;进入Keys页面 → 生成一个API Key（免费，无需信用卡）&lt;/li&gt;
+    &lt;li&gt;设置环境变量：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;export OPENROUTER_API_KEY=&quot;sk-or-v1-xxxx&quot;&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;用OpenAI SDK直接调用：&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;openai&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OpenAI&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;client&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OpenAI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;base_url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://openrouter.ai/api/v1&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;api_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;lt;你的API Key&amp;gt;&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;completions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;google/gemini-2.0-flash-001&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 免费模型
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;messages&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[{&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Hello&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;choices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;p&gt;&lt;strong&gt;关键点：&lt;/strong&gt; 模型名用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;provider/model_name&lt;/code&gt; 格式（如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;google/gemini-2.0-flash-001&lt;/code&gt;），OpenRouter会自动路由到最便宜的免费端点。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;其他值得试的免费API：&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;平台&lt;/th&gt;
+        &lt;th&gt;免费模型&lt;/th&gt;
+        &lt;th&gt;特点&lt;/th&gt;
+        &lt;th&gt;入口&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Google AI Studio&lt;/td&gt;
+        &lt;td&gt;Gemini 2.0 Flash&lt;/td&gt;
+        &lt;td&gt;100万token上下文、多模态&lt;/td&gt;
+        &lt;td&gt;需Google账号，API Key免费&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Groq&lt;/td&gt;
+        &lt;td&gt;Llama 3 70B&lt;/td&gt;
+        &lt;td&gt;极快推理速度（LPU硬件）&lt;/td&gt;
+        &lt;td&gt;注册即用，无信用卡&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Cohere&lt;/td&gt;
+        &lt;td&gt;Command R+&lt;/td&gt;
+        &lt;td&gt;企业级RAG能力&lt;/td&gt;
+        &lt;td&gt;免费层20K tokens/天&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;AIHubMix&lt;/td&gt;
+        &lt;td&gt;GPT-5.5、Gemini 3等&lt;/td&gt;
+        &lt;td&gt;统一网关，27+免费模型&lt;/td&gt;
+        &lt;td&gt;无需信用卡，无过期&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p&gt;&lt;strong&gt;AIHubMix特别说明：&lt;/strong&gt; 这是一个第三方网关，把各家免费模型聚合到一个API。优点是&lt;strong&gt;一个Key用所有模型&lt;/strong&gt;，缺点是&lt;strong&gt;非官方渠道&lt;/strong&gt;，稳定性取决于网关本身。适合快速原型，不适合生产。&lt;/p&gt;
+
+  &lt;h3 id=&quot;aikilo-code&quot;&gt;二、AI编程代理：Kilo Code（开源首选）&lt;/h3&gt;
+
+  &lt;p&gt;Kilo Code是2026年最活跃的开源AI编程代理。它支持VS Code、JetBrains、CLI三种入口，核心是&lt;strong&gt;你自带模型、零加价&lt;/strong&gt;。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;安装与使用（VS Code）：&lt;/strong&gt;&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;在VS Code扩展市场搜索 “Kilo Code” → 安装&lt;/li&gt;
+    &lt;li&gt;打开命令面板（Cmd+Shift+P）→ 输入 “Kilo Code: Start New Session”&lt;/li&gt;
+    &lt;li&gt;选择模型：默认用OpenRouter免费模型，也可绑定自己的API Key（OpenAI、Anthropic、Groq等）&lt;/li&gt;
+    &lt;li&gt;开始对话：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/edit&lt;/code&gt; 命令直接修改文件，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/terminal&lt;/code&gt; 执行命令&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;CLI模式：&lt;/strong&gt;&lt;/p&gt;
+  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; @kilo-org/kilocode
+kilocode &lt;span class=&quot;nt&quot;&gt;--model&lt;/span&gt; openrouter/google/gemini-2.0-flash-001
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;p&gt;&lt;strong&gt;关键特性：&lt;/strong&gt;&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;500+模型，可随时切换（成本控制）&lt;/li&gt;
+    &lt;li&gt;支持MCP（Model Context Protocol）服务器&lt;/li&gt;
+    &lt;li&gt;多文件编辑、终端访问、Git操作&lt;/li&gt;
+    &lt;li&gt;开源，无隐藏收费&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;替代方案：GitHub Copilot Agent HQ&lt;/strong&gt;（适合深度绑定GitHub工作流的团队）&lt;/p&gt;
+
+  &lt;h3 id=&quot;mcpai&quot;&gt;三、MCP服务器：免费扩展AI工具链&lt;/h3&gt;
+
+  &lt;p&gt;MCP（Model Context Protocol）是2026年AI工具链的标准化协议。以下免费MCP服务器值得一试：&lt;/p&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;服务器&lt;/th&gt;
+        &lt;th&gt;功能&lt;/th&gt;
+        &lt;th&gt;安装方式&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Kilo Code MCP&lt;/td&gt;
+        &lt;td&gt;文件系统、终端、Git&lt;/td&gt;
+        &lt;td&gt;VS Code内置&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;OpenRouter MCP&lt;/td&gt;
+        &lt;td&gt;模型路由、成本控制&lt;/td&gt;
+        &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npx @openrouter/mcp-server&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;AIHubMix MCP&lt;/td&gt;
+        &lt;td&gt;统一模型网关&lt;/td&gt;
+        &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install aihubmix-mcp&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;适合谁&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;强烈推荐：&lt;/strong&gt;&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;AI原型开发者&lt;/strong&gt;：用OpenRouter + Kilo Code组合，零成本跑通MVP&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;独立开发者/Indie Hacker&lt;/strong&gt;：免费API + 开源代理，省掉每月$20-50的模型费用&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;数据团队&lt;/strong&gt;：用Google AI Studio的100万token上下文做长文档分析&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;安全/合规工程师&lt;/strong&gt;：用免费API做PoC，再迁移到合规付费方案&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;谨慎考虑：&lt;/strong&gt;&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;生产环境&lt;/strong&gt;：免费API有速率限制（通常15-60 RPM），且无SLA保障&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;企业级应用&lt;/strong&gt;：建议用OpenRouter的付费层（$0.01/百万token）或直接签约模型厂商&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;需要隐私/合规&lt;/strong&gt;：免费API默认不承诺数据隔离，敏感数据请用本地模型或自部署&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-3&quot;&gt;限制和注意事项&lt;/h2&gt;
+
+  &lt;h3 id=&quot;api&quot;&gt;免费API的硬限制&lt;/h3&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;限制项&lt;/th&gt;
+        &lt;th&gt;具体数值&lt;/th&gt;
+        &lt;th&gt;影响&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;速率限制&lt;/td&gt;
+        &lt;td&gt;15-60 RPM（多数免费层）&lt;/td&gt;
+        &lt;td&gt;不能做高并发&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;上下文窗口&lt;/td&gt;
+        &lt;td&gt;128K-1M（取决于模型）&lt;/td&gt;
+        &lt;td&gt;长文档需分片&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;数据隐私&lt;/td&gt;
+        &lt;td&gt;无明确承诺&lt;/td&gt;
+        &lt;td&gt;不用于敏感数据&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;模型可用性&lt;/td&gt;
+        &lt;td&gt;可能随时下架&lt;/td&gt;
+        &lt;td&gt;需监控状态页&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;多模态支持&lt;/td&gt;
+        &lt;td&gt;仅部分模型支持&lt;/td&gt;
+        &lt;td&gt;图片/音频需单独处理&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;风险清单&lt;/h3&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;API Key泄露&lt;/strong&gt;：免费Key通常无权限控制，泄露后可能被滥用&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;模型幻觉&lt;/strong&gt;：免费模型通常是小参数版本（8B-70B），准确率低于付费版&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;服务中断&lt;/strong&gt;：免费层无SLA，Groq曾因LPU硬件故障中断数小时&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;数据残留&lt;/strong&gt;：部分平台（如AIHubMix）可能缓存请求数据&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h3 id=&quot;section-5&quot;&gt;操作建议&lt;/h3&gt;
+
+  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安全实践：用环境变量管理Key&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;OPENROUTER_API_KEY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sk-or-v1-xxxx&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 不要硬编码在代码里&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# 生产前：用OpenRouter的付费层做压力测试&lt;/span&gt;
+openrouter rate-limit &lt;span class=&quot;nt&quot;&gt;--model&lt;/span&gt; google/gemini-2.0-flash-001 &lt;span class=&quot;nt&quot;&gt;--requests&lt;/span&gt; 100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h2 id=&quot;section-6&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;2026年的免费AI工具已经足够好用，但需要正确使用。&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;p&gt;我的结论：&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;OpenRouter + Kilo Code&lt;/strong&gt; 是2026年最推荐的免费AI开发组合。一个管理模型路由，一个管理编码代理，零成本跑通全流程。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Google AI Studio&lt;/strong&gt; 是长文本场景的唯一选择。100万token上下文在2026年仍无对手。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;AIHubMix&lt;/strong&gt; 是“懒人包”，但风险在于第三方网关可能随时更改策略。适合快速原型，不适合长期依赖。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;免费API永远不是生产方案&lt;/strong&gt;。但它是验证想法、学习模型、测试兼容性的最佳起点。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;一句话总结：&lt;/strong&gt; 2026年，免费AI工具已经可以支撑个人项目、原型验证和团队选型。但如果你要做商业产品，请准备好每月$20-50的模型预算。&lt;/p&gt;
+
+  &lt;hr /&gt;
+
+  &lt;h2 id=&quot;english-brief-free-llm-apis--ai-coding-tools-in-2026&quot;&gt;English Brief: Free LLM APIs &amp;amp; AI Coding Tools in 2026&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;What it is:&lt;/strong&gt; A practical guide to three free AI infrastructure stacks in 2026: OpenRouter (unified free LLM API gateway), Kilo Code (open-source AI coding agent), and AIHubMix (third-party model aggregator). All are OpenAI-compatible, no credit card required.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Why it matters:&lt;/strong&gt; Free AI tools have matured. You can now build a full MVP with zero model cost. This guide covers registration, API setup, model selection, and production risks.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;How to try:&lt;/strong&gt;&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;OpenRouter: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install openai&lt;/code&gt; → set &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OPENROUTER_API_KEY&lt;/code&gt; → call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;google/gemini-2.0-flash-001&lt;/code&gt; for free&lt;/li&gt;
+    &lt;li&gt;Kilo Code: Install VS Code extension → start session with OpenRouter models → use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/edit&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/terminal&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;AIHubMix: One API key for 27+ free models including GPT-5.5&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;Risks:&lt;/strong&gt; Rate limits (15-60 RPM), no SLA, no data privacy guarantee, model availability fluctuates. Not for production.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Take:&lt;/strong&gt; Free AI is now viable for prototypes, learning, and team evaluation. For production, budget $20-50/month.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;top-free-llm-apis--ai-coding-agents-to-try-now-2026-guide&quot;&gt;Top Free LLM APIs &amp;amp; AI Coding Agents to Try Now (2026 Guide)&lt;/h2&gt;
+
+  &lt;h1 id=&quot;top-free-llm-apis--ai-coding-agents-to-try-now-2026-guide-1&quot;&gt;Top Free LLM APIs &amp;amp; AI Coding Agents to Try Now (2026 Guide)&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-this-is&quot;&gt;What This Is&lt;/h2&gt;
+
+  &lt;p&gt;This guide covers two categories of free-tier AI infrastructure that developers can use today: &lt;strong&gt;LLM APIs with permanent free tiers&lt;/strong&gt; (no credit card required) and &lt;strong&gt;open-source AI coding agents&lt;/strong&gt; that run in VS Code, JetBrains, or the CLI. The key players are OpenRouter, AIHubMix, Google AI Studio, Groq, and Kilo Code.&lt;/p&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
+
+  &lt;p&gt;In 2026, the barrier to shipping AI features has dropped to near zero. Multiple providers now offer genuinely free, permanent tiers for text inference—no trial expiry, no surprise billing. Meanwhile, coding agents like Kilo Code give developers access to 500+ models with zero markup and no API key required to start. This means individual developers and small teams can prototype, build, and ship AI-powered products without upfront infrastructure costs.&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;For LLM APIs&lt;/strong&gt;: Start with OpenRouter or AIHubMix for a unified, OpenAI-compatible gateway. Both offer free tiers with no credit card. Google AI Studio is best for long-context tasks (up to 1M tokens on Gemini Flash). Groq is ideal for speed-critical applications using Llama 3.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;For coding agents&lt;/strong&gt;: Install Kilo Code from the VS Code Marketplace or npm. It supports 500+ models, five agent modes, terminal access, multi-file editing, and MCP support. No API key is required to begin—just pick a model and start coding.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Test your setup&lt;/strong&gt;: Use the OpenAI SDK pattern—swap the base URL and API key, and your existing code works across all providers.&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;risks--limitations&quot;&gt;Risks &amp;amp; Limitations&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Rate limits&lt;/strong&gt;: Free tiers are capped (e.g., 15 RPM, 20K tokens/day for Aion Labs). Production workloads will require paid plans.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Model availability&lt;/strong&gt;: Free models may change or be deprecated without notice. Always have a fallback provider.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Data privacy&lt;/strong&gt;: Free tiers often process data on shared infrastructure. Do not send sensitive or proprietary data without reviewing the provider’s privacy policy.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Vendor lock-in&lt;/strong&gt;: While most APIs are OpenAI-compatible, advanced features (e.g., Google’s file-based RAG) may require native SDKs.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
+
+  &lt;p&gt;The free-tier LLM API landscape is mature enough for prototyping, learning, and low-traffic production use. For coding agents, Kilo Code is the strongest open-source option in 2026—it’s free, model-agnostic, and works across editors. GitHub Copilot Agent HQ is better for teams already deep in GitHub’s ecosystem. Start with the free tiers, but plan for paid scaling if your usage grows.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://openrouter.ai/blog/tutorials/free-llm-apis-compared&quot;&gt;Free LLM APIs Compared: Rate Limits, Models, and Real Costs (2026)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mnfst/awesome-free-llm-apis&quot;&gt;mnfst/awesome-free-llm-apis - GitHub&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.aihubmix.com/en/blogs/free-ai-models&quot;&gt;Free AI Models - AiHubMix Documentation Hub&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/kilo-org/kilocode&quot;&gt;GitHub - Kilo-Org/kilocode: Kilo is the all-in-one agentic engineering platform. Build, ship, and iterate faster with the most popular open source coding agent.&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://kilo.ai/articles/coding-agents-for-vscode&quot;&gt;Best Coding Agents for VS Code in 2026: Compared &amp;amp; Reviewed&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>中国数据出境合规新规：跨境传输实操指南 — China&apos;s Data Export Compliance: New Rules for Cross-Border Transfers</title>
