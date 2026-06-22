@@ -10,10 +10,407 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 22 Jun 2026 01:19:22 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 23 Jun 2026 03:19:48 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>CI/CD中的DevSecOps：用GitHub Actions检测并修复安全风险 — DevSecOps in CI/CD: How to Detect and Fix Security Risks with GitHub Actions</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook.html</guid>
+      <pubDate>Tue, 23 Jun 2026 03:19:41 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">infosec</category>
+      <category domain="content_type">Defensive Playbook</category>
+      <category domain="tag">DevSecOps</category><category domain="tag">GitHub Actions</category><category domain="tag">SAST</category><category domain="tag">SCA</category><category domain="tag">SBOM</category>
+      <description>本指南介绍如何将SAST、SCA、DAST和SBOM工具集成到GitHub Actions中，在早期检测并修复安全漏洞。提供可操作步骤，帮助团队在不影响开发速度的前提下左移安全。&#10;&#10;This playbook covers how to integrate SAST, SCA, DAST, and SBOM tools into GitHub Actions to detect and fix security vulnerabilities early. It provides actionable steps for teams to shift left security without slowing down development.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;cicddevsecopsgithub-actions&quot;&gt;CI/CD中的DevSecOps：用GitHub Actions检测并修复安全风险&lt;/h2&gt;
+
+  &lt;h1 id=&quot;cicddevsecopsgithub-actions-1&quot;&gt;CI/CD中的DevSecOps：用GitHub Actions检测并修复安全风险&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;风险是什么&lt;/h2&gt;
+
+  &lt;p&gt;现代软件开发依赖大量开源组件和第三方库。一个典型的Node.js或Python项目可能直接依赖上百个包，间接依赖上千个。这些依赖中的任何一个存在已知漏洞，都可能被攻击者利用。&lt;/p&gt;
+
+  &lt;p&gt;更严重的问题是：&lt;strong&gt;漏洞发现到修复的时间窗口&lt;/strong&gt;。根据行业数据，从CVE公开到被大规模利用的平均时间已缩短到15天以内。如果团队只在发布前做一次安全扫描，或者完全依赖人工检查，这个窗口期足以让漏洞进入生产环境。&lt;/p&gt;
+
+  &lt;p&gt;具体风险包括：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;依赖漏洞&lt;/strong&gt;：Log4j、lodash等库的已知漏洞未被发现&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;代码质量问题&lt;/strong&gt;：SQL注入、XSS、硬编码密钥等静态代码缺陷&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;容器镜像风险&lt;/strong&gt;：基础镜像包含高危漏洞、错误配置&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;运行时暴露&lt;/strong&gt;：API端点存在未授权访问、敏感信息泄露&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;谁会受影响&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;中小型开发团队&lt;/strong&gt;：没有专职安全工程师，依赖自动化工具&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;使用GitHub Actions的团队&lt;/strong&gt;：可以直接在CI/CD流程中集成安全扫描&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SaaS产品团队&lt;/strong&gt;：需要满足SOC 2、ISO 27001等合规要求&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;开源项目维护者&lt;/strong&gt;：需要向贡献者和用户证明代码安全性&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DevOps/SRE团队&lt;/strong&gt;：负责构建和部署流水线&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;不适用场景&lt;/strong&gt;：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;离线或内网环境（需要自行托管扫描器）&lt;/li&gt;
+    &lt;li&gt;对扫描延迟极其敏感的流水线（安全扫描通常需要额外2-10分钟）&lt;/li&gt;
+    &lt;li&gt;需要深度定制规则的组织级安全策略（开源工具规则库有限）&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;怎么检查&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-3&quot;&gt;第一步：评估当前安全状态&lt;/h3&gt;
+
+  &lt;p&gt;在集成任何工具之前，先回答三个问题：&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;你的项目使用哪些语言和框架？（决定SAST工具选择）&lt;/li&gt;
+    &lt;li&gt;依赖管理工具是什么？（npm、pip、maven等）&lt;/li&gt;
+    &lt;li&gt;容器镜像是否使用？基础镜像来源是什么？&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;第二步：选择扫描工具&lt;/h3&gt;
+
+  &lt;p&gt;根据项目类型选择组合：&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Python项目&lt;/strong&gt;：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;SCA：Snyk（免费额度足够小团队）或 OWASP Dependency-Check&lt;/li&gt;
+    &lt;li&gt;SAST：CodeQL（GitHub原生，免费）&lt;/li&gt;
+    &lt;li&gt;容器扫描：Docker Scout（Docker Desktop内置）或 Trivy（开源）&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Node.js项目&lt;/strong&gt;：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;SCA：GitHub Dependabot（自动PR，零配置） + Snyk&lt;/li&gt;
+    &lt;li&gt;SAST：CodeQL&lt;/li&gt;
+    &lt;li&gt;容器扫描：Trivy&lt;/li&gt;
+    &lt;li&gt;DAST：OWASP ZAP（基线扫描，适合API）&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Java/Go项目&lt;/strong&gt;：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;同上，但SAST可考虑SonarQube（社区版免费）&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;github-actions&quot;&gt;第三步：在GitHub Actions中配置扫描&lt;/h3&gt;
+
+  &lt;p&gt;以下是一个完整的DevSecOps工作流示例（基于[2]和[3]的实践）：&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DevSecOps Pipeline&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;develop&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;pull_request&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;main&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# 1. SCA - 依赖扫描&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;sca-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v3&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Snyk SCA Scan&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;snyk/actions/node@master&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;SNYK_TOKEN&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;--severity-threshold=high&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# 2. SAST - 静态代码分析&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;sast-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v3&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;CodeQL Analysis&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github/codeql-action/analyze@v2&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;languages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;javascript, python&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# 3. 容器扫描&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;container-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v3&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Build Docker Image&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;docker build -t myapp:latest .&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Trivy Scan&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;aquasecurity/trivy-action@master&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;image-ref&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;myapp:latest&apos;&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;sarif&apos;&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;trivy-results.sarif&apos;&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;severity&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CRITICAL,HIGH&apos;&lt;/span&gt;
+
+  &lt;span class=&quot;c1&quot;&gt;# 4. DAST - 动态扫描（需要部署环境）&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;dast-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;needs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;container-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;OWASP ZAP Baseline Scan&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zaproxy/action-baseline@v0.12.0&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://staging.myapp.com&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h3 id=&quot;sbom&quot;&gt;第四步：生成SBOM（软件物料清单）&lt;/h3&gt;
+
+  &lt;p&gt;SBOM是合规审计和供应链安全的基础。推荐工具（基于[4][5]）：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Syft&lt;/strong&gt;：轻量级SBOM生成器，支持SPDX和CycloneDX格式&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Trivy&lt;/strong&gt;：同时支持漏洞扫描和SBOM生成&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Dependency-Track&lt;/strong&gt;：企业级SBOM管理平台，持续监控&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;在GitHub Actions中添加SBOM生成：&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Generate SBOM&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;anchore/sbom-action@v0&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cyclonedx-json&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;output-file&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sbom.cdx.json&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h2 id=&quot;section-5&quot;&gt;怎么修 / 怎么接入流程&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;修复优先级&lt;/h3&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;CRITICAL/HIGH漏洞&lt;/strong&gt;：立即修复，如果无法立即修复则阻断CI&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;MEDIUM漏洞&lt;/strong&gt;：在下一个迭代中修复&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;LOW漏洞&lt;/strong&gt;：记录并定期审查&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h3 id=&quot;section-7&quot;&gt;阻断策略&lt;/h3&gt;
+
+  &lt;p&gt;在GitHub Actions中设置门禁：&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Fail on Critical Vulnerabilities&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;failure()&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;echo &quot;Critical vulnerabilities found. Pipeline blocked.&quot;&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;exit 1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h3 id=&quot;section-8&quot;&gt;自动化修复&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Dependabot&lt;/strong&gt;：自动创建修复PR，配置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;security-updates-only: true&lt;/code&gt;避免噪音&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Snyk&lt;/strong&gt;：自动修复PR，支持批量更新&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-9&quot;&gt;团队流程&lt;/h3&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;开发阶段&lt;/strong&gt;：本地运行&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm audit&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip-audit&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;PR阶段&lt;/strong&gt;：GitHub Actions运行SAST+SCA，结果作为PR检查&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;合并后&lt;/strong&gt;：构建镜像并扫描，生成SBOM&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;部署前&lt;/strong&gt;：DAST扫描（需要staging环境）&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;生产环境&lt;/strong&gt;：持续监控（Dependency-Track或Wiz）&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;section-10&quot;&gt;注意事项&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-11&quot;&gt;工具限制&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;误报率&lt;/strong&gt;：SAST工具误报率通常在10-30%，需要人工审核&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;漏报率&lt;/strong&gt;：SCA工具只覆盖已知漏洞（CVE），0-day无法检测&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;语言支持&lt;/strong&gt;：CodeQL对Python/JavaScript支持最好，对Go/Rust支持有限&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DAST限制&lt;/strong&gt;：需要运行中的实例，且只能检测HTTP层面的漏洞&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-12&quot;&gt;运营风险&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;扫描时间&lt;/strong&gt;：完整扫描可能增加5-15分钟CI时间&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;噪音管理&lt;/strong&gt;：Dependabot可能每天产生多个PR，需要配置阈值&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;密钥管理&lt;/strong&gt;：Snyk Token等密钥需存储在GitHub Secrets中&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;成本&lt;/strong&gt;：Snyk免费额度有限，企业版按用户收费&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-13&quot;&gt;合规注意事项&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;中国法规&lt;/strong&gt;：如果处理个人信息或重要数据，扫描结果可能包含敏感信息，需注意数据不出境&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SBOM合规&lt;/strong&gt;：中国等保2.0要求软件供应链安全，SBOM是基础&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;跨境传输&lt;/strong&gt;：使用Snyk等海外SaaS工具时，代码可能被传输到境外服务器&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-14&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;DevSecOps不是可选项，而是现代软件工程的必需品。&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;p&gt;对于中小团队，我推荐以下最低配置：&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;GitHub Dependabot&lt;/strong&gt;：零配置，自动检测依赖漏洞&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;CodeQL&lt;/strong&gt;：免费，覆盖常见SAST场景&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Trivy&lt;/strong&gt;：开源，同时覆盖容器和文件系统扫描&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;这套组合可以在不增加额外成本的情况下覆盖80%的安全风险。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;但要注意&lt;/strong&gt;：工具只是安全的第一道防线。真正的安全需要：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;开发人员的安全意识培训&lt;/li&gt;
+    &lt;li&gt;定期的安全审计&lt;/li&gt;
+    &lt;li&gt;事件响应预案&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;对于中国团队&lt;/strong&gt;：如果使用Snyk等海外工具，务必确认代码中不包含个人信息或重要数据。建议优先使用开源工具（Trivy、OWASP Dependency-Check）或国产替代方案。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;最后&lt;/strong&gt;：不要追求100%的覆盖率。安全扫描的目标是发现并修复高优先级风险，而不是消除所有漏洞。设定合理的阈值（如只阻断CRITICAL漏洞），保持流水线速度，才能让团队长期坚持。&lt;/p&gt;
+
+  &lt;hr /&gt;
+
+  &lt;h2 id=&quot;english-brief-devsecops-in-cicd-with-github-actions&quot;&gt;English Brief: DevSecOps in CI/CD with GitHub Actions&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;Risk&lt;/strong&gt;: Modern software relies on hundreds of open-source dependencies. Known vulnerabilities (CVE) can be exploited within 15 days of disclosure. Without automated scanning, vulnerabilities enter production undetected.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Affected Teams&lt;/strong&gt;: Small-to-mid dev teams without dedicated security engineers, GitHub Actions users, SaaS product teams needing SOC 2/ISO 27001 compliance, open-source maintainers.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Checks&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;SCA&lt;/strong&gt; (Software Composition Analysis): Snyk, GitHub Dependabot, OWASP Dependency-Check&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SAST&lt;/strong&gt; (Static Analysis): CodeQL (free, GitHub-native)&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Container Scan&lt;/strong&gt;: Docker Scout, Trivy (open-source)&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DAST&lt;/strong&gt; (Dynamic Scan): OWASP ZAP (requires running instance)&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SBOM&lt;/strong&gt;: Syft (lightweight), Trivy, Dependency-Track (enterprise)&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;Remediation Workflow&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Block CI on CRITICAL/HIGH vulnerabilities&lt;/li&gt;
+    &lt;li&gt;Auto-fix via Dependabot or Snyk PRs&lt;/li&gt;
+    &lt;li&gt;Integrate scanning at every stage: local → PR → build → deploy → production&lt;/li&gt;
+    &lt;li&gt;Generate SBOM for compliance (CycloneDX/SPDX format)&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Caveats&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;False positive rate 10-30% for SAST&lt;/li&gt;
+    &lt;li&gt;SCA only covers known CVEs (no 0-day)&lt;/li&gt;
+    &lt;li&gt;DAST requires a running instance&lt;/li&gt;
+    &lt;li&gt;Overseas SaaS tools (Snyk) may transfer code outside China&lt;/li&gt;
+    &lt;li&gt;Full scan adds 5-15 min to CI pipeline&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Take&lt;/strong&gt;: Minimum viable setup for small teams: Dependabot + CodeQL + Trivy. Covers 80% of risks at zero cost. For Chinese teams, prefer open-source tools (Trivy, OWASP) to avoid cross-border data transfer issues. Security scanning is a baseline, not a silver bullet—combine with training and incident response.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;devsecops-in-cicd-how-to-detect-and-fix-security-risks-with-github-actions&quot;&gt;DevSecOps in CI/CD: How to Detect and Fix Security Risks with GitHub Actions&lt;/h2&gt;
+
+  &lt;h1 id=&quot;devsecops-in-cicd-how-to-detect-and-fix-security-risks-with-github-actions-1&quot;&gt;DevSecOps in CI/CD: How to Detect and Fix Security Risks with GitHub Actions&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-this-is&quot;&gt;What This Is&lt;/h2&gt;
+
+  &lt;p&gt;DevSecOps is the practice of integrating security scanning directly into CI/CD pipelines. Using GitHub Actions, teams can automate security checks at every stage of development—from code commit to deployment. This approach shifts security left, catching vulnerabilities before they reach production.&lt;/p&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
+
+  &lt;p&gt;Software supply chain attacks are rising. Open-source dependencies introduce risk, and manual security reviews don’t scale. Embedding automated scans in CI/CD means every pull request triggers security checks. Teams get immediate feedback without slowing delivery. For regulated industries, this also builds an audit trail for compliance.&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-steps-you-can-take&quot;&gt;Practical Steps You Can Take&lt;/h2&gt;
+
+  &lt;h3 id=&quot;add-software-composition-analysis-sca&quot;&gt;1. Add Software Composition Analysis (SCA)&lt;/h3&gt;
+  &lt;p&gt;Scan dependencies for known vulnerabilities. Use &lt;strong&gt;Snyk&lt;/strong&gt; or &lt;strong&gt;OWASP Dependency Check&lt;/strong&gt; in your workflow. These tools check open-source libraries against vulnerability databases.&lt;/p&gt;
+
+  &lt;h3 id=&quot;run-static-application-security-testing-sast&quot;&gt;2. Run Static Application Security Testing (SAST)&lt;/h3&gt;
+  &lt;p&gt;Use &lt;strong&gt;CodeQL&lt;/strong&gt; (GitHub’s native SAST) to analyze source code for injection flaws, insecure deserialization, and other common bugs. CodeQL runs on every push and creates alerts in the Security tab.&lt;/p&gt;
+
+  &lt;h3 id=&quot;scan-containers-with-docker-scout-or-trivy&quot;&gt;3. Scan Containers with Docker Scout or Trivy&lt;/h3&gt;
+  &lt;p&gt;Container images often bundle vulnerable packages. &lt;strong&gt;Docker Scout&lt;/strong&gt; analyzes image layers and surfaces fixes. &lt;strong&gt;Trivy&lt;/strong&gt; is a fast, open-source alternative that scans OS packages and application dependencies.&lt;/p&gt;
+
+  &lt;h3 id=&quot;add-dynamic-application-security-testing-dast&quot;&gt;4. Add Dynamic Application Security Testing (DAST)&lt;/h3&gt;
+  &lt;p&gt;For web apps and APIs, run &lt;strong&gt;OWASP ZAP&lt;/strong&gt; baseline scans against staging environments. This catches runtime issues like missing authentication or XSS that static tools miss.&lt;/p&gt;
+
+  &lt;h3 id=&quot;generate-sboms-for-supply-chain-visibility&quot;&gt;5. Generate SBOMs for Supply Chain Visibility&lt;/h3&gt;
+  &lt;p&gt;Use &lt;strong&gt;Syft&lt;/strong&gt; to produce Software Bill of Materials (SBOM) in CycloneDX or SPDX format. Attach SBOMs to releases. This helps you track what’s in your software and respond to new CVEs.&lt;/p&gt;
+
+  &lt;h2 id=&quot;risks-and-operational-notes&quot;&gt;Risks and Operational Notes&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;False positives are real.&lt;/strong&gt; SCA and SAST tools flag many issues. Triage by severity and exploitability. Don’t block builds on every low-severity alert.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DAST requires a running target.&lt;/strong&gt; You need a test environment with realistic data. ZAP scans can break if your app has auth flows or rate limits.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SBOMs need maintenance.&lt;/strong&gt; A single SBOM snapshot is not enough. Use tools like Dependency-Track for continuous monitoring.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Tool overlap is common.&lt;/strong&gt; Run SCA and SAST together. They catch different things. SCA finds known library bugs; SAST finds custom code flaws.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;who-this-is-for&quot;&gt;Who This Is For&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;DevOps engineers&lt;/strong&gt; who own CI pipelines and want to add security gates.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Security teams&lt;/strong&gt; who need to enforce policy without slowing developers.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Compliance teams&lt;/strong&gt; tracking software supply chain risk.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;who-this-is-not-for&quot;&gt;Who This Is Not For&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Teams without CI/CD.&lt;/strong&gt; Manual scanning won’t scale.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Teams that skip triage.&lt;/strong&gt; Running tools without reviewing results creates noise and burnout.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;bottom-line&quot;&gt;Bottom Line&lt;/h2&gt;
+
+  &lt;p&gt;DevSecOps with GitHub Actions is not a one-tool fix. You need SCA, SAST, container scanning, and DAST to cover the full attack surface. Start with one scan per pipeline stage, then layer up. The goal is not zero vulnerabilities—it’s catching the ones that matter before they ship.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[DevSecOps Tutorial for Beginners&lt;/td&gt;
+          &lt;td&gt;CI Pipeline with GitHub Actions and Docker Scout](https://www.youtube.com/watch?v=gLJdrXPn0ns)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/adavarski/DevSecOps-GitHub-Actions-node-app&quot;&gt;GitHub - adavarski/DevSecOps-GitHub-Actions-node-app: DevSecOps pipeline/workflow with Github Actions · GitHub&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[DevSecOps with GitHub Action and SaaS Tools&lt;/td&gt;
+          &lt;td&gt;cicd-github-action-example](https://judebantony.github.io/cicd-github-action-example)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[Guide to SBOM Tools: 5 Picks for Enterprise Security Teams&lt;/td&gt;
+          &lt;td&gt;Wiz](https://www.wiz.io/academy/application-security/top-open-source-sbom-tools)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ox.security/blog/sbom-tools&quot;&gt;Top 5 SBOM Tools 2025: Secure Your Software Supply Chain&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>AI Agent循环与治理框架：可靠自主工作流的工程新实践 — AI Agent Loops &amp; Harnesses: The New Engineering Practice for Reliable Autonomous Workflows</title>
