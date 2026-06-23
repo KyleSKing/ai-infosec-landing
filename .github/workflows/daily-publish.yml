@@ -25,6 +25,19 @@ jobs:
       - name: Install Python dependencies
         run: pip install requests python-dateutil python-frontmatter
 
+      - name: Restore generated content from content branch
+        run: |
+          mkdir -p _posts archive
+          if git ls-remote --exit-code --heads origin content >/dev/null 2>&1; then
+            git fetch origin content
+            git checkout origin/content -- _posts archive || true
+          elif compgen -G "_posts/*.md" >/dev/null; then
+            echo "No content branch found. Using source-branch posts for initial seed."
+          else
+            echo "::error::No content branch or source posts found. Seed the content branch before source-only release."
+            exit 1
+          fi
+
       - name: Generate articles
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
@@ -43,20 +56,49 @@ jobs:
       - name: Install Ruby dependencies
         run: bundle install
 
-      - name: Commit generated article to main
+      - name: Build Jekyll site
+        run: bundle exec jekyll build --destination _site
+
+      - name: Upload generated content artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: generated-content-${{ github.run_id }}
+          path: |
+            _posts/
+            archive/
+          retention-days: 30
+
+      - name: Save generated content to content branch
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add _posts/ archive/
-          if git diff --cached --quiet; then
-            echo "No generated article or archive changes to commit."
+
+          worktree_dir="$(mktemp -d)"
+          git worktree add --detach "$worktree_dir"
+
+          if git ls-remote --exit-code --heads origin content >/dev/null 2>&1; then
+            git -C "$worktree_dir" fetch origin content
+            git -C "$worktree_dir" checkout -B content origin/content
           else
-            git commit -m "chore: publish daily article + update archive"
-            git push origin HEAD:main
+            git -C "$worktree_dir" checkout --orphan content
+            git -C "$worktree_dir" rm -rf . >/dev/null 2>&1 || true
           fi
 
-      - name: Build Jekyll site
-        run: bundle exec jekyll build --destination _site
+          rm -rf "$worktree_dir/_posts" "$worktree_dir/archive"
+          mkdir -p "$worktree_dir/_posts" "$worktree_dir/archive"
+          cp -a _posts/. "$worktree_dir/_posts/"
+          cp -a archive/. "$worktree_dir/archive/"
+
+          git -C "$worktree_dir" add _posts archive
+          if git -C "$worktree_dir" diff --cached --quiet; then
+            echo "No generated content changes to save."
+          else
+            git -C "$worktree_dir" commit -m "chore: save generated content"
+            git -C "$worktree_dir" push origin content
+          fi
+
+          git worktree remove "$worktree_dir"
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
