@@ -2,7 +2,7 @@ name: Daily Article Publisher
 
 on:
   schedule:
-    - cron: '0 16 * * *'  # 每天UTC 16:00（北京时间00:00 半夜）
+    - cron: '0 16 * * 0'  # 每周日UTC 16:00（北京时间周一00:00）
   workflow_dispatch:       # 允许手动触发
 
 jobs:
