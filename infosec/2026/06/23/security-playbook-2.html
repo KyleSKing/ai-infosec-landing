@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#05070a">
+  <title>GitHub Actions DevSecOps：自动化SBOM、SAST与DAST安全扫描 | 東情局 · DONG INTEL BUREAU</title>
+  <meta name="description" content="本文介绍如何在GitHub Actions中集成SBOM生成（Syft）、SAST（CodeQL）和DAST（OWASP ZAP），实现早期漏洞检测。提供可落地的CI/CD工作流，并讨论误报、性能开销与合规风险。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css?v=radar-dot-brightness-v1">
+  <link rel="alternate" type="application/rss+xml" title="東情局 · DONG INTEL BUREAU RSS" href="https://kylesking.github.io/ai-infosec-landing/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Security Playbook 2 | 東情局 · DONG INTEL BUREAU</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Security Playbook 2" />
+<meta name="author" content="東情局 / DONG INTEL BUREAU" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook-2.html" />
+<meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook-2.html" />
+<meta property="og:site_name" content="東情局 · DONG INTEL BUREAU" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-06-23T17:56:16+08:00" />
+<meta property="article:modified_time" content="2026-06-23T17:56:16+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Security Playbook 2" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"東情局 / DONG INTEL BUREAU"},"dateModified":"2026-06-23T17:56:16+08:00","datePublished":"2026-06-23T17:56:16+08:00","description":"Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Security Playbook 2","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook-2.html"},"url":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook-2.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="東情局首页">
+      <div class="logo-mark"><span></span></div>
+      <div>
+        <div class="logo-text">東情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
+      </div>
+    </a>
+
+    <div class="nav-cats" aria-label="Category filters">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI</span><span class="en">AI</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全合规</span><span class="en">Security</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="live-pill" title="Live signal monitoring">
+        <div class="live-dot"></div>
+        <span>LIVE</span>
+      </div>
+      <div class="lang-toggle" aria-label="Language switcher">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="post-wrap">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">東情局 / DONG INTEL BUREAU</div>
+    <div class="post-head-meta">
+      <span class="cat-chip chip-sec">INFOSEC</span>
+      
+      <span class="type-chip"><span class="zh">防御实操</span><span class="en">Defensive Playbook</span></span>
+      
+      <span class="art-date">2026.06.23</span>
+    </div>
+
+    <h1 class="post-title-cn zh">GitHub Actions DevSecOps：自动化SBOM、SAST与DAST安全扫描</h1>
+    <h1 class="post-title-en en">DevSecOps in GitHub Actions: Automating Security Scans for SBOM, SAST, and DAST</h1>
+
+    <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
+      <p class="zh">本文介绍如何在GitHub Actions中集成SBOM生成（Syft）、SAST（CodeQL）和DAST（OWASP ZAP），实现早期漏洞检测。提供可落地的CI/CD工作流，并讨论误报、性能开销与合规风险。</p>
+      <p class="en">This playbook covers how to integrate SBOM generation (Syft), SAST (CodeQL), and DAST (OWASP ZAP) into GitHub Actions for early vulnerability detection. It provides actionable workflows and addresses false positives, performance overhead, and compliance risks.</p>
+    </div>
+
+    <div class="post-tags-row">
+      <span class="tag">DevSecOps</span><span class="tag">GitHub Actions</span><span class="tag">SBOM</span><span class="tag">SAST</span><span class="tag">DAST</span>
+    </div>
+  </article>
+
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
+  </div>
+
+  <div class="post-body post-content">
+    <!-- Chinese Version -->
+<div class="lang-cn">
+
+  <h2 id="github-actions-devsecopssbomsastdast">GitHub Actions DevSecOps：自动化SBOM、SAST与DAST安全扫描</h2>
+
+  <h1 id="github-actions-devsecopssbomsastdast-1">GitHub Actions DevSecOps：自动化SBOM、SAST与DAST安全扫描</h1>
+
+  <h2 id="section">风险是什么</h2>
+
+  <p>现代软件供应链攻击正在快速上升。2025年，超过70%的企业代码库包含至少一个已知漏洞的开源依赖，而供应链攻击（如依赖混淆、恶意包投毒、CI/CD管道劫持）已成为攻击者最青睐的入口之一。</p>
+
+  <p>核心风险有三层：</p>
+
+  <ol>
+    <li><strong>依赖层</strong>：你不知道你的代码里用了什么，更不知道这些依赖有没有已知漏洞。没有SBOM（软件物料清单），你连“用了什么”都说不清。</li>
+    <li><strong>代码层</strong>：开发者在代码中引入的安全缺陷（SQL注入、XSS、硬编码密钥）在合并前未被发现，直接流入生产。</li>
+    <li><strong>运行时层</strong>：应用上线后，攻击面暴露在互联网上，但团队从未对运行中的应用做过动态扫描。</li>
+  </ol>
+
+  <p>这三个风险叠加，意味着你的CI/CD管道可能正在安全地交付不安全的软件。</p>
+
+  <h2 id="section-1">谁会受影响</h2>
+
+  <ul>
+    <li><strong>开发团队</strong>：每天提交代码，但缺乏自动化安全检测手段。</li>
+    <li><strong>DevOps/SRE团队</strong>：维护CI/CD管道，需要在不拖慢交付的前提下嵌入安全扫描。</li>
+    <li><strong>安全工程师</strong>：需要从海量告警中筛选真正需要修复的漏洞。</li>
+    <li><strong>合规团队</strong>：需要满足PIPL、CSL、MLPS 2.0、EU AI Act、SOC 2等对软件供应链透明度的要求。</li>
+    <li><strong>独立开发者/小团队</strong>：没有专职安全人员，但同样面临供应链攻击风险。</li>
+  </ul>
+
+  <p><strong>不适合谁</strong>：已经拥有成熟商业级AST平台（如Snyk、Checkmarx、Veracode）且管道集成完善的团队。本文方案是开源/低成本替代方案，适合从零搭建或补充现有流程。</p>
+
+  <h2 id="section-2">怎么检查</h2>
+
+  <h3 id="sbom">第一步：生成SBOM</h3>
+
+  <p>SBOM是供应链安全的基础。没有SBOM，你无法知道依赖树的全貌。</p>
+
+  <p><strong>推荐工具：Syft（Anchore开源项目）</strong></p>
+
+  <p>在GitHub Actions中集成：</p>
+
+  <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Generate SBOM</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">anchore/sbom-action@v0</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">path</span><span class="pi">:</span> <span class="s">./</span>
+    <span class="na">format</span><span class="pi">:</span> <span class="s">cyclonedx-json</span>
+    <span class="na">output-file</span><span class="pi">:</span> <span class="s">sbom.cdx.json</span>
+</code></pre></div>  </div>
+
+  <p>检查要点：</p>
+  <ul>
+    <li>生成的SBOM是否包含所有直接和传递依赖？</li>
+    <li>格式是否为CycloneDX或SPDX（行业标准）？</li>
+    <li>是否包含版本号和许可证信息？</li>
+  </ul>
+
+  <h3 id="sast">第二步：SAST静态扫描</h3>
+
+  <p>SAST在代码编写阶段发现安全缺陷，实现“左移”。</p>
+
+  <p><strong>推荐工具：CodeQL（GitHub原生）</strong></p>
+
+  <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Initialize CodeQL</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">github/codeql-action/init@v3</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">languages</span><span class="pi">:</span> <span class="s">python, javascript</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Perform CodeQL Analysis</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">github/codeql-action/analyze@v3</span>
+</code></pre></div>  </div>
+
+  <p>检查要点：</p>
+  <ul>
+    <li>是否覆盖了所有主要语言？</li>
+    <li>是否配置了<code class="language-plaintext highlighter-rouge">security-and-quality</code>查询套件（比默认更全面）？</li>
+    <li>是否在PR级别设置了门禁（阻断含Critical漏洞的PR合并）？</li>
+  </ul>
+
+  <h3 id="dast">第三步：DAST动态扫描</h3>
+
+  <p>DAST在应用运行后扫描，发现运行时安全问题。</p>
+
+  <p><strong>推荐工具：OWASP ZAP</strong></p>
+
+  <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ZAP Scan</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">zaproxy/action-full-scan@v0.10.0</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">target</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://staging.example.com'</span>
+    <span class="na">rules_file_name</span><span class="pi">:</span> <span class="s1">'</span><span class="s">.zap/rules.tsv'</span>
+    <span class="na">cmd_options</span><span class="pi">:</span> <span class="s1">'</span><span class="s">-a'</span>
+</code></pre></div>  </div>
+
+  <p>检查要点：</p>
+  <ul>
+    <li>是否有可访问的staging环境？</li>
+    <li>是否配置了排除规则（避免扫描注销/删除功能）？</li>
+    <li>是否设置了告警阈值（避免因低危告警阻塞管道）？</li>
+  </ul>
+
+  <h2 id="section-3">怎么修 / 怎么接入流程</h2>
+
+  <h3 id="section-4">完整工作流示例</h3>
+
+  <p>在<code class="language-plaintext highlighter-rouge">.github/workflows/security-scan.yml</code>中：</p>
+
+  <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">DevSecOps Pipeline</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">,</span> <span class="nv">develop</span><span class="pi">]</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">main</span><span class="pi">]</span>
+
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">sbom</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Generate SBOM</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">anchore/sbom-action@v0</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">./</span>
+          <span class="na">format</span><span class="pi">:</span> <span class="s">cyclonedx-json</span>
+          <span class="na">output-file</span><span class="pi">:</span> <span class="s">sbom.cdx.json</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Upload SBOM</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/upload-artifact@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">name</span><span class="pi">:</span> <span class="s">sbom</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">sbom.cdx.json</span>
+
+  <span class="na">sast</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Initialize CodeQL</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">github/codeql-action/init@v3</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">languages</span><span class="pi">:</span> <span class="s">python</span>
+          <span class="na">queries</span><span class="pi">:</span> <span class="s">security-and-quality</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Autobuild</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">github/codeql-action/autobuild@v3</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Perform CodeQL Analysis</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">github/codeql-action/analyze@v3</span>
+
+  <span class="na">dast</span><span class="pi">:</span>
+    <span class="na">needs</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">sbom</span><span class="pi">,</span> <span class="nv">sast</span><span class="pi">]</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">ZAP Scan</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">zaproxy/action-full-scan@v0.10.0</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">target</span><span class="pi">:</span> <span class="s1">'</span><span class="s">https://staging-$.example.com'</span>
+          <span class="na">allow_issue_writing</span><span class="pi">:</span> <span class="kc">false</span>
+</code></pre></div>  </div>
+
+  <h3 id="section-5">修复优先级</h3>
+
+  <ol>
+    <li><strong>SBOM告警</strong>：使用<code class="language-plaintext highlighter-rouge">grype</code>（与Syft同属Anchore生态）扫描SBOM中的漏洞，按CVSS评分排序修复。</li>
+    <li><strong>SAST告警</strong>：CodeQL结果按<code class="language-plaintext highlighter-rouge">error</code>/<code class="language-plaintext highlighter-rouge">warning</code>分级，Critical和High必须阻断PR合并。</li>
+    <li><strong>DAST告警</strong>：ZAP结果中，仅High和Critical阻断管道，Medium和Low作为工单跟踪。</li>
+  </ol>
+
+  <h3 id="section-6">中国合规特别要求</h3>
+
+  <ul>
+    <li><strong>PIPL/CSL</strong>：SBOM中需记录个人信息处理模块的依赖关系，确保不引入未经安全评估的第三方SDK。</li>
+    <li><strong>MLPS 2.0</strong>：SAST和DAST结果需作为等保测评的“安全开发”证据留存。</li>
+    <li><strong>CAC数据出境</strong>：如果SBOM显示使用了跨境数据处理的依赖（如海外日志SDK），需触发数据出境安全评估流程。</li>
+  </ul>
+
+  <h2 id="section-7">注意事项</h2>
+
+  <h3 id="section-8">工具限制</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>工具</th>
+        <th>已知限制</th>
+        <th>误报/漏报</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Syft</td>
+        <td>不扫描运行时依赖，仅分析文件系统</td>
+        <td>低误报，但可能漏掉动态加载的包</td>
+      </tr>
+      <tr>
+        <td>CodeQL</td>
+        <td>对动态语言（Python/JS）覆盖较好，对C++/Go的复杂模板可能漏报</td>
+        <td>中等误报率，需要人工确认</td>
+      </tr>
+      <tr>
+        <td>ZAP</td>
+        <td>仅扫描HTTP接口，不覆盖gRPC/WebSocket</td>
+        <td>高误报率，需要配置排除规则</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="section-9">运营风险</h3>
+
+  <ul>
+    <li><strong>管道时间膨胀</strong>：全量SAST扫描可能增加5-15分钟构建时间。建议SAST在PR级别运行，DAST在合并后运行。</li>
+    <li><strong>告警疲劳</strong>：ZAP默认规则集会产生大量Low/Info告警。必须配置<code class="language-plaintext highlighter-rouge">rules_file_name.tsv</code>排除噪音。</li>
+    <li><strong>假阳性处理</strong>：不要直接忽略，应创建<code class="language-plaintext highlighter-rouge">.codeql/codeql-config.yml</code>定义suppression规则并附上理由。</li>
+  </ul>
+
+  <h3 id="section-10">安全风险</h3>
+
+  <ul>
+    <li><strong>DAST扫描目标</strong>：绝不要对生产环境运行ZAP全量扫描，可能导致数据污染或服务中断。</li>
+    <li><strong>凭证管理</strong>：扫描工具中不要硬编码API密钥，使用GitHub Secrets注入。</li>
+    <li><strong>SBOM泄露</strong>：SBOM文件可能暴露内部包名和版本号，上传到公开仓库前需确认。</li>
+  </ul>
+
+  <h2 id="section-11">我的判断</h2>
+
+  <p><strong>GitHub Actions + 开源工具链（Syft + CodeQL + ZAP）是目前中小团队性价比最高的DevSecOps入门方案。</strong> 它不需要额外预算，不需要专用服务器，完全在GitHub生态内运行。</p>
+
+  <p>但必须清醒认识到：这套方案是“安全基线”而非“安全终点”。</p>
+
+  <ul>
+    <li>如果你处理的是重要数据（CIIO、重要数据、跨境数据），这套方案远远不够——你需要商业级SCA工具、IAST运行时监控、以及定期的渗透测试。</li>
+    <li>如果你在合规审计场景下，开源工具的告警报告可能不被审计师接受——需要额外整理和解释。</li>
+    <li>如果你团队超过50人，建议评估Snyk、Checkmarx或Semgrep的商业版，它们提供更好的策略管理和告警去重。</li>
+  </ul>
+
+  <p><strong>我的建议</strong>：今天就开始。在现有CI管道中加一个SBOM生成步骤，只需要5分钟。然后逐步加入SAST和DAST。不要追求完美，先跑起来，再优化。</p>
+
+  <hr />
+
+  <h2 id="english-brief">English Brief</h2>
+
+  <p><strong>Risk</strong>: Modern software supply chain attacks exploit unknown dependencies, code-level vulnerabilities, and runtime exposure. Without automated SBOM, SAST, and DAST in CI/CD, teams ship insecure software blindly.</p>
+
+  <p><strong>Affected Teams</strong>: Developers, DevOps/SRE, security engineers, compliance teams, and indie hackers. Not for teams already using enterprise AST platforms (Snyk, Checkmarx).</p>
+
+  <p><strong>Checklist</strong>:</p>
+  <ol>
+    <li><strong>SBOM</strong>: Use <code class="language-plaintext highlighter-rouge">anchore/sbom-action</code> to generate CycloneDX JSON.</li>
+    <li><strong>SAST</strong>: Use <code class="language-plaintext highlighter-rouge">github/codeql-action</code> with <code class="language-plaintext highlighter-rouge">security-and-quality</code> queries.</li>
+    <li><strong>DAST</strong>: Use <code class="language-plaintext highlighter-rouge">zaproxy/action-full-scan</code> on staging environment.</li>
+  </ol>
+
+  <p><strong>Remediation Workflow</strong>:</p>
+  <ul>
+    <li>Block PR merge on CodeQL Critical/High findings.</li>
+    <li>Use <code class="language-plaintext highlighter-rouge">grype</code> to scan SBOM for CVSS-scored vulnerabilities.</li>
+    <li>Configure ZAP rule exclusions to reduce noise.</li>
+    <li>For China compliance (PIPL/CSL/MLPS 2.0): retain scan artifacts as audit evidence; trigger data export assessment if SBOM reveals cross-border dependencies.</li>
+  </ul>
+
+  <p><strong>Caveats</strong>:</p>
+  <ul>
+    <li>Syft misses runtime-loaded packages.</li>
+    <li>CodeQL has moderate false positive rate.</li>
+    <li>ZAP produces high noise; must configure exclusion rules.</li>
+    <li>Never run DAST on production.</li>
+    <li>SBOM files may leak internal package names.</li>
+  </ul>
+
+  <p><strong>Take</strong>: This open-source stack (Syft + CodeQL + ZAP) is the most cost-effective DevSecOps baseline for small-to-medium teams. It’s a starting point, not a final solution. For critical data or compliance-heavy environments, upgrade to commercial tools. Start today: add SBOM generation to your pipeline in 5 minutes.</p>
+
+</div>
+
+<hr />
+
+<!-- English Version -->
+<div class="lang-en">
+
+  <h2 id="devsecops-in-github-actions-automating-security-scans-for-sbom-sast-and-dast">DevSecOps in GitHub Actions: Automating Security Scans for SBOM, SAST, and DAST</h2>
+
+  <h1 id="devsecops-in-github-actions-automating-security-scans-for-sbom-sast-and-dast-1">DevSecOps in GitHub Actions: Automating Security Scans for SBOM, SAST, and DAST</h1>
+
+  <h2 id="what-it-is">What It Is</h2>
+
+  <p>DevSecOps in GitHub Actions means embedding security scanning directly into your CI/CD pipeline using GitHub’s native automation. The three core scan types are:</p>
+
+  <ul>
+    <li><strong>SBOM (Software Bill of Materials)</strong>: Generates an inventory of all open-source components and dependencies in your application. Tools like Syft, Trivy, and Docker Scout produce machine-readable lists (SPDX, CycloneDX) for vulnerability tracking and compliance.</li>
+    <li><strong>SAST (Static Application Security Testing)</strong>: Scans source code without executing it. GitHub’s CodeQL is the primary option, with community alternatives like ESLint security plugins and Bandit for Python.</li>
+    <li><strong>DAST (Dynamic Application Security Testing)</strong>: Tests running applications for vulnerabilities. OWASP ZAP is the leading open-source tool, with GitHub Actions wrappers for API scanning and full web app testing.</li>
+  </ul>
+
+  <h2 id="why-it-matters-now">Why It Matters Now</h2>
+
+  <p>Software supply chain attacks are accelerating. The US Executive Order 14028 and global regulations increasingly require SBOM generation. GitHub Actions makes these scans frictionless—triggering automatically on every push or pull request without separate infrastructure. Teams that skip automated security scanning in CI/CD are shipping blind, often discovering vulnerabilities only after production deployment or audit.</p>
+
+  <h2 id="practical-next-steps">Practical Next Steps</h2>
+
+  <ol>
+    <li><strong>Add SBOM generation</strong> to your build workflow using <code class="language-plaintext highlighter-rouge">anchore/sbom-action</code> or <code class="language-plaintext highlighter-rouge">aquasecurity/trivy-action</code>. Output CycloneDX or SPDX format and store artifacts for audit trails.</li>
+    <li><strong>Enable CodeQL</strong> via GitHub’s built-in action. Configure it for your language (JavaScript, Python, Java, etc.) and set it to run on every push and pull request.</li>
+    <li><strong>Add a DAST scan</strong> for web applications using <code class="language-plaintext highlighter-rouge">zaproxy/action-api-scan</code> for REST APIs or <code class="language-plaintext highlighter-rouge">zaproxy/action-full-scan</code> for full web apps. Run this after deployment to a staging environment.</li>
+    <li><strong>Use Dependabot</strong> (GitHub-native) or Renovate to automate dependency updates and alert on known vulnerabilities.</li>
+  </ol>
+
+  <p>Example minimal workflow snippet for a Node.js project:</p>
+
+  <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Generate SBOM</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">anchore/sbom-action@v0</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Initialize CodeQL</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">github/codeql-action/init@v2</span>
+  <span class="na">with</span><span class="pi">:</span>
+    <span class="na">languages</span><span class="pi">:</span> <span class="s">javascript</span>
+<span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Perform CodeQL Analysis</span>
+  <span class="na">uses</span><span class="pi">:</span> <span class="s">github/codeql-action/analyze@v2</span>
+</code></pre></div>  </div>
+
+  <h2 id="risks-and-operational-notes">Risks and Operational Notes</h2>
+
+  <ul>
+    <li><strong>False positives</strong> are common in SAST and DAST. Triage results and tune rules to avoid alert fatigue. Do not block builds on every finding—use severity thresholds.</li>
+    <li><strong>SBOM tools produce flat lists</strong> of vulnerabilities without cloud or runtime context. They are developer-level artifacts, not production security assessments. Pair with runtime scanners (e.g., Wiz, KubeClarity) for actionable insights.</li>
+    <li><strong>DAST scans can break staging environments</strong> or trigger rate limits. Run them against isolated test instances, not production.</li>
+    <li><strong>Pipeline slowdown</strong> is real. Run scans in parallel where possible and cache dependencies to avoid rebuilding SBOMs on every commit.</li>
+    <li><strong>GitHub Actions minutes</strong> are consumed by scans. For large repos, consider running full scans on schedule (nightly) and quick scans on PRs.</li>
+  </ul>
+
+  <h2 id="take">Take</h2>
+
+  <p>Every team shipping code on GitHub should implement at minimum SBOM generation and CodeQL scanning. These are free, built-in, and take less than an hour to configure. DAST is valuable but requires a running environment—start with API scanning if you have REST endpoints. The cost of not scanning is higher than the cost of false positives or pipeline delays. Automate now, tune later.</p>
+
+</div>
+
+<hr />
+
+<h3 id="参考来源--sources">参考来源 / Sources</h3>
+
+<ul>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[DevSecOps Tutorial for Beginners</td>
+          <td>CI Pipeline with GitHub Actions and Docker Scout](https://www.youtube.com/watch?v=gLJdrXPn0ns)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[DevSecOps with GitHub Action and SaaS Tools</td>
+          <td>cicd-github-action-example](https://judebantony.github.io/cicd-github-action-example)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://devsecopsschool.com/blog/github-actions-in-devsecops-a-comprehensive-tutorial">GitHub Actions in DevSecOps: A Comprehensive Tutorial - DevSecOps School</a></li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[Guide to SBOM Tools: 5 Picks for Enterprise Security Teams</td>
+          <td>Wiz](https://www.wiz.io/academy/application-security/top-open-source-sbom-tools)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://github.com/bureado/awesome-software-supply-chain-security">bureado/awesome-software-supply-chain-security - GitHub</a></li>
+</ul>
+
+  </div>
+
+  <div class="post-nav">
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
+    <a href="/ai-infosec-landing/feed.xml" class="back-link rss-back-link">RSS FEED</a>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">東情局 / DONG INTEL BUREAU</div>
+      <p>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p>LIVE SIGNAL MONITORING · UPDATED DAILY 08:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/ai-infosec-landing/assets/js/main.js"></script>
+</body>
+</html>

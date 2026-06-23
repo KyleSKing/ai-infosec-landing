@@ -10,10 +10,389 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 23 Jun 2026 03:19:48 +0800</lastBuildDate>
+    <lastBuildDate>Tue, 23 Jun 2026 17:56:21 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>GitHub Actions DevSecOps：自动化SBOM、SAST与DAST安全扫描 — DevSecOps in GitHub Actions: Automating Security Scans for SBOM, SAST, and DAST</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook-2.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook-2.html</guid>
+      <pubDate>Tue, 23 Jun 2026 17:56:16 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">infosec</category>
+      <category domain="content_type">Defensive Playbook</category>
+      <category domain="tag">DevSecOps</category><category domain="tag">GitHub Actions</category><category domain="tag">SBOM</category><category domain="tag">SAST</category><category domain="tag">DAST</category>
+      <description>本文介绍如何在GitHub Actions中集成SBOM生成（Syft）、SAST（CodeQL）和DAST（OWASP ZAP），实现早期漏洞检测。提供可落地的CI/CD工作流，并讨论误报、性能开销与合规风险。&#10;&#10;This playbook covers how to integrate SBOM generation (Syft), SAST (CodeQL), and DAST (OWASP ZAP) into GitHub Actions for early vulnerability detection. It provides actionable workflows and addresses false positives, performance overhead, and compliance risks.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;github-actions-devsecopssbomsastdast&quot;&gt;GitHub Actions DevSecOps：自动化SBOM、SAST与DAST安全扫描&lt;/h2&gt;
+
+  &lt;h1 id=&quot;github-actions-devsecopssbomsastdast-1&quot;&gt;GitHub Actions DevSecOps：自动化SBOM、SAST与DAST安全扫描&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;风险是什么&lt;/h2&gt;
+
+  &lt;p&gt;现代软件供应链攻击正在快速上升。2025年，超过70%的企业代码库包含至少一个已知漏洞的开源依赖，而供应链攻击（如依赖混淆、恶意包投毒、CI/CD管道劫持）已成为攻击者最青睐的入口之一。&lt;/p&gt;
+
+  &lt;p&gt;核心风险有三层：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;依赖层&lt;/strong&gt;：你不知道你的代码里用了什么，更不知道这些依赖有没有已知漏洞。没有SBOM（软件物料清单），你连“用了什么”都说不清。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;代码层&lt;/strong&gt;：开发者在代码中引入的安全缺陷（SQL注入、XSS、硬编码密钥）在合并前未被发现，直接流入生产。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;运行时层&lt;/strong&gt;：应用上线后，攻击面暴露在互联网上，但团队从未对运行中的应用做过动态扫描。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;这三个风险叠加，意味着你的CI/CD管道可能正在安全地交付不安全的软件。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;谁会受影响&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;开发团队&lt;/strong&gt;：每天提交代码，但缺乏自动化安全检测手段。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DevOps/SRE团队&lt;/strong&gt;：维护CI/CD管道，需要在不拖慢交付的前提下嵌入安全扫描。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;安全工程师&lt;/strong&gt;：需要从海量告警中筛选真正需要修复的漏洞。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;合规团队&lt;/strong&gt;：需要满足PIPL、CSL、MLPS 2.0、EU AI Act、SOC 2等对软件供应链透明度的要求。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;独立开发者/小团队&lt;/strong&gt;：没有专职安全人员，但同样面临供应链攻击风险。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;不适合谁&lt;/strong&gt;：已经拥有成熟商业级AST平台（如Snyk、Checkmarx、Veracode）且管道集成完善的团队。本文方案是开源/低成本替代方案，适合从零搭建或补充现有流程。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;怎么检查&lt;/h2&gt;
+
+  &lt;h3 id=&quot;sbom&quot;&gt;第一步：生成SBOM&lt;/h3&gt;
+
+  &lt;p&gt;SBOM是供应链安全的基础。没有SBOM，你无法知道依赖树的全貌。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;推荐工具：Syft（Anchore开源项目）&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;p&gt;在GitHub Actions中集成：&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Generate SBOM&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;anchore/sbom-action@v0&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cyclonedx-json&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;output-file&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sbom.cdx.json&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;p&gt;检查要点：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;生成的SBOM是否包含所有直接和传递依赖？&lt;/li&gt;
+    &lt;li&gt;格式是否为CycloneDX或SPDX（行业标准）？&lt;/li&gt;
+    &lt;li&gt;是否包含版本号和许可证信息？&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;sast&quot;&gt;第二步：SAST静态扫描&lt;/h3&gt;
+
+  &lt;p&gt;SAST在代码编写阶段发现安全缺陷，实现“左移”。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;推荐工具：CodeQL（GitHub原生）&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Initialize CodeQL&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github/codeql-action/init@v3&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;languages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;python, javascript&lt;/span&gt;
+&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Perform CodeQL Analysis&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github/codeql-action/analyze@v3&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;p&gt;检查要点：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;是否覆盖了所有主要语言？&lt;/li&gt;
+    &lt;li&gt;是否配置了&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;security-and-quality&lt;/code&gt;查询套件（比默认更全面）？&lt;/li&gt;
+    &lt;li&gt;是否在PR级别设置了门禁（阻断含Critical漏洞的PR合并）？&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;dast&quot;&gt;第三步：DAST动态扫描&lt;/h3&gt;
+
+  &lt;p&gt;DAST在应用运行后扫描，发现运行时安全问题。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;推荐工具：OWASP ZAP&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ZAP Scan&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zaproxy/action-full-scan@v0.10.0&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://staging.example.com&apos;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;rules_file_name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.zap/rules.tsv&apos;&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;cmd_options&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-a&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;p&gt;检查要点：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;是否有可访问的staging环境？&lt;/li&gt;
+    &lt;li&gt;是否配置了排除规则（避免扫描注销/删除功能）？&lt;/li&gt;
+    &lt;li&gt;是否设置了告警阈值（避免因低危告警阻塞管道）？&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-3&quot;&gt;怎么修 / 怎么接入流程&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;完整工作流示例&lt;/h3&gt;
+
+  &lt;p&gt;在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.github/workflows/security-scan.yml&lt;/code&gt;中：&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DevSecOps Pipeline&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;develop&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;pull_request&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+
+&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;sbom&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v4&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Generate SBOM&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;anchore/sbom-action@v0&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cyclonedx-json&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;output-file&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sbom.cdx.json&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Upload SBOM&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/upload-artifact@v4&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sbom&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sbom.cdx.json&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;sast&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v4&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Initialize CodeQL&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github/codeql-action/init@v3&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;languages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;python&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;queries&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;security-and-quality&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Autobuild&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github/codeql-action/autobuild@v3&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Perform CodeQL Analysis&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github/codeql-action/analyze@v3&lt;/span&gt;
+
+  &lt;span class=&quot;na&quot;&gt;dast&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;needs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;sbom&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;sast&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ZAP Scan&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zaproxy/action-full-scan@v0.10.0&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://staging-$.example.com&apos;&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;allow_issue_writing&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h3 id=&quot;section-5&quot;&gt;修复优先级&lt;/h3&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;SBOM告警&lt;/strong&gt;：使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;grype&lt;/code&gt;（与Syft同属Anchore生态）扫描SBOM中的漏洞，按CVSS评分排序修复。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SAST告警&lt;/strong&gt;：CodeQL结果按&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;error&lt;/code&gt;/&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;warning&lt;/code&gt;分级，Critical和High必须阻断PR合并。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DAST告警&lt;/strong&gt;：ZAP结果中，仅High和Critical阻断管道，Medium和Low作为工单跟踪。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;中国合规特别要求&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;PIPL/CSL&lt;/strong&gt;：SBOM中需记录个人信息处理模块的依赖关系，确保不引入未经安全评估的第三方SDK。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;MLPS 2.0&lt;/strong&gt;：SAST和DAST结果需作为等保测评的“安全开发”证据留存。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;CAC数据出境&lt;/strong&gt;：如果SBOM显示使用了跨境数据处理的依赖（如海外日志SDK），需触发数据出境安全评估流程。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-7&quot;&gt;注意事项&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-8&quot;&gt;工具限制&lt;/h3&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;工具&lt;/th&gt;
+        &lt;th&gt;已知限制&lt;/th&gt;
+        &lt;th&gt;误报/漏报&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Syft&lt;/td&gt;
+        &lt;td&gt;不扫描运行时依赖，仅分析文件系统&lt;/td&gt;
+        &lt;td&gt;低误报，但可能漏掉动态加载的包&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;CodeQL&lt;/td&gt;
+        &lt;td&gt;对动态语言（Python/JS）覆盖较好，对C++/Go的复杂模板可能漏报&lt;/td&gt;
+        &lt;td&gt;中等误报率，需要人工确认&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;ZAP&lt;/td&gt;
+        &lt;td&gt;仅扫描HTTP接口，不覆盖gRPC/WebSocket&lt;/td&gt;
+        &lt;td&gt;高误报率，需要配置排除规则&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h3 id=&quot;section-9&quot;&gt;运营风险&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;管道时间膨胀&lt;/strong&gt;：全量SAST扫描可能增加5-15分钟构建时间。建议SAST在PR级别运行，DAST在合并后运行。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;告警疲劳&lt;/strong&gt;：ZAP默认规则集会产生大量Low/Info告警。必须配置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rules_file_name.tsv&lt;/code&gt;排除噪音。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;假阳性处理&lt;/strong&gt;：不要直接忽略，应创建&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.codeql/codeql-config.yml&lt;/code&gt;定义suppression规则并附上理由。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-10&quot;&gt;安全风险&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;DAST扫描目标&lt;/strong&gt;：绝不要对生产环境运行ZAP全量扫描，可能导致数据污染或服务中断。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;凭证管理&lt;/strong&gt;：扫描工具中不要硬编码API密钥，使用GitHub Secrets注入。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SBOM泄露&lt;/strong&gt;：SBOM文件可能暴露内部包名和版本号，上传到公开仓库前需确认。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-11&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;GitHub Actions + 开源工具链（Syft + CodeQL + ZAP）是目前中小团队性价比最高的DevSecOps入门方案。&lt;/strong&gt; 它不需要额外预算，不需要专用服务器，完全在GitHub生态内运行。&lt;/p&gt;
+
+  &lt;p&gt;但必须清醒认识到：这套方案是“安全基线”而非“安全终点”。&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;如果你处理的是重要数据（CIIO、重要数据、跨境数据），这套方案远远不够——你需要商业级SCA工具、IAST运行时监控、以及定期的渗透测试。&lt;/li&gt;
+    &lt;li&gt;如果你在合规审计场景下，开源工具的告警报告可能不被审计师接受——需要额外整理和解释。&lt;/li&gt;
+    &lt;li&gt;如果你团队超过50人，建议评估Snyk、Checkmarx或Semgrep的商业版，它们提供更好的策略管理和告警去重。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;我的建议&lt;/strong&gt;：今天就开始。在现有CI管道中加一个SBOM生成步骤，只需要5分钟。然后逐步加入SAST和DAST。不要追求完美，先跑起来，再优化。&lt;/p&gt;
+
+  &lt;hr /&gt;
+
+  &lt;h2 id=&quot;english-brief&quot;&gt;English Brief&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;Risk&lt;/strong&gt;: Modern software supply chain attacks exploit unknown dependencies, code-level vulnerabilities, and runtime exposure. Without automated SBOM, SAST, and DAST in CI/CD, teams ship insecure software blindly.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Affected Teams&lt;/strong&gt;: Developers, DevOps/SRE, security engineers, compliance teams, and indie hackers. Not for teams already using enterprise AST platforms (Snyk, Checkmarx).&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Checklist&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;SBOM&lt;/strong&gt;: Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;anchore/sbom-action&lt;/code&gt; to generate CycloneDX JSON.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SAST&lt;/strong&gt;: Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;github/codeql-action&lt;/code&gt; with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;security-and-quality&lt;/code&gt; queries.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DAST&lt;/strong&gt;: Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zaproxy/action-full-scan&lt;/code&gt; on staging environment.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;Remediation Workflow&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Block PR merge on CodeQL Critical/High findings.&lt;/li&gt;
+    &lt;li&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;grype&lt;/code&gt; to scan SBOM for CVSS-scored vulnerabilities.&lt;/li&gt;
+    &lt;li&gt;Configure ZAP rule exclusions to reduce noise.&lt;/li&gt;
+    &lt;li&gt;For China compliance (PIPL/CSL/MLPS 2.0): retain scan artifacts as audit evidence; trigger data export assessment if SBOM reveals cross-border dependencies.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Caveats&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Syft misses runtime-loaded packages.&lt;/li&gt;
+    &lt;li&gt;CodeQL has moderate false positive rate.&lt;/li&gt;
+    &lt;li&gt;ZAP produces high noise; must configure exclusion rules.&lt;/li&gt;
+    &lt;li&gt;Never run DAST on production.&lt;/li&gt;
+    &lt;li&gt;SBOM files may leak internal package names.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Take&lt;/strong&gt;: This open-source stack (Syft + CodeQL + ZAP) is the most cost-effective DevSecOps baseline for small-to-medium teams. It’s a starting point, not a final solution. For critical data or compliance-heavy environments, upgrade to commercial tools. Start today: add SBOM generation to your pipeline in 5 minutes.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;devsecops-in-github-actions-automating-security-scans-for-sbom-sast-and-dast&quot;&gt;DevSecOps in GitHub Actions: Automating Security Scans for SBOM, SAST, and DAST&lt;/h2&gt;
+
+  &lt;h1 id=&quot;devsecops-in-github-actions-automating-security-scans-for-sbom-sast-and-dast-1&quot;&gt;DevSecOps in GitHub Actions: Automating Security Scans for SBOM, SAST, and DAST&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
+
+  &lt;p&gt;DevSecOps in GitHub Actions means embedding security scanning directly into your CI/CD pipeline using GitHub’s native automation. The three core scan types are:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;SBOM (Software Bill of Materials)&lt;/strong&gt;: Generates an inventory of all open-source components and dependencies in your application. Tools like Syft, Trivy, and Docker Scout produce machine-readable lists (SPDX, CycloneDX) for vulnerability tracking and compliance.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SAST (Static Application Security Testing)&lt;/strong&gt;: Scans source code without executing it. GitHub’s CodeQL is the primary option, with community alternatives like ESLint security plugins and Bandit for Python.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DAST (Dynamic Application Security Testing)&lt;/strong&gt;: Tests running applications for vulnerabilities. OWASP ZAP is the leading open-source tool, with GitHub Actions wrappers for API scanning and full web app testing.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
+
+  &lt;p&gt;Software supply chain attacks are accelerating. The US Executive Order 14028 and global regulations increasingly require SBOM generation. GitHub Actions makes these scans frictionless—triggering automatically on every push or pull request without separate infrastructure. Teams that skip automated security scanning in CI/CD are shipping blind, often discovering vulnerabilities only after production deployment or audit.&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;Add SBOM generation&lt;/strong&gt; to your build workflow using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;anchore/sbom-action&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aquasecurity/trivy-action&lt;/code&gt;. Output CycloneDX or SPDX format and store artifacts for audit trails.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Enable CodeQL&lt;/strong&gt; via GitHub’s built-in action. Configure it for your language (JavaScript, Python, Java, etc.) and set it to run on every push and pull request.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Add a DAST scan&lt;/strong&gt; for web applications using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zaproxy/action-api-scan&lt;/code&gt; for REST APIs or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zaproxy/action-full-scan&lt;/code&gt; for full web apps. Run this after deployment to a staging environment.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Use Dependabot&lt;/strong&gt; (GitHub-native) or Renovate to automate dependency updates and alert on known vulnerabilities.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;Example minimal workflow snippet for a Node.js project:&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Generate SBOM&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;anchore/sbom-action@v0&lt;/span&gt;
+&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Initialize CodeQL&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github/codeql-action/init@v2&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;languages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;javascript&lt;/span&gt;
+&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Perform CodeQL Analysis&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github/codeql-action/analyze@v2&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h2 id=&quot;risks-and-operational-notes&quot;&gt;Risks and Operational Notes&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;False positives&lt;/strong&gt; are common in SAST and DAST. Triage results and tune rules to avoid alert fatigue. Do not block builds on every finding—use severity thresholds.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SBOM tools produce flat lists&lt;/strong&gt; of vulnerabilities without cloud or runtime context. They are developer-level artifacts, not production security assessments. Pair with runtime scanners (e.g., Wiz, KubeClarity) for actionable insights.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DAST scans can break staging environments&lt;/strong&gt; or trigger rate limits. Run them against isolated test instances, not production.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Pipeline slowdown&lt;/strong&gt; is real. Run scans in parallel where possible and cache dependencies to avoid rebuilding SBOMs on every commit.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;GitHub Actions minutes&lt;/strong&gt; are consumed by scans. For large repos, consider running full scans on schedule (nightly) and quick scans on PRs.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
+
+  &lt;p&gt;Every team shipping code on GitHub should implement at minimum SBOM generation and CodeQL scanning. These are free, built-in, and take less than an hour to configure. DAST is valuable but requires a running environment—start with API scanning if you have REST endpoints. The cost of not scanning is higher than the cost of false positives or pipeline delays. Automate now, tune later.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[DevSecOps Tutorial for Beginners&lt;/td&gt;
+          &lt;td&gt;CI Pipeline with GitHub Actions and Docker Scout](https://www.youtube.com/watch?v=gLJdrXPn0ns)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[DevSecOps with GitHub Action and SaaS Tools&lt;/td&gt;
+          &lt;td&gt;cicd-github-action-example](https://judebantony.github.io/cicd-github-action-example)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://devsecopsschool.com/blog/github-actions-in-devsecops-a-comprehensive-tutorial&quot;&gt;GitHub Actions in DevSecOps: A Comprehensive Tutorial - DevSecOps School&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[Guide to SBOM Tools: 5 Picks for Enterprise Security Teams&lt;/td&gt;
+          &lt;td&gt;Wiz](https://www.wiz.io/academy/application-security/top-open-source-sbom-tools)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/bureado/awesome-software-supply-chain-security&quot;&gt;bureado/awesome-software-supply-chain-security - GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>CI/CD中的DevSecOps：用GitHub Actions检测并修复安全风险 — DevSecOps in CI/CD: How to Detect and Fix Security Risks with GitHub Actions</title>
