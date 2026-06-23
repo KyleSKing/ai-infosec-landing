@@ -6,3 +6,5 @@ Gemfile.lock
 *.gem
 .bundle/
 vendor/
+_posts/
+archive/
