@@ -10,10 +10,224 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 23 Jun 2026 17:56:21 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 29 Jun 2026 01:21:08 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>2026开发AI工具推荐：免费LLM API与开源编码代理 — Free LLM APIs &amp; Open-Source Coding Agents: The Developer&apos;s AI Stack in 2026</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/06/29/ai-tool-guide.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/06/29/ai-tool-guide.html</guid>
+      <pubDate>Mon, 29 Jun 2026 01:20:49 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">ai</category>
+      <category domain="content_type">Tool Guide</category>
+      <category domain="tag">LLM API</category><category domain="tag">OpenAI-compatible</category><category domain="tag">Free Tier</category><category domain="tag">Coding Agent</category><category domain="tag">Open Source</category>
+      <description>本文介绍当前可用的免费LLM API（如Google AI Studio、Groq、Mistral、Eden AI），它们均兼容OpenAI接口格式；同时推荐Kilo Code和Continue等开源编码代理，支持VS Code、JetBrains和CLI。涵盖注册配置、速率限制、费用风险和适用场景。&#10;&#10;Explore the latest free-tier LLM APIs (Google AI Studio, Groq, Mistral, Eden AI) that are fully OpenAI-compatible, alongside open-source coding agents like Kilo Code and Continue that work across VS Code, JetBrains, and CLI. This guide covers setup steps, rate limits, pricing, and production risks for each tool.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;aillm-api&quot;&gt;2026开发AI工具推荐：免费LLM API与开源编码代理&lt;/h2&gt;
+
+  &lt;h1 id=&quot;ai--llm-api-&quot;&gt;2026 开发 AI 工具推荐：免费 LLM API 与开源编码代理&lt;/h1&gt;
+
+  &lt;p&gt;如果你还在为选模型、比价格、测集成而头疼，2026 年的工具生态已经给出更直接的答案：要么用统一的 OpenAI 兼容 API 一次接入几十个模型（带免费额度），要么直接上开源全功能编码代理（也自带免费模型池）。本文聚焦两类最实用的选项：&lt;strong&gt;永久免费的 LLM API（OpenAI 兼容）&lt;/strong&gt; 和 &lt;strong&gt;开源的 AI 编码代理&lt;/strong&gt;，并给出可直接执行的配置步骤。&lt;/p&gt;
+
+  &lt;h2 id=&quot;llm-api&quot;&gt;一、免费 LLM API：一个端点接入全家桶&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section&quot;&gt;这是什么&lt;/h3&gt;
+
+  &lt;p&gt;过去半年，大量第三方聚合 API 和模型提供方原生 API 都采用了 OpenAI 兼容格式。这意味着你不需要换 SDK，只改一行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;base_url&lt;/code&gt; 和 API Key 就能调用不同模型。&lt;/p&gt;
+
+  &lt;p&gt;典型代表：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Eden AI&lt;/strong&gt;：新推出 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/v2/llm/chat&lt;/code&gt; 端点，支持 OpenAI、Anthropic、Google、Mistral、DeepSeek、Perplexity、Groq、Amazon Bedrock、Qwen、xAI 等。免费层有每日额度（具体额度需注册查看）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;OpenRouter&lt;/strong&gt;：老牌聚合，免费层提供 Llama 3.1 70B、Mistral 7B 等模型。完全 OpenAI 兼容，支持模型路由和退回落。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Google AI Studio&lt;/strong&gt;：Gemini Flash 免费层提供 1M token 上下文窗口，支持多模态。标准聊天任务兼容 OpenAI 格式，但高级功能（如文件 RAG）建议用 Google SDK。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Groq&lt;/strong&gt;：基于 LPU 硬件的极速推理，Llama 3.3 70B 可达 320 tok/s。完全 OpenAI 兼容，免费层有速率限制（具体见官网）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Mistral&lt;/strong&gt;：实验层（Experiment Tier）每月约 10 亿 token 免费，兼容 OpenAI 格式，适合大批量测试。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Cohere、Aion Labs&lt;/strong&gt; 等也有免费层，但功能和稳定性参差。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-1&quot;&gt;怎么用&lt;/h3&gt;
+
+  &lt;p&gt;以下以 OpenRouter 为例（步骤通用）：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;注册 &lt;a href=&quot;https://openrouter.ai/&quot;&gt;OpenRouter.ai&lt;/a&gt;，获取 API Key。&lt;/li&gt;
+    &lt;li&gt;安装 OpenAI Python SDK（或 Node.js、curl）：
+      &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;openai
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;配置客户端（代码示例）：
+      &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;openai&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OpenAI&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;client&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OpenAI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;base_url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://openrouter.ai/api/v1&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;api_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;lt;YOUR_OPENROUTER_KEY&amp;gt;&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;completions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;mistralai/mistral-7b-instruct:free&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;messages&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[{&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Hello&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;choices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;需要换模型时只需改 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;model&lt;/code&gt; 字段，例如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;google/gemini-2.0-flash-exp:free&quot;&lt;/code&gt; 或 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;&quot;groq/llama3-70b-8192&quot;&lt;/code&gt;。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;Eden AI&lt;/strong&gt; 类似，base_url 为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://api.edenai.run/v2&lt;/code&gt;（注意不是 /v1），需用 Eden AI 自己的 SDK 或直接发 HTTP 请求。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Google AI Studio&lt;/strong&gt;：免费试用无需信用卡，但 OpenAI 兼容性不完全，推荐先使用 Google 原生 SDK（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;google-generativeai&lt;/code&gt;）。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Mistral&lt;/strong&gt;：注册后获得 API Key，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;base_url=https://api.mistral.ai/v1&lt;/code&gt; 即可。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-2&quot;&gt;适合谁&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;独立开发者快速原型验证。&lt;/li&gt;
+    &lt;li&gt;需要对比多个模型输出质量的项目。&lt;/li&gt;
+    &lt;li&gt;低成本构建 MVP 或工具链。&lt;/li&gt;
+    &lt;li&gt;学生和研究人员。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-3&quot;&gt;限制和注意事项&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;免费层速率限制严格&lt;/strong&gt;：例如 Eden AI 免费层有每日请求数限制；Groq 免费层每分钟最多 30 次请求；Mistral 实验层总 token 上限但无明确速率。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;模型可用性不稳定&lt;/strong&gt;：免费模型可能在高峰时被降级或无响应（OpenRouter 会自动 failover，但仍有延迟）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;隐私风险&lt;/strong&gt;：免费 API 通常会将数据用于模型改进，避免发送敏感信息。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;无 SLA&lt;/strong&gt;：生产环境不建议依赖免费层。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;部分服务需绑定信用卡&lt;/strong&gt;（如 Google AI Studio 即使免费也要卡）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;kilo-code--continue&quot;&gt;二、开源编码代理：Kilo Code 和 Continue&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;这是什么&lt;/h3&gt;
+
+  &lt;p&gt;它们是 VS Code / JetBrains / CLI 中的 AI 编码代理，可自动补全、生成代码、执行命令、读取文件等。两者的核心区别：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Kilo Code&lt;/strong&gt;：2026 年新星，支持 500+ 模型（包括 GPT‑5.5、Claude Opus 4.7、Gemini 3.1 Pro），无需 API Key 即可使用内置免费模型。开源，零加成定价（你付模型提供商原价）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Continue&lt;/strong&gt;：老牌开源代理，Apache 2.0 许可，支持 VS Code 和 JetBrains，社区活跃但官方不再维护？2026 年 4 月已归档为只读，推荐用户迁移到 Kilo。Continue CLI 仍可用。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-5&quot;&gt;怎么用&lt;/h3&gt;
+
+  &lt;p&gt;&lt;strong&gt;Kilo Code&lt;/strong&gt;：&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;在 VS Code 中安装 “Kilo Code” 扩展（从市场获取），或 JetBrains 插件，或 CLI：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install -g kilocode&lt;/code&gt;。&lt;/li&gt;
+    &lt;li&gt;创建账号（免费），之后即可在编辑器中使用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/ask&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/edit&lt;/code&gt; 等命令。&lt;/li&gt;
+    &lt;li&gt;默认使用内置免费模型（如 Mistral 7B），也可以手动指定其他模型：打开设置，填入自定义 API Key 和 base_url。&lt;/li&gt;
+    &lt;li&gt;在终端直接运行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kilo&lt;/code&gt; 启动 CLI 模式。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;Continue&lt;/strong&gt;（仅推荐已有旧版用户）：&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;在 VS Code 市场安装 “Continue” 扩展。&lt;/li&gt;
+    &lt;li&gt;配置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;~/.continue/config.json&lt;/code&gt; 指定模型和 API Key。&lt;/li&gt;
+    &lt;li&gt;可连接本地 llama.cpp、Ollama 或任何 OpenAI 兼容 API。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;适合谁&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;日常使用 AI 辅助编码的开发者。&lt;/li&gt;
+    &lt;li&gt;想避免锁定在单一闭源工具（如 Copilot）的团队。&lt;/li&gt;
+    &lt;li&gt;需要自建隐私安全环境的公司（可配置本地模型）。&lt;/li&gt;
+    &lt;li&gt;贡献者：Kilo Code 开源社区很活跃。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-7&quot;&gt;限制和注意事项&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Kilo Code 免费模型能力有限&lt;/strong&gt;（Mistral 7B 级别），复杂任务建议升级到付费模型。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Continue 已停止维护&lt;/strong&gt;：GitHub 显示最后更新 2025 年 12 月，社区 fork 可能继续，但官方不再修复 bug 或合并 PR。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;两者都有终端执行能力&lt;/strong&gt;：自动运行命令行可能产生意外效果，建议在沙箱或代码审查后使用。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;JetBrains 支持&lt;/strong&gt;：Kilo Code 的 JetBrains 插件仍不如 VS Code 稳定。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-8&quot;&gt;三、我的判断&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;免费 LLM API&lt;/strong&gt;：对于原型和实验非常值得，尤其是 OpenRouter 和 Mistral 的免费额度。但不要在生产环境依赖免费层——稳定性、隐私、速率都是硬伤。建议用免费层做测试，上线时切换为付费模型或自建推理。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;开源编码代理&lt;/strong&gt;：Kilo Code 是目前最值得投入的选项。它继承了 Continue 的开放原则，但持续更新，模型选择丰富，对隐私敏感场景友好。如果你仍用 Continue，应立即迁移到 Kilo——否则很快会因兼容性问题无法使用。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;最终建议&lt;/strong&gt;：组合使用——用 Kilo Code 对接你选择的免费/付费 LLM API，形成“一个编辑界面 + 后端任意切换”的工作流。这与 2026 年“统一接口 + 开源代理”的趋势完全一致。&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;free-llm-apis--open-source-coding-agents-the-developers-ai-stack-in-2026&quot;&gt;Free LLM APIs &amp;amp; Open-Source Coding Agents: The Developer’s AI Stack in 2026&lt;/h2&gt;
+
+  &lt;h1 id=&quot;free-llm-apis--open-source-coding-agents-the-developers-ai-stack-in-2026-1&quot;&gt;Free LLM APIs &amp;amp; Open-Source Coding Agents: The Developer’s AI Stack in 2026&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
+
+  &lt;p&gt;The developer AI tooling landscape in 2026 offers two critical layers: (1) &lt;strong&gt;free or extremely cheap LLM APIs&lt;/strong&gt; with permanent free tiers and OpenAI-compatible endpoints, and (2) &lt;strong&gt;open-source coding agents&lt;/strong&gt; that run locally, in VS Code, JetBrains, or the CLI.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Free LLM APIs&lt;/strong&gt; include providers like Google AI Studio (1M token context on Gemini Flash), Groq (~320 tokens/second on Llama 3.3 70B via LPU hardware), Mistral (1 billion tokens/month free), Cohere, and newer entrants like Aion Labs. Aggregators like Eden AI and OpenRouter unify these under a single OpenAI-compatible endpoint.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Open-source coding agents&lt;/strong&gt; — Kilo Code and Continue — are the standout tools. Kilo supports 500+ models with zero markup pricing, works in VS Code, JetBrains, and CLI, and requires no API key to start. Continue, also open-source (Apache 2.0), offers a similar experience with CLI and IDE integration.&lt;/p&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
+
+  &lt;p&gt;Two trends converge: model commoditization and agent maturity.&lt;/p&gt;
+
+  &lt;p&gt;First, LLM inference costs have dropped to near-zero for developers. Permanent free tiers from Mistral, Google, and Groq mean you can prototype, test, and even run production experiments without upfront API costs. The OpenAI-compatible format has become the universal adapter — once your code talks to one endpoint, it talks to all.&lt;/p&gt;
+
+  &lt;p&gt;Second, coding agents have moved from demos to daily drivers. Kilo and Continue are not toy assistants; they handle multi-file refactoring, test generation, and architecture exploration in real projects. Being open-source means no vendor lock-in, transparent pricing, and the ability to audit or modify behavior.&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Set up a free LLM router&lt;/strong&gt;: Sign up for OpenRouter or Eden AI. Get API keys for Google AI Studio (Gemini Flash for long context) and Groq (for latency-sensitive tasks). Configure your existing OpenAI SDK to point to the aggregator’s base URL.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Install an open-source coding agent&lt;/strong&gt;: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install -g @continuedev/continue&lt;/code&gt; or install Kilo Code from VS Code Marketplace. Run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;continue&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kilo&lt;/code&gt; in a project directory to start.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Test agent on a real task&lt;/strong&gt;: Ask the agent to refactor a module, generate unit tests, or update dependencies. Compare results across models (Gemini Flash for cheap bulk, Groq for speed, Claude for complex reasoning).&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Build a rate-limit-aware pipeline&lt;/strong&gt;: Free tiers come with RPM and daily token caps. Implement queueing, fallback models, and automatic retry when switching providers.&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;risks--limitations&quot;&gt;Risks &amp;amp; Limitations&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Free tier fragility&lt;/strong&gt;: Free APIs change terms. Cohere and Mistral have already adjusted caps. Build with fallback strategies.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Rate limits are real&lt;/strong&gt;: 15 RPM on some providers is not enough for agentic loops. Use multiple providers or upgrade to paid tiers for production.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Privacy&lt;/strong&gt;: Free API calls go to third-party servers. Do not send proprietary code or data unless you have a BAA or use local models (possible with Ollama through the same agent interfaces).&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Agent quality varies&lt;/strong&gt;: Coding agents are powerful but hallucinate often. Always review generated code, especially for security-critical or logic-sensitive operations.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;No compliance guarantees&lt;/strong&gt;: None of these free APIs offer SOC 2, HIPAA, or GDPR-compliant processing out of the box. For regulated environments, use enterprise tiers or local inference.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;Adopt now, but isolate free API usage from sensitive workflows.&lt;/strong&gt; The combination of OpenRouter-style aggregators and open-source agents like Kilo/Continue has reached a tipping point: the friction of switching models or providers is nearly zero. Use free tiers for prototyping, personal projects, and CI/CD automation. For production, plan to layer in paid provider accounts or local models (Llama 3.3, Qwen 2.5) through the same agent interfaces. The open-source nature of the agents means you keep control — no one can pull your API access away or change pricing on a tool you run yourself.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=KlCghmesA5o&quot;&gt;Access all the LLM models with ONE unfied OpenAI compatible API&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://openrouter.ai/blog/tutorials/free-llm-apis-compared&quot;&gt;Free LLM APIs Compared: Rate Limits, Models, and Real Costs (2026)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mnfst/awesome-free-llm-apis&quot;&gt;mnfst/awesome-free-llm-apis - GitHub&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/kilo-org/kilocode&quot;&gt;GitHub - Kilo-Org/kilocode: Kilo is the all-in-one agentic engineering …&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/continuedev/continue&quot;&gt;continuedev/continue: open-source coding agent - GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>GitHub Actions DevSecOps：自动化SBOM、SAST与DAST安全扫描 — DevSecOps in GitHub Actions: Automating Security Scans for SBOM, SAST, and DAST</title>
