@@ -10,10 +10,157 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 20 Jul 2026 01:05:22 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 27 Jul 2026 01:09:06 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>2026免费LLM API与开源AI工具实战指南 — 2026 Free LLM APIs &amp; Open Source AI Tools: A Practical Guide for Developers</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/07/27/ai-tool-guide.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/07/27/ai-tool-guide.html</guid>
+      <pubDate>Mon, 27 Jul 2026 01:08:57 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">ai</category>
+      <category domain="content_type">Tool Guide</category>
+      <category domain="tag">free-llm-apis</category><category domain="tag">vscode-ai</category><category domain="tag">open-source-ai-tools</category><category domain="tag">developer-tools</category><category domain="tag">2026</category>
+      <description>对比OpenRouter、Google AI Studio和Groq等免费LLM API，它们都兼容OpenAI接口。同时介绍VS Code开源AI扩展，包括GitHub Copilot开源版和Continue本地AI编程助手。&#10;&#10;Compare free LLM APIs from OpenRouter, Google AI Studio, and Groq with OpenAI-compatible interfaces. Also cover VS Code AI extensions including the open-source GitHub Copilot and Continue for local AI coding.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;llm-apiai&quot;&gt;2026免费LLM API与开源AI工具实战指南&lt;/h2&gt;
+
+  &lt;h1 id=&quot;llm-apiai-1&quot;&gt;2026免费LLM API与开源AI工具实战指南&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;这是什么&lt;/h2&gt;
+
+  &lt;p&gt;2026年，开发者可用的免费LLM API和开源AI工具比以往更丰富。OpenRouter、Google AI Studio、Groq等平台提供慷慨的免费额度（部分高达百万token），且兼容OpenAI API格式，切换成本极低。同时，VS Code生态中的开源AI扩展（如Continue、Sourcegraph Cody）让开发者无需付费即可获得代码补全与对话能力。本文整理当前最实用的免费选项，并给出集成步骤与风险提示。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;怎么用&lt;/h2&gt;
+
+  &lt;h3 id=&quot;llm-apiopenrouter&quot;&gt;1. 免费LLM API：OpenRouter（推荐首选）&lt;/h3&gt;
+
+  &lt;p&gt;OpenRouter聚合多个模型提供商，提供统一API和免费额度（每月约$1额度，足够原型开发）。注册后获取API Key，使用Python调用：&lt;/p&gt;
+
+  &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;openai&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OpenAI&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;client&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OpenAI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;base_url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://openrouter.ai/api/v1&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;api_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;your-openrouter-api-key&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;completions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;openai/gpt-4o-mini&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 或免费模型如 &quot;google/gemini-2.0-flash&quot;
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;messages&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[{&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Hello&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;choices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;p&gt;免费额度覆盖多个模型，但注意合理使用，避免速率限制。&lt;/p&gt;
+
+  &lt;h3 id=&quot;google-ai-studio-gemini&quot;&gt;2. Google AI Studio (Gemini)&lt;/h3&gt;
+
+  &lt;p&gt;Google AI Studio提供Gemini系列模型的免费API，支持1M token上下文（Gemini Flash），适合长文档处理。注册Google账号后，在AI Studio获取API Key，同样兼容OpenAI格式（需设置base_url为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://generativelanguage.googleapis.com/v1beta/openai/&lt;/code&gt;）。但官方推荐使用Google SDK以获得完整功能（如文件上传、RAG）。免费额度：每分钟60次请求，每日1500次，足够个人使用。&lt;/p&gt;
+
+  &lt;h3 id=&quot;groq&quot;&gt;3. Groq&lt;/h3&gt;
+
+  &lt;p&gt;Groq使用专用硬件运行Llama 3等模型，推理速度极快。免费层提供每天约400次请求（具体见官网）。注册后获取API Key，base_url为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;https://api.groq.com/openai/v1&lt;/code&gt;。模型如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;llama3-8b-8192&lt;/code&gt;。适合需要低延迟的聊天应用。&lt;/p&gt;
+
+  &lt;h3 id=&quot;aicontinue&quot;&gt;4. 开源AI编辑工具：Continue&lt;/h3&gt;
+
+  &lt;p&gt;Continue是VS Code的开源AI代码助手，支持本地模型（如Ollama）或连接任何OpenAI兼容API（包括免费API）。安装后，在配置文件中设置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apiBase&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;model&lt;/code&gt;即可。例如连接Ollama的本地模型，或连接OpenRouter的免费模型。无需任何付费订阅即可获得内联代码补全和聊天功能。&lt;/p&gt;
+
+  &lt;h3 id=&quot;vs-code--github-copilot-&quot;&gt;5. VS Code + GitHub Copilot (开源版)&lt;/h3&gt;
+
+  &lt;p&gt;GitHub Copilot Chat已开源，可在VS Code中免费使用（需注册GitHub账号并关联用户）。但Copilot的代码补全功能仍需要订阅（免费试用30天）。开源替代可考虑Continue或Tabnine（免费版）。&lt;/p&gt;
+
+  &lt;h3 id=&quot;api&quot;&gt;6. 其他值得关注的免费API&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Mistral AI&lt;/strong&gt;：提供免费API额度（每天约500次请求），支持&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mistral-tiny&lt;/code&gt;等模型，兼容OpenAI格式。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DeepSeek&lt;/strong&gt;：国产模型，有免费API，但需注意数据存储在中国（合规）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Perplexity&lt;/strong&gt;：提供免费API（有限），但需要信用卡注册。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;适合谁&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;个人开发者&lt;/strong&gt;：快速原型验证、学习AI集成、开发小工具。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;独立黑客&lt;/strong&gt;：构建MVP阶段，无需承担API成本。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;技术团队&lt;/strong&gt;：评估不同模型效果，或搭建内部开发环境（注意数据隐私）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;学生/研究者&lt;/strong&gt;：低成本实验。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-3&quot;&gt;限制和注意事项&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;免费额度限制&lt;/strong&gt;：每个平台都有速率限制（如OpenRouter免费模型每分钟20次请求）和总请求次数限制，不适合生产环境高并发。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;数据隐私&lt;/strong&gt;：海外API会将数据发送到境外服务器，涉及中国数据出境法规（PIPL、网络安全法）。若处理个人数据，需评估合规性。建议使用国内合规的API（如阿里通义、百度文心、DeepSeek）或自建。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;稳定性&lt;/strong&gt;：免费服务无SLA，可能随时调整或下线。重要项目需付费升级或使用备用方案。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;模型能力&lt;/strong&gt;：免费模型通常是较小或较旧的版本，复杂任务效果不如付费模型（如GPT-4、Claude 3 Opus）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;API Key安全&lt;/strong&gt;：不要硬编码在客户端，避免泄露造成资源滥用。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;section-4&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;对于2026年的个人开发者，&lt;strong&gt;OpenRouter + Google AI Studio&lt;/strong&gt; 是性价比最高的免费LLM API组合，前者提供多模型统一入口，后者提供超长上下文。&lt;strong&gt;Continue&lt;/strong&gt; 是VS Code上最值得推荐的开源AI插件，可完全免费使用。如果你想完全本地化，搭配Ollama可离线运行模型。但如果你需要处理敏感数据或满足合规要求，优先选择国内供应商（如阿里通义千问API免费额度）或自建基于开源模型的API网关（如参考来源[3]的方法）。不要依赖免费API做生产负载，但作为原型和测试层，它们足够好用。&lt;/p&gt;
+
+  &lt;p&gt;注意：以上信息基于2026年7月公开资料，各平台政策可能变动，使用前请确认最新条款。&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;free-llm-apis--open-source-ai-tools-a-practical-guide-for-developers&quot;&gt;2026 Free LLM APIs &amp;amp; Open Source AI Tools: A Practical Guide for Developers&lt;/h2&gt;
+
+  &lt;h1 id=&quot;free-llm-apis--open-source-ai-tools-a-practical-guide-for-developers-1&quot;&gt;2026 Free LLM APIs &amp;amp; Open Source AI Tools: A Practical Guide for Developers&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
+
+  &lt;p&gt;A growing ecosystem of free-tier LLM APIs and open-source AI tools now gives developers access to production-grade models without upfront cost. Services like &lt;strong&gt;OpenRouter&lt;/strong&gt;, &lt;strong&gt;Google AI Studio&lt;/strong&gt; (Gemini Flash with 1M token context), &lt;strong&gt;Groq&lt;/strong&gt; (LPU-accelerated Llama 3), and &lt;strong&gt;Mistral&lt;/strong&gt; offer free API keys with rate limits (e.g., 3 requests/min on OpenAI’s free tier, but higher limits on others). On the editor side, VS Code’s &lt;strong&gt;GitHub Copilot&lt;/strong&gt; (now open-source as of June 2025) and extensions like &lt;strong&gt;Continue&lt;/strong&gt;, &lt;strong&gt;Tabnine&lt;/strong&gt;, &lt;strong&gt;Sourcegraph Cody&lt;/strong&gt;, and &lt;strong&gt;CodeGPT&lt;/strong&gt; provide AI-assisted coding—many with free tiers.&lt;/p&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
+
+  &lt;p&gt;LLM costs are dropping, and the free tiers are generous enough for prototyping, learning, and even light production use. The shift to &lt;strong&gt;OpenAI-compatible API formats&lt;/strong&gt; means you can swap providers by changing a base URL and API key. Meanwhile, VS Code’s decision to open-source Copilot Chat signals a trend toward community-driven AI editing. For indie hackers, teams evaluating models, and bootstrapped startups, these free resources lower the barrier to building AI-powered features.&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;Get a free API key&lt;/strong&gt; – Start with OpenRouter or Google AI Studio. Both support OpenAI-compatible endpoints. Use the SDK or direct HTTP calls.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Test long context&lt;/strong&gt; – Google Gemini Flash supports 1M tokens free. Useful for document analysis or RAG prototypes.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Try AI coding assistants&lt;/strong&gt; – Install Continue (open-source) or GitHub Copilot (free trial) in VS Code. For security audits, AWS CodeWhisperer (free) adds vulnerability scanning.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Build your own proxy&lt;/strong&gt; – If you need rate limiting, custom API keys, or want to wrap open-source models (like Llama 3), follow the pattern in the Medium guide to create an OpenAI-compatible API using Streamlit and Azure email auth.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;risks--limitations&quot;&gt;Risks &amp;amp; Limitations&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Rate limits&lt;/strong&gt; – Free tiers are heavily throttled. OpenAI’s free plan: 3 req/min. Groq is faster but lower daily caps. Not suitable for high-traffic applications.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Data privacy&lt;/strong&gt; – Free APIs may use your data for training (check terms). For sensitive code, use local models (e.g., Continue + Ollama) or paid tiers.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Reliability&lt;/strong&gt; – Free endpoints can go down or change without notice. Build fallback logic.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Open-source Copilot&lt;/strong&gt; – The open-source extension is still in early stages; stability and feature parity with the paid version are not guaranteed.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;the-take&quot;&gt;The Take&lt;/h2&gt;
+
+  &lt;p&gt;Free LLM APIs are a viable entry point for developers in 2026. Use them for prototyping, education, and low-risk automation. For production, plan to migrate to paid tiers or self-hosted models once you validate your use case. The open-source tooling around VS Code is maturing fast—watch for community-driven improvements in code intelligence.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=Hbx_8vQHaJg&quot;&gt;Create OpenAI API Key and Interact with ChatGPT LLM in Python for Free&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://openrouter.ai/blog/tutorials/free-llm-apis-compared&quot;&gt;Free LLM API in 2026: 13 Options Ranked and Compared&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://sourajit16-02-93.medium.com/building-an-openai-compatible-api-with-open-source-llm-rate-limiting-custom-api-keys-and-22b5ac944eb9&quot;&gt;Medium&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://graphite.com/guides/best-vscode-extensions-ai&quot;&gt;Best VS Code extensions for AI-powered development&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://code.visualstudio.com/blogs/2025/05/19/openSourceAIEditor&quot;&gt;VS Code: Open Source AI Editor&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>AI智能体循环与驾驭层：生产级工作流的新工程实践 — AI Agent Loops and Harnesses: The New Engineering Practice for Production Workflows</title>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#05070a">
+  <title>2026免费LLM API与开源AI工具实战指南 | 東情局 · DONG INTEL BUREAU</title>
+  <meta name="description" content="对比OpenRouter、Google AI Studio和Groq等免费LLM API，它们都兼容OpenAI接口。同时介绍VS Code开源AI扩展，包括GitHub Copilot开源版和Continue本地AI编程助手。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css?v=radar-dot-brightness-v1">
+  <link rel="alternate" type="application/rss+xml" title="東情局 · DONG INTEL BUREAU RSS" href="https://kylesking.github.io/ai-infosec-landing/feed.xml">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Ai Tool Guide | 東情局 · DONG INTEL BUREAU</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Ai Tool Guide" />
+<meta name="author" content="東情局 / DONG INTEL BUREAU" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/07/27/ai-tool-guide.html" />
+<meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/ai/2026/07/27/ai-tool-guide.html" />
+<meta property="og:site_name" content="東情局 · DONG INTEL BUREAU" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-07-27T01:08:57+08:00" />
+<meta property="article:modified_time" content="2026-07-27T01:08:57+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Ai Tool Guide" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"東情局 / DONG INTEL BUREAU"},"dateModified":"2026-07-27T01:08:57+08:00","datePublished":"2026-07-27T01:08:57+08:00","description":"Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Ai Tool Guide","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/ai/2026/07/27/ai-tool-guide.html"},"url":"https://kylesking.github.io/ai-infosec-landing/ai/2026/07/27/ai-tool-guide.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="東情局首页">
+      <div class="logo-mark"><span></span></div>
+      <div>
+        <div class="logo-text">東情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
+      </div>
+    </a>
+
+    <div class="nav-cats" aria-label="Category filters">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI</span><span class="en">AI</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全合规</span><span class="en">Security</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="live-pill" title="Live signal monitoring">
+        <div class="live-dot"></div>
+        <span>LIVE</span>
+      </div>
+      <div class="lang-toggle" aria-label="Language switcher">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="post-wrap">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">東情局 / DONG INTEL BUREAU</div>
+    <div class="post-head-meta">
+      <span class="cat-chip chip-ai">AI</span>
+      
+      <span class="type-chip"><span class="zh">工具攻略</span><span class="en">Tool Guide</span></span>
+      
+      <span class="art-date">2026.07.27</span>
+    </div>
+
+    <h1 class="post-title-cn zh">2026免费LLM API与开源AI工具实战指南</h1>
+    <h1 class="post-title-en en">2026 Free LLM APIs & Open Source AI Tools: A Practical Guide for Developers</h1>
+
+    <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
+      <p class="zh">对比OpenRouter、Google AI Studio和Groq等免费LLM API，它们都兼容OpenAI接口。同时介绍VS Code开源AI扩展，包括GitHub Copilot开源版和Continue本地AI编程助手。</p>
+      <p class="en">Compare free LLM APIs from OpenRouter, Google AI Studio, and Groq with OpenAI-compatible interfaces. Also cover VS Code AI extensions including the open-source GitHub Copilot and Continue for local AI coding.</p>
+    </div>
+
+    <div class="post-tags-row">
+      <span class="tag">free-llm-apis</span><span class="tag">vscode-ai</span><span class="tag">open-source-ai-tools</span><span class="tag">developer-tools</span><span class="tag">2026</span>
+    </div>
+  </article>
+
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
+  </div>
+
+  <div class="post-body post-content">
+    <!-- Chinese Version -->
+<div class="lang-cn">
+
+  <h2 id="llm-apiai">2026免费LLM API与开源AI工具实战指南</h2>
+
+  <h1 id="llm-apiai-1">2026免费LLM API与开源AI工具实战指南</h1>
+
+  <h2 id="section">这是什么</h2>
+
+  <p>2026年，开发者可用的免费LLM API和开源AI工具比以往更丰富。OpenRouter、Google AI Studio、Groq等平台提供慷慨的免费额度（部分高达百万token），且兼容OpenAI API格式，切换成本极低。同时，VS Code生态中的开源AI扩展（如Continue、Sourcegraph Cody）让开发者无需付费即可获得代码补全与对话能力。本文整理当前最实用的免费选项，并给出集成步骤与风险提示。</p>
+
+  <h2 id="section-1">怎么用</h2>
+
+  <h3 id="llm-apiopenrouter">1. 免费LLM API：OpenRouter（推荐首选）</h3>
+
+  <p>OpenRouter聚合多个模型提供商，提供统一API和免费额度（每月约$1额度，足够原型开发）。注册后获取API Key，使用Python调用：</p>
+
+  <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="n">openai</span> <span class="kn">import</span> <span class="n">OpenAI</span>
+<span class="n">client</span> <span class="o">=</span> <span class="nc">OpenAI</span><span class="p">(</span>
+    <span class="n">base_url</span><span class="o">=</span><span class="sh">"</span><span class="s">https://openrouter.ai/api/v1</span><span class="sh">"</span><span class="p">,</span>
+    <span class="n">api_key</span><span class="o">=</span><span class="sh">"</span><span class="s">your-openrouter-api-key</span><span class="sh">"</span>
+<span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="p">.</span><span class="n">chat</span><span class="p">.</span><span class="n">completions</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span>
+    <span class="n">model</span><span class="o">=</span><span class="sh">"</span><span class="s">openai/gpt-4o-mini</span><span class="sh">"</span><span class="p">,</span>  <span class="c1"># 或免费模型如 "google/gemini-2.0-flash"
+</span>    <span class="n">messages</span><span class="o">=</span><span class="p">[{</span><span class="sh">"</span><span class="s">role</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">user</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">content</span><span class="sh">"</span><span class="p">:</span> <span class="sh">"</span><span class="s">Hello</span><span class="sh">"</span><span class="p">}]</span>
+<span class="p">)</span>
+<span class="nf">print</span><span class="p">(</span><span class="n">response</span><span class="p">.</span><span class="n">choices</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">message</span><span class="p">.</span><span class="n">content</span><span class="p">)</span>
+</code></pre></div>  </div>
+
+  <p>免费额度覆盖多个模型，但注意合理使用，避免速率限制。</p>
+
+  <h3 id="google-ai-studio-gemini">2. Google AI Studio (Gemini)</h3>
+
+  <p>Google AI Studio提供Gemini系列模型的免费API，支持1M token上下文（Gemini Flash），适合长文档处理。注册Google账号后，在AI Studio获取API Key，同样兼容OpenAI格式（需设置base_url为<code class="language-plaintext highlighter-rouge">https://generativelanguage.googleapis.com/v1beta/openai/</code>）。但官方推荐使用Google SDK以获得完整功能（如文件上传、RAG）。免费额度：每分钟60次请求，每日1500次，足够个人使用。</p>
+
+  <h3 id="groq">3. Groq</h3>
+
+  <p>Groq使用专用硬件运行Llama 3等模型，推理速度极快。免费层提供每天约400次请求（具体见官网）。注册后获取API Key，base_url为<code class="language-plaintext highlighter-rouge">https://api.groq.com/openai/v1</code>。模型如<code class="language-plaintext highlighter-rouge">llama3-8b-8192</code>。适合需要低延迟的聊天应用。</p>
+
+  <h3 id="aicontinue">4. 开源AI编辑工具：Continue</h3>
+
+  <p>Continue是VS Code的开源AI代码助手，支持本地模型（如Ollama）或连接任何OpenAI兼容API（包括免费API）。安装后，在配置文件中设置<code class="language-plaintext highlighter-rouge">apiBase</code>和<code class="language-plaintext highlighter-rouge">model</code>即可。例如连接Ollama的本地模型，或连接OpenRouter的免费模型。无需任何付费订阅即可获得内联代码补全和聊天功能。</p>
+
+  <h3 id="vs-code--github-copilot-">5. VS Code + GitHub Copilot (开源版)</h3>
+
+  <p>GitHub Copilot Chat已开源，可在VS Code中免费使用（需注册GitHub账号并关联用户）。但Copilot的代码补全功能仍需要订阅（免费试用30天）。开源替代可考虑Continue或Tabnine（免费版）。</p>
+
+  <h3 id="api">6. 其他值得关注的免费API</h3>
+
+  <ul>
+    <li><strong>Mistral AI</strong>：提供免费API额度（每天约500次请求），支持<code class="language-plaintext highlighter-rouge">mistral-tiny</code>等模型，兼容OpenAI格式。</li>
+    <li><strong>DeepSeek</strong>：国产模型，有免费API，但需注意数据存储在中国（合规）。</li>
+    <li><strong>Perplexity</strong>：提供免费API（有限），但需要信用卡注册。</li>
+  </ul>
+
+  <h2 id="section-2">适合谁</h2>
+
+  <ul>
+    <li><strong>个人开发者</strong>：快速原型验证、学习AI集成、开发小工具。</li>
+    <li><strong>独立黑客</strong>：构建MVP阶段，无需承担API成本。</li>
+    <li><strong>技术团队</strong>：评估不同模型效果，或搭建内部开发环境（注意数据隐私）。</li>
+    <li><strong>学生/研究者</strong>：低成本实验。</li>
+  </ul>
+
+  <h2 id="section-3">限制和注意事项</h2>
+
+  <ol>
+    <li><strong>免费额度限制</strong>：每个平台都有速率限制（如OpenRouter免费模型每分钟20次请求）和总请求次数限制，不适合生产环境高并发。</li>
+    <li><strong>数据隐私</strong>：海外API会将数据发送到境外服务器，涉及中国数据出境法规（PIPL、网络安全法）。若处理个人数据，需评估合规性。建议使用国内合规的API（如阿里通义、百度文心、DeepSeek）或自建。</li>
+    <li><strong>稳定性</strong>：免费服务无SLA，可能随时调整或下线。重要项目需付费升级或使用备用方案。</li>
+    <li><strong>模型能力</strong>：免费模型通常是较小或较旧的版本，复杂任务效果不如付费模型（如GPT-4、Claude 3 Opus）。</li>
+    <li><strong>API Key安全</strong>：不要硬编码在客户端，避免泄露造成资源滥用。</li>
+  </ol>
+
+  <h2 id="section-4">我的判断</h2>
+
+  <p>对于2026年的个人开发者，<strong>OpenRouter + Google AI Studio</strong> 是性价比最高的免费LLM API组合，前者提供多模型统一入口，后者提供超长上下文。<strong>Continue</strong> 是VS Code上最值得推荐的开源AI插件，可完全免费使用。如果你想完全本地化，搭配Ollama可离线运行模型。但如果你需要处理敏感数据或满足合规要求，优先选择国内供应商（如阿里通义千问API免费额度）或自建基于开源模型的API网关（如参考来源[3]的方法）。不要依赖免费API做生产负载，但作为原型和测试层，它们足够好用。</p>
+
+  <p>注意：以上信息基于2026年7月公开资料，各平台政策可能变动，使用前请确认最新条款。</p>
+
+</div>
+
+<hr />
+
+<!-- English Version -->
+<div class="lang-en">
+
+  <h2 id="free-llm-apis--open-source-ai-tools-a-practical-guide-for-developers">2026 Free LLM APIs &amp; Open Source AI Tools: A Practical Guide for Developers</h2>
+
+  <h1 id="free-llm-apis--open-source-ai-tools-a-practical-guide-for-developers-1">2026 Free LLM APIs &amp; Open Source AI Tools: A Practical Guide for Developers</h1>
+
+  <h2 id="what-it-is">What It Is</h2>
+
+  <p>A growing ecosystem of free-tier LLM APIs and open-source AI tools now gives developers access to production-grade models without upfront cost. Services like <strong>OpenRouter</strong>, <strong>Google AI Studio</strong> (Gemini Flash with 1M token context), <strong>Groq</strong> (LPU-accelerated Llama 3), and <strong>Mistral</strong> offer free API keys with rate limits (e.g., 3 requests/min on OpenAI’s free tier, but higher limits on others). On the editor side, VS Code’s <strong>GitHub Copilot</strong> (now open-source as of June 2025) and extensions like <strong>Continue</strong>, <strong>Tabnine</strong>, <strong>Sourcegraph Cody</strong>, and <strong>CodeGPT</strong> provide AI-assisted coding—many with free tiers.</p>
+
+  <h2 id="why-it-matters-now">Why It Matters Now</h2>
+
+  <p>LLM costs are dropping, and the free tiers are generous enough for prototyping, learning, and even light production use. The shift to <strong>OpenAI-compatible API formats</strong> means you can swap providers by changing a base URL and API key. Meanwhile, VS Code’s decision to open-source Copilot Chat signals a trend toward community-driven AI editing. For indie hackers, teams evaluating models, and bootstrapped startups, these free resources lower the barrier to building AI-powered features.</p>
+
+  <h2 id="practical-next-steps">Practical Next Steps</h2>
+
+  <ol>
+    <li><strong>Get a free API key</strong> – Start with OpenRouter or Google AI Studio. Both support OpenAI-compatible endpoints. Use the SDK or direct HTTP calls.</li>
+    <li><strong>Test long context</strong> – Google Gemini Flash supports 1M tokens free. Useful for document analysis or RAG prototypes.</li>
+    <li><strong>Try AI coding assistants</strong> – Install Continue (open-source) or GitHub Copilot (free trial) in VS Code. For security audits, AWS CodeWhisperer (free) adds vulnerability scanning.</li>
+    <li><strong>Build your own proxy</strong> – If you need rate limiting, custom API keys, or want to wrap open-source models (like Llama 3), follow the pattern in the Medium guide to create an OpenAI-compatible API using Streamlit and Azure email auth.</li>
+  </ol>
+
+  <h2 id="risks--limitations">Risks &amp; Limitations</h2>
+
+  <ul>
+    <li><strong>Rate limits</strong> – Free tiers are heavily throttled. OpenAI’s free plan: 3 req/min. Groq is faster but lower daily caps. Not suitable for high-traffic applications.</li>
+    <li><strong>Data privacy</strong> – Free APIs may use your data for training (check terms). For sensitive code, use local models (e.g., Continue + Ollama) or paid tiers.</li>
+    <li><strong>Reliability</strong> – Free endpoints can go down or change without notice. Build fallback logic.</li>
+    <li><strong>Open-source Copilot</strong> – The open-source extension is still in early stages; stability and feature parity with the paid version are not guaranteed.</li>
+  </ul>
+
+  <h2 id="the-take">The Take</h2>
+
+  <p>Free LLM APIs are a viable entry point for developers in 2026. Use them for prototyping, education, and low-risk automation. For production, plan to migrate to paid tiers or self-hosted models once you validate your use case. The open-source tooling around VS Code is maturing fast—watch for community-driven improvements in code intelligence.</p>
+
+</div>
+
+<hr />
+
+<h3 id="参考来源--sources">参考来源 / Sources</h3>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=Hbx_8vQHaJg">Create OpenAI API Key and Interact with ChatGPT LLM in Python for Free</a></li>
+  <li><a href="https://openrouter.ai/blog/tutorials/free-llm-apis-compared">Free LLM API in 2026: 13 Options Ranked and Compared</a></li>
+  <li><a href="https://sourajit16-02-93.medium.com/building-an-openai-compatible-api-with-open-source-llm-rate-limiting-custom-api-keys-and-22b5ac944eb9">Medium</a></li>
+  <li><a href="https://graphite.com/guides/best-vscode-extensions-ai">Best VS Code extensions for AI-powered development</a></li>
+  <li><a href="https://code.visualstudio.com/blogs/2025/05/19/openSourceAIEditor">VS Code: Open Source AI Editor</a></li>
+</ul>
+
+  </div>
+
+  <div class="post-nav">
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
+    <a href="/ai-infosec-landing/feed.xml" class="back-link rss-back-link">RSS FEED</a>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">東情局 / DONG INTEL BUREAU</div>
+      <p>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p>LIVE SIGNAL MONITORING · UPDATED DAILY 08:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+    </div>
+  </div>
+</footer>
+
+<script src="/ai-infosec-landing/assets/js/main.js"></script>
+</body>
+</html>
