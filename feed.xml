@@ -8,12 +8,277 @@
     <title>東情局 · DONG INTEL BUREAU</title>
     <link>https://kylesking.github.io/ai-infosec-landing/</link>
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
-    <description>Daily AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
+    <description>Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 10 Aug 2026 00:42:48 +0800</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 14:43:45 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>关基与等保合规新信号：重要数据与跨境运维实操要点 — China CIIO &amp; MLPS Compliance: New Enforcement Signals for Important Data and Cross-Border Ops</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/08/14/china-cybersecurity-operations.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/08/14/china-cybersecurity-operations.html</guid>
+      <pubDate>Fri, 14 Aug 2026 14:43:39 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">infosec</category>
+      <category domain="content_type">Regulation Watch</category>
+      <category domain="tag">CIIO</category><category domain="tag">MLPS</category><category domain="tag">important data</category><category domain="tag">data export</category><category domain="tag">China compliance</category>
+      <description>近期监管信号强化关基运营者在采购、境内运维及数据出境安全评估上的义务。等保2.0合规仍为五阶段流程，须由有资质机构测评，影响所有涉及重要数据的SaaS、AI及出海企业。&#10;&#10;Recent regulatory signals tighten CIIO obligations on procurement, domestic maintenance, and data export security assessments. MLPS 2.0 compliance remains a five-stage process with mandatory third-party evaluation, affecting all SaaS, AI, and outbound businesses handling important data.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;关基与等保合规新信号：重要数据与跨境运维实操要点&lt;/h2&gt;
+
+  &lt;h1 id=&quot;section-1&quot;&gt;关基与等保合规新信号：重要数据与跨境运维实操要点&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;发生了什么&lt;/h2&gt;
+
+  &lt;p&gt;2026年以来，中国关键信息基础设施（CII）和数据安全监管进入精细化执行阶段。核心变化集中在三个方向：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;CIIO采购与外包安全审查&lt;/strong&gt;：根据《网络安全法》第三十五条及《关键信息基础设施安全保护条例》（以下简称《关保条例》）第三十一、三十二条，CIIO采购网络产品和服务若可能影响国家安全，必须通过国家网络安全审查。外包开发的系统上线前必须进行安全检测，并签订安全保密协议。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;数据境内存储与跨境运维收紧&lt;/strong&gt;：《网安法》第三十七条要求CIIO在境内运营中收集和产生的个人信息和重要数据存储在境内。确需向境外提供的，须按《数据出境安全评估办法》进行安全评估。更关键的是，《关保条例》第三十四条明确：&lt;strong&gt;关键信息基础设施的运行维护应当在境内实施；因业务需要确需境外远程维护的，应事先报国家行业主管或监管部门和国务院公安部门&lt;/strong&gt;。这意味着跨境运维不再是“内部审批”即可，而是需要向两个政府部门报批。&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;等保2.0全流程闭环&lt;/strong&gt;：等保2.0的定级、备案、建设整改、等级测评、监督检查五阶段已形成完整闭环。评估只能由有资质的评估机构进行，报告提交公安部网络安全办公室审核。阿里云等云服务商已推出合规解决方案，但企业自身仍需承担定级和整改的主体责任。&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;section-3&quot;&gt;为什么现在重要&lt;/h2&gt;
+
+  &lt;p&gt;2025-2026年是中国数据安全法规的“执行深化期”。此前很多企业将关基认定、重要数据目录、跨境运维报批视为“理论要求”，但近期监管动作表明：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;行业主管/监管部门正在加速制定本行业关基认定规则，并组织认定工作。&lt;/li&gt;
+    &lt;li&gt;数据出境安全评估的申报量激增，未申报即跨境传输的处罚案例开始公开。&lt;/li&gt;
+    &lt;li&gt;跨境运维报批的“事先”要求被执法部门强调，已有企业因未报批被约谈。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;对于使用海外云服务、跨国运维、外包开发、采购海外网络产品的企业，合规窗口正在关闭。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-4&quot;&gt;影响谁&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;CIIO（关键信息基础设施运营者）&lt;/strong&gt;：直接受《关保条例》约束，采购、运维、数据出境均需合规。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;AI产品与SaaS企业&lt;/strong&gt;：若被认定为CII或处理重要数据，需满足数据本地化、安全评估、算法备案等要求。跨境提供AI服务需额外关注。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;出海企业（Outbound SaaS）&lt;/strong&gt;：在境内运营中收集数据，即使面向海外客户，仍受中国数据法管辖。跨境运维团队需报批。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;安全团队与数据团队&lt;/strong&gt;：需建立重要数据识别、分类分级、风险评估、应急响应机制。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;法律/合规团队&lt;/strong&gt;：需跟踪行业关基认定规则、数据出境安全评估指南、跨境运维报批流程。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;产品团队&lt;/strong&gt;：涉及外包开发、第三方SDK、海外运维工具的产品，需重新设计数据流和运维架构。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-5&quot;&gt;工程/安全/数据团队要做什么&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;1. 重要数据识别与分类分级&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;依据《数据安全法》第二十一条，建立数据分类分级制度，确定重要数据目录。&lt;/li&gt;
+    &lt;li&gt;参考行业标准（如金融、能源、交通等已出台的指南），识别本企业是否处理重要数据。&lt;/li&gt;
+    &lt;li&gt;重要数据的处理者需明确数据安全负责人和管理机构，定期开展风险评估并上报。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-7&quot;&gt;2. 数据本地化与跨境合规&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;检查所有CII系统：个人信息和重要数据是否存储在境内？若否，立即制定迁移计划。&lt;/li&gt;
+    &lt;li&gt;对确需出境的场景，启动数据出境安全评估流程。先完成自我评估，再向省级网信办申报。&lt;/li&gt;
+    &lt;li&gt;跨境运维报批：梳理所有境外远程维护场景（包括VPN、堡垒机、远程桌面等），准备报批材料（业务必要性、安全方案、数据保护措施），向行业主管/监管部门和公安部提交申请。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-8&quot;&gt;3. 采购与外包安全审查&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;建立采购审批流程：对可能影响国家安全的网络产品和服务，启动国家安全审查（参考《网络产品和服务安全审查办法》）。&lt;/li&gt;
+    &lt;li&gt;与供应商签订安全保密协议，明确安全义务。&lt;/li&gt;
+    &lt;li&gt;外包开发的系统，上线前必须进行安全检测（渗透测试、代码审计、配置核查）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-9&quot;&gt;4. 等保2.0合规落地&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;完成定级：确定对象等级，准备定级报告。&lt;/li&gt;
+    &lt;li&gt;备案：将报告提交当地公安机关。&lt;/li&gt;
+    &lt;li&gt;建设整改：依据等保2.0基本要求进行差距分析，部署安全产品（防火墙、IDS/IPS、日志审计、堡垒机等）。&lt;/li&gt;
+    &lt;li&gt;等级测评：委托有资质评估机构进行测评，获取报告。&lt;/li&gt;
+    &lt;li&gt;监督检查：配合公安机关和行业主管部门检查。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-10&quot;&gt;5. 持续监控与应急&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;建立数据安全风险监测机制，对缺陷、漏洞及时补救。&lt;/li&gt;
+    &lt;li&gt;制定数据安全应急处置预案，发生事件后立即处置并上报。&lt;/li&gt;
+    &lt;li&gt;定期开展数据安全风险评估，形成报告存档。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-11&quot;&gt;中国数据监管重点&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;重要数据保护&lt;/strong&gt;：国家建立重要数据目录，CIIO和重要数据处理者承担更高义务（本地存储、安全评估、负责人、定期风评）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;跨境数据传输&lt;/strong&gt;：数据出境安全评估、标准合同、认证三条路径并行。CIIO仅适用安全评估路径。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;跨境运维报批&lt;/strong&gt;：这是《关保条例》第三十四条的独特要求，与一般数据出境不同，需额外报批。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;等保2.0与关基保护联动&lt;/strong&gt;：等保是基础，关基是重点。CIIO必须在等保三级以上基础上满足关基专项要求。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;生成式AI与算法合规&lt;/strong&gt;：若AI产品涉及算法推荐、深度合成、生成式AI，需履行算法备案、安全评估、内容审核等义务。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-12&quot;&gt;国际规则对照&lt;/h2&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;中国要求&lt;/th&gt;
+        &lt;th&gt;国际对应规则&lt;/th&gt;
+        &lt;th&gt;差异点&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;重要数据本地存储&lt;/td&gt;
+        &lt;td&gt;GDPR第44-49条（数据跨境限制）&lt;/td&gt;
+        &lt;td&gt;中国对重要数据定义更宽泛，且无“充分性认定”替代路径&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;数据出境安全评估&lt;/td&gt;
+        &lt;td&gt;GDPR SCCs + 影响评估&lt;/td&gt;
+        &lt;td&gt;中国安全评估是前置审批，而非事后备案&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;跨境运维报批&lt;/td&gt;
+        &lt;td&gt;无直接对应&lt;/td&gt;
+        &lt;td&gt;欧盟NIS2要求事件报告，但未要求运维地点&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;等保2.0&lt;/td&gt;
+        &lt;td&gt;ISO 27001、SOC 2&lt;/td&gt;
+        &lt;td&gt;等保是强制等级制度，ISO/SOC是自愿认证&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;关基保护&lt;/td&gt;
+        &lt;td&gt;NIS2（欧盟）、DORA（金融）&lt;/td&gt;
+        &lt;td&gt;中国监管更强调境内运维和采购审查&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p&gt;对于同时受GDPR管辖的企业，需注意中国数据出境安全评估与GDPR SCCs的衔接——同一数据流可能需同时满足两套规则。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-13&quot;&gt;可以提前准备的检查清单&lt;/h2&gt;
+
+  &lt;ul class=&quot;task-list&quot;&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已识别本企业是否属于CIIO？是否收到行业主管部门的认定通知？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已建立重要数据目录？是否明确数据安全负责人？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;所有CII系统的数据是否存储在境内？若否，是否已启动迁移或申报？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否存在境外远程运维场景？是否已向行业主管和公安部报批？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;采购的网络产品和服务是否经过安全审查？外包系统是否上线前检测？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;等保定级是否完成？是否已备案？等级测评是否在有效期内？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否建立了数据安全风险评估和应急响应机制？最近一次风评时间？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否与供应商签订了安全保密协议？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否跟踪了本行业关基认定规则的最新动态？&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-14&quot;&gt;风险和不确定性&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;重要数据范围不明确&lt;/strong&gt;：虽然国家层面有目录，但行业目录仍在制定中，企业可能误判。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;跨境运维报批流程不透明&lt;/strong&gt;：目前缺乏公开的报批指南，不同行业主管部门要求可能不同。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;执法力度差异&lt;/strong&gt;：部分地区执法宽松，但一线城市和重点行业已开始严格检查。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;与GDPR的冲突&lt;/strong&gt;：例如，GDPR要求数据可跨境传输，中国要求本地存储，企业可能陷入两难。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;技术实现成本&lt;/strong&gt;：数据本地化、安全评估、运维架构改造需要大量投入，中小企业压力大。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-15&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;2026年是中国关基与数据合规的“执行元年”。此前法规框架已基本完善，现在进入“查漏补缺”阶段。对于CIIO和重要数据处理者，合规不再是可选项，而是生存条件。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;核心建议&lt;/strong&gt;：&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;立即启动重要数据识别&lt;/strong&gt;，不要等行业目录出台后再行动。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;跨境运维报批是当前最大盲区&lt;/strong&gt;，建议主动向行业主管部门咨询流程，不要等到被检查。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;将等保2.0与关基保护整合推进&lt;/strong&gt;，避免重复建设。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;建立合规-安全-工程联动机制&lt;/strong&gt;，避免法务团队孤军奋战。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;适合人群&lt;/strong&gt;：CIIO安全负责人、数据合规负责人、出海SaaS CTO、云服务商合规团队。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;限制/风险&lt;/strong&gt;：本文不构成法律意见。具体操作需咨询专业律师，并关注最新法规更新。部分行业（如金融、能源）可能有更严格的专项要求。&lt;/p&gt;
+
+  &lt;hr /&gt;
+
+  &lt;p&gt;&lt;strong&gt;English Brief&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;What happened&lt;/strong&gt;: China’s CII and data security regulations entered an enforcement phase in 2026. Key changes include: (1) CIIOs must undergo national security review for procurement of network products/services; (2) data must be stored locally, and cross-border O&amp;amp;M requires prior approval from both industry regulator and Ministry of Public Security; (3) MLPS 2.0 five-stage process is now fully enforced.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Who is affected&lt;/strong&gt;: CIIOs, AI/SaaS companies handling important data, outbound businesses with cross-border O&amp;amp;M, security/data teams, legal/compliance teams, product teams using outsourced development.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Engineering/security actions&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Identify important data and classify it.&lt;/li&gt;
+    &lt;li&gt;Ensure local storage; apply for data export security assessment if needed.&lt;/li&gt;
+    &lt;li&gt;Apply for cross-border O&amp;amp;M approval before any remote maintenance.&lt;/li&gt;
+    &lt;li&gt;Implement procurement security review and vendor security agreements.&lt;/li&gt;
+    &lt;li&gt;Complete MLPS grading, filing, remediation, and assessment.&lt;/li&gt;
+    &lt;li&gt;Establish risk monitoring and incident response.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;China data compliance angle&lt;/strong&gt;: Priority on important data protection, local storage, cross-border data transfer security assessment, and the unique requirement of cross-border O&amp;amp;M approval (Article 34 of CII Protection Regulation). MLPS 2.0 is mandatory baseline.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Take&lt;/strong&gt;: 2026 is the enforcement year. CIIOs and important data processors must act now. The biggest blind spot is cross-border O&amp;amp;M approval—start consulting regulators proactively. Integrate MLPS and CII compliance to avoid duplication.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;china-ciio--mlps-compliance-new-enforcement-signals-for-important-data-and-cross-border-ops&quot;&gt;China CIIO &amp;amp; MLPS Compliance: New Enforcement Signals for Important Data and Cross-Border Ops&lt;/h2&gt;
+
+  &lt;h1 id=&quot;china-ciio--mlps-compliance-new-enforcement-signals-for-important-data-and-cross-border-ops-1&quot;&gt;China CIIO &amp;amp; MLPS Compliance: New Enforcement Signals for Important Data and Cross-Border Ops&lt;/h1&gt;
+
+  &lt;p&gt;&lt;strong&gt;What it is.&lt;/strong&gt; China is tightening the operational compliance burden on operators of critical information infrastructure (CIIO) and on any organization handling important data. Three interlocking regimes are now the baseline: the Cybersecurity Law (CSL), the Data Security Law (DSL), and MLPS 2.0 (网络安全等级保护 / Multi-Level Protection Scheme). The CIIO-specific rules were firmly established by the &lt;em&gt;Key Information Infrastructure Security Protection Regulations&lt;/em&gt; (《关键信息基础设施安全保护条例》), which detail obligations in procurement, data location, and system operation.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Why it matters now.&lt;/strong&gt; The legal framework has moved from draft guidance to enforced rules. CII identification is being defined sector-by-sector by industry regulators, so many organizations will only learn they are CIIO after designation. For everyone else, MLPS 2.0 filing and assessment is now a de facto prerequisite for operating regulated systems in China, and data cross-border rules are being enforced through the CAC security assessment process — not merely recommended.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Key obligations to operationalize.&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Procurement and supply chain.&lt;/strong&gt; CIIOs purchasing network products or services that may affect national security must pass a national security review. Security and confidentiality agreements with suppliers are required. Outsourced or donated systems must undergo security testing before going live.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Data localization and cross-border transfer.&lt;/strong&gt; Personal information and important data collected in China by CIIOs must be stored domestically. If transfer abroad is necessary, a security assessment under CAC measures is required. For important data, the DSL adds classification-and-grading obligations and a national important data catalog.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Domestic operation and maintenance.&lt;/strong&gt; CII operation and maintenance must be performed inside China. Remote maintenance from overseas requires prior reporting to the industry regulator and the Ministry of Public Security — a clause often overlooked.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;MLPS 2.0 process.&lt;/strong&gt; The five-stage lifecycle is: classification (定级), filing (备案), remediation (建设整改), assessment by a qualified Chinese third-party institution (等级测评), and supervision/inspection (监督检查). The assessment report must be submitted to local public security authorities.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Practical next steps.&lt;/strong&gt; Determine whether you may fall under CII criteria by sector, and confirm your MLPS level (typically Level 2 or 3 for most commercial systems). Inventory your data assets and classify them against the important data catalog. If you transfer data overseas, audit whether you need a CAC security assessment or China SCC filings. Review procurement contracts for security review triggers and confidentiality clauses. Pre-test all outsourced code before production. Document any remote O&amp;amp;M involving overseas access and file the required notifications.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Risks.&lt;/strong&gt; Enforcement exposure spans fines, suspension of operations, and criminal liability for responsible personnel. The main pitfalls: treating MLPS as a one-time paperwork exercise rather than continuous monitoring, failing to keep an up-to-date important data inventory, and unapproved cross-border data flows — including remote troubleshooting access from abroad.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Take.&lt;/strong&gt; Compliance is now an engineering and operations program. Engineering teams should map MLPS controls to their infrastructure, data teams should operationalize classification and export assessments, and security teams should add CII inspection points to procurement, release, and remote-access workflows. Treat the legal texts as technical requirements, not legal formalities.&lt;/p&gt;
+
+  &lt;p&gt;&lt;em&gt;This brief is informational, not legal advice.&lt;/em&gt;&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[观韬视点&lt;/td&gt;
+          &lt;td&gt;国家网络安全领域核心命脉：关键信息基础设施的合规要点解析-北京观韬律师事务所](https://www.guantao.com/page2082)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.alibabacloud.com/zh/china-gateway/mlps2?_p_lc=1&quot;&gt;等保2.0安全合规解决方案- 阿里云&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.junhe.com/legal-updates/1534?locale=zh&quot;&gt;《关键信息基础设施安全保护条例》正式出台&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.nblawyer.com/FileUpload/ueditor/file/20240730/6385795123086712509588223.pdf&quot;&gt;[PDF] 网络安全与数据合规法律法规汇编 - 宁波市律师协会&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.dbappsecurity.com.cn/content/details284_6069.html&quot;&gt;深度解读｜数据安全法&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>CI/CD中实战DevSecOps：用GitHub Actions检测SBOM、SAST、SCA与密钥风险 — Practical DevSecOps in CI/CD: Detecting SBOM, SAST, SCA &amp; Secrets Risks with GitHub Actions</title>
