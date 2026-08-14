@@ -1,12 +1,12 @@
 # AI Infosec Landing
 
-每日 AI / 安全 / 合规中英双语实用情报 / Daily bilingual practical intelligence for AI, security, and compliance
+每周 AI / 安全 / 合规中英双语实用情报 / Weekly bilingual practical intelligence for AI, security, and compliance
 
 主页 / Landing Page: https://kylesking.github.io/ai-infosec-landing/
 
 ## 功能特性
 
-- 每天自动发布 1 篇文章，四种内容类型轮换
+- 每周自动发布 1 篇文章，四种内容类型轮换
 - 中英双语，聚焦趋势追踪、教程实操、工具分享、法规合规分析
 - 内容类型：工具攻略、趋势分析、防御实操、法规追踪
 - DeepSeek V4 Flash 驱动写作
@@ -46,7 +46,7 @@ url: "https://YOUR_GITHUB_USERNAME.github.io"
 
 ### 5. 手动触发第一次
 
-进入 **Actions → Daily Article Publisher → Run workflow**
+进入 **Actions → Weekly Article Publisher → Run workflow**
 
 等待约2分钟，文章自动生成并部署。
 
@@ -61,10 +61,10 @@ https://YOUR_USERNAME.github.io/ai-infosec-landing
 编辑 `.github/workflows/daily-publish.yml`：
 
 ```yaml
-- cron: '0 0 * * *'  # UTC 00:00 = 北京时间 08:00
+- cron: '0 16 * * 0'  # 每周日UTC 16:00 = 北京时间周一00:00
 ```
 
-按需修改 cron 时间。
+按需修改 cron 时间。周值：0=周日、1=周一等。
 
 ## 本地预览
 
