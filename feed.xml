@@ -10,10 +10,233 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 14 Aug 2026 14:43:45 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 00:34:19 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>LLM推理优化：缓存、量化与模型路由实战指南 — LLM Inference Optimization: Caching, Quantization, and Model Routing for Cost Control</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/08/17/ai-inference-efficiency.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/08/17/ai-inference-efficiency.html</guid>
+      <pubDate>Mon, 17 Aug 2026 00:34:12 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">ai</category>
+      <category domain="content_type">Tool Guide</category>
+      <category domain="tag">LLM推理</category><category domain="tag">推理优化</category><category domain="tag">TensorRT-LLM</category><category domain="tag">模型路由</category><category domain="tag">成本控制</category>
+      <description>不碰模型权重，也能大幅降低推理成本。本文介绍提示缓存、TensorRT-LLM量化、模型路由和异步批处理四种方法，均可用开源工具落地。&#10;&#10;A practical guide to reducing LLM inference costs without touching model weights. Covers prompt caching, quantization with TensorRT-LLM, model routing, and async batching—all implementable today with open-source tools.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;llm&quot;&gt;LLM推理优化：缓存、量化与模型路由实战指南&lt;/h2&gt;
+
+  &lt;h1 id=&quot;llm-1&quot;&gt;LLM推理优化：缓存、量化与模型路由实战指南&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;这是什么&lt;/h2&gt;
+
+  &lt;p&gt;LLM推理成本正在成为AI应用规模化最大的瓶颈。缓存、量化和模型路由是三种经过验证的优化手段，可以在不改变模型权重的前提下显著降低延迟和成本。缓存利用重复提示减少计算，量化压缩模型体积加速推理，模型路由根据任务复杂度动态选择合适模型。这三者组合使用，通常能将推理成本降低50%-80%，同时保持响应质量。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;怎么用&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-2&quot;&gt;第一步：工作负载审计&lt;/h3&gt;
+
+  &lt;p&gt;在动手优化前，先分析你的推理请求特征。记录三类数据：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;提示重复率&lt;/strong&gt;：有多少请求的提示前缀或完整提示完全相同？重复率超过20%时，缓存效果显著。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;复杂度需求&lt;/strong&gt;：任务是否需要大模型（如复杂推理、代码生成）？还是小模型（如分类、摘要）足够？&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;延迟敏感度&lt;/strong&gt;：用户是否等待实时响应？还是可以接受异步批处理？&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;审计结果直接决定优化优先级。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-3&quot;&gt;第二步：启用提示缓存&lt;/h3&gt;
+
+  &lt;p&gt;&lt;strong&gt;API级缓存&lt;/strong&gt;：如果使用OpenAI、Anthropic等托管API，检查是否支持自动提示缓存。OpenAI的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;prompt caching&lt;/code&gt;功能在2025年已普遍可用，对重复前缀自动打折。AWS Bedrock也支持按需端点的提示缓存。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;自建缓存&lt;/strong&gt;：使用vLLM部署开源模型时，启用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--enable-prefix-caching&lt;/code&gt;。vLLM会自动缓存公共前缀的KV缓存，对多轮对话或固定系统提示的场景特别有效。部署命令示例：&lt;/p&gt;
+
+  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;vllm serve meta-llama/Llama-3.1-8B-Instruct &lt;span class=&quot;nt&quot;&gt;--enable-prefix-caching&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--max-model-len&lt;/span&gt; 8192
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;p&gt;&lt;strong&gt;本地测试&lt;/strong&gt;：Ollama默认支持上下文缓存，重复提示自动复用计算。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;第三步：实施模型路由&lt;/h3&gt;
+
+  &lt;p&gt;模型路由的核心是“用对的模型处理对的任务”。实现方式有两种：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;规则路由&lt;/strong&gt;：根据提示长度、关键词、任务类型（如分类 vs 生成）硬编码路由逻辑。例如：短文本分类用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Llama-3.2-1B&lt;/code&gt;，代码生成用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Llama-3.1-70B&lt;/code&gt;。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;智能路由&lt;/strong&gt;：使用轻量级分类器（如BERT）预测任务复杂度，动态路由到不同模型。开源项目如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RouteLLM&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OpenRouter&lt;/code&gt;提供现成方案。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;生产建议：先做规则路由，再逐步引入智能路由。路由逻辑本身延迟应低于10ms。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-5&quot;&gt;第四步：模型量化&lt;/h3&gt;
+
+  &lt;p&gt;量化将模型权重从FP16压缩到INT8或INT4，减少显存占用并加速推理。主流工具：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;TensorRT-LLM&lt;/strong&gt;（NVIDIA GPU）：支持FP8、INT8、INT4量化，配合Triton推理服务器可获得最佳性能。官方提供量化脚本，例如将Llama 3.1 8B量化为INT4：
+      &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python quantize.py &lt;span class=&quot;nt&quot;&gt;--model_dir&lt;/span&gt; meta-llama/Llama-3.1-8B-Instruct &lt;span class=&quot;nt&quot;&gt;--dtype&lt;/span&gt; float16 &lt;span class=&quot;nt&quot;&gt;--qformat&lt;/span&gt; int4_awq &lt;span class=&quot;nt&quot;&gt;--output_dir&lt;/span&gt; ./llama_int4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;      &lt;/div&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;llama.cpp / Ollama&lt;/strong&gt;（CPU/GPU混合）：使用GGUF格式，支持Q4_K_M等量化级别。Ollama拉取模型时自动选择量化版本（如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;llama3.1:8b-q4_K_M&lt;/code&gt;）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;vLLM&lt;/strong&gt;：内置AWQ、GPTQ量化支持，加载量化模型时自动优化。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;注意：INT4量化在复杂推理任务上可能损失1-3%的准确率，建议先用INT8或FP8。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;第五步：异步批处理&lt;/h3&gt;
+
+  &lt;p&gt;对延迟不敏感的任务（如离线分析、批量分类），将请求排队后批量推理。vLLM原生支持动态批处理（continuous batching），无需额外配置。Triton推理服务器也支持调度策略。关键参数：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;max_num_batched_tokens&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;max_num_seqs&lt;/code&gt;。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-7&quot;&gt;工具选择速查&lt;/h3&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;场景&lt;/th&gt;
+        &lt;th&gt;推荐工具&lt;/th&gt;
+        &lt;th&gt;关键特性&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;高并发生产环境&lt;/td&gt;
+        &lt;td&gt;vLLM + TensorRT-LLM&lt;/td&gt;
+        &lt;td&gt;连续批处理、前缀缓存、量化支持&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;本地开发/测试&lt;/td&gt;
+        &lt;td&gt;Ollama&lt;/td&gt;
+        &lt;td&gt;一键部署、自动量化、CPU友好&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;多模型路由&lt;/td&gt;
+        &lt;td&gt;RouteLLM / OpenRouter&lt;/td&gt;
+        &lt;td&gt;基于成本或质量的动态路由&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;企业级服务&lt;/td&gt;
+        &lt;td&gt;NVIDIA Triton&lt;/td&gt;
+        &lt;td&gt;多框架支持、GPU调度、监控集成&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h2 id=&quot;section-8&quot;&gt;适合谁&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;AI应用开发者&lt;/strong&gt;：需要降低API调用成本或自建推理服务。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;MLOps/DevOps工程师&lt;/strong&gt;：负责推理基础设施的选型和调优。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SaaS团队&lt;/strong&gt;：LLM推理成本占运营支出大头，急需优化。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;独立开发者&lt;/strong&gt;：预算有限，希望用最小成本跑通产品。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;不适合&lt;/strong&gt;：仅使用闭源API且无重复提示的业务（缓存无效）；对模型精度零容忍且无法接受量化的场景（如医疗诊断）。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-9&quot;&gt;限制和注意事项&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;缓存&lt;/strong&gt;：依赖提示重复率；动态提示（如包含时间戳）会破坏缓存。需设计提示模板保持前缀稳定。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;量化&lt;/strong&gt;：INT4量化可能降低长文本生成质量；FP8在H100上原生支持，但旧GPU不支持。量化后需做质量回归测试。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;模型路由&lt;/strong&gt;：增加系统复杂度；路由决策错误可能导致成本上升或质量下降。建议设置兜底策略（如路由失败时回退到大模型）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;生产风险&lt;/strong&gt;：vLLM的prefix caching在极高并发下可能内存溢出，需设置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;max_num_batched_tokens&lt;/code&gt;限制。TensorRT-LLM的量化需要重新编译模型，部署流程变长。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;成本&lt;/strong&gt;：自建推理需要GPU硬件投入，短期可能比API贵。建议先用API缓存和路由优化，再评估自建。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-10&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;优先顺序&lt;/strong&gt;：缓存 &amp;gt; 模型路由 &amp;gt; 量化 &amp;gt; 批处理。缓存和路由几乎零成本，适合所有团队立即实施。量化需要模型修改和测试，适合有ML工程能力的团队。批处理是默认选项，vLLM已内置。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;推荐组合&lt;/strong&gt;：vLLM + 前缀缓存 + INT8量化 + 规则路由。这套组合在延迟、成本和质量之间平衡最好，且社区成熟度高。如果预算紧张，先用Ollama本地测试量化版本，再迁移到vLLM生产。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;不推荐&lt;/strong&gt;：一开始就上TensorRT-LLM + Triton，除非你有专门的GPU集群和MLOps团队。对于大多数团队，vLLM已经足够。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;未来趋势&lt;/strong&gt;：模型路由将越来越智能，结合成本和质量的多目标优化会成为标配。缓存技术会扩展到跨请求的语义缓存（而非仅前缀匹配）。量化标准（如FP4）正在统一，工具链会越来越简单。现在开始优化，半年后你的竞争对手可能已经用上这些技术了。&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;llm-inference-optimization-caching-quantization-and-model-routing-for-cost-control&quot;&gt;LLM Inference Optimization: Caching, Quantization, and Model Routing for Cost Control&lt;/h2&gt;
+
+  &lt;h1 id=&quot;llm-inference-optimization-caching-quantization-and-model-routing-for-cost-control-1&quot;&gt;LLM Inference Optimization: Caching, Quantization, and Model Routing for Cost Control&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
+
+  &lt;p&gt;LLM inference optimization refers to techniques that reduce latency and cost when running models in production—without modifying the underlying model. The key methods covered here are caching, quantization, and model routing, plus supporting techniques like batching, streaming, and adapter-based serving.&lt;/p&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
+
+  &lt;p&gt;As AI applications scale from prototypes to production, inference costs dominate infrastructure spend. A single high-traffic agent can consume thousands of dollars per month in GPU compute. Meanwhile, latency directly impacts user experience—slow responses kill adoption. The good news: most cost and latency issues can be addressed at the infrastructure and API layer without retraining models or hiring ML engineers.&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Audit your workload.&lt;/strong&gt; Categorize requests by prompt repetition rate, complexity, and latency sensitivity. This determines which optimizations apply.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Enable API-level prompt caching.&lt;/strong&gt; If your traffic includes repeated or similar prompts (e.g., support chatbots with templated queries), caching can cut costs by 50-80%. AWS and other providers now support prompt caching for on-demand endpoints.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Implement model routing.&lt;/strong&gt; Route simple queries to smaller, cheaper models (e.g., 7B or 8B parameter) and complex ones to larger models. A smart router can handle this transparently in &amp;lt;50ms.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Use quantization.&lt;/strong&gt; Reduce model precision from FP16 to INT4/INT8 with minimal accuracy loss, cutting memory and compute by 2-4x. Tools like TensorRT-LLM and llama.cpp make this straightforward.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Move latency-tolerant workloads to async batch processing.&lt;/strong&gt; Non-real-time tasks (e.g., nightly report generation) can be batched and processed off-peak, using vLLM or Triton for efficient batch inference.&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;risks-and-operational-notes&quot;&gt;Risks and Operational Notes&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Quantization may degrade accuracy&lt;/strong&gt; on edge cases—always benchmark on your specific task.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Caching works best with deterministic prompts&lt;/strong&gt;; variable content or personalization reduces hit rate.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Model routing requires careful benchmarking&lt;/strong&gt;—routing a complex legal query to a small model can produce bad output.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Adapters (LoRA/QLoRA) simplify multi-task serving&lt;/strong&gt; but add operational complexity—manage via tools like Predibase or TensorRT-LLM.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Open-source inference servers (vLLM, Triton)&lt;/strong&gt; give full control but require DevOps effort; managed services (AWS Bedrock, Vertex AI) trade cost for simplicity.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;who-this-is-for&quot;&gt;Who This Is For&lt;/h2&gt;
+
+  &lt;p&gt;Engineering teams building production AI applications—especially indie hackers, SaaS builders, and enterprise AI teams. Not suited for research projects or one-off experiments.&lt;/p&gt;
+
+  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
+
+  &lt;p&gt;The highest-impact wins are zero-infrastructure changes: caching and routing. Quantization and batching come next. Start with a workload audit, then apply techniques in priority order—don’t optimize what you don’t measure. The tools exist today; the bottleneck is operational discipline, not technology.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[LLM Serving Guide: How to Build Faster Inference for Open-source Models&lt;/td&gt;
+          &lt;td&gt;Rubrik](https://www.rubrik.com/blog/ai/25/guide-how-to-serve-llms-faster-inference)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.nvidia.com/blog/mastering-llm-techniques-inference-optimization&quot;&gt;Mastering LLM Techniques: Inference Optimization&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=9tvJ_GYJA-o&quot;&gt;Mastering LLM Inference Optimization From Theory to Cost Effective …&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@kyeg/accelerating-ai-agent-inference-performance-in-production-874b427cb41b&quot;&gt;Accelerating AI Agent Inference &amp;amp; Performance in Production&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.softwareseni.com/the-ai-inference-optimisation-playbook-caching-quantization-and-model-routing-in-priority-order&quot;&gt;The AI Inference Optimisation Playbook — Caching, Quantization, and Model Routing in Priority Order - SoftwareSeni&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>关基与等保合规新信号：重要数据与跨境运维实操要点 — China CIIO &amp; MLPS Compliance: New Enforcement Signals for Important Data and Cross-Border Ops</title>
