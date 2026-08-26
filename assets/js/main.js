@@ -238,6 +238,7 @@
     async function loadSiteTotals() {
       if (!isSupabaseConfigured) return;
       const data = await supabaseFetch('/functions/v1/stats?type=site');
+      try { console.log('[stats] loadSiteTotals response:', data); } catch (_) {}
       if (!data || !data.totals) return;
       const t = data.totals;
       const setIfPresent = (key, val) => {
