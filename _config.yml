@@ -34,3 +34,16 @@ exclude:
 # SEO
 lang: "zh-CN"
 timezone: Asia/Shanghai
+
+# Supabase — anon key gets injected at build time by CI.
+# Do NOT commit a real key here; placeholder is replaced by sed in the workflow.
+supabase:
+  url: "https://placeholder.supabase.co"
+  anon_key: "SUPABASE_ANON_KEY_PLACEHOLDER"
+
+# Twitter / OG defaults consumed by jekyll-seo-tag
+twitter:
+  username: "dongintbureau"
+  card: "summary_large_image"
+logo: /assets/img/avatar.jpg
+default_image: /assets/img/og-default.png
