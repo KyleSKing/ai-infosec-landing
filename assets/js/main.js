@@ -238,12 +238,18 @@
     async function loadSiteTotals() {
       if (!isSupabaseConfigured) return;
       const data = await supabaseFetch('/functions/v1/stats?type=site');
-      try { console.log('[stats] loadSiteTotals response:', data); } catch (_) {}
+      try {
+        console.log('[stats] loadSiteTotals response:', data, 'configured:', isSupabaseConfigured);
+        if (data && data.totals) {
+          document.title = 'PV=' + data.totals.total_pv + ' Likes=' + data.totals.total_likes + ' | 東情局';
+        }
+      } catch (_) {}
       if (!data || !data.totals) return;
       const t = data.totals;
       const setIfPresent = (key, val) => {
         const el = document.querySelector('[data-stat="' + key + '"]');
         if (el && typeof val === 'number') el.textContent = val;
+        else if (!el) console.warn('[stats] no element for', key);
       };
       setIfPresent('total-pv', t.total_pv);
       setIfPresent('total-uv', t.total_uv);

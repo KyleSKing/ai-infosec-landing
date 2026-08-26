@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>规范驱动开发：从随意编程到可控交付 | 東情局 · DONG INTEL BUREAU</title>
+  <meta name="description" content="AI辅助软件交付正从随意的vibe coding转向规范驱动开发，清晰规范引导编码代理完成实现、测试、审查和发布。该趋势减少错误、跨会话保留上下文，并让人工保持对业务关键决策的掌控。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css?v=radar-dot-brightness-v1">
+  <link rel="alternate" type="application/rss+xml" title="東情局 · DONG INTEL BUREAU RSS" href="https://kylesking.github.io/ai-infosec-landing/feed.xml">
+  <link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery-5.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery-5.html">
+  <link rel="alternate" hreflang="en" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery-5.html">
+  <link rel="alternate" hreflang="x-default" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery-5.html">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Ai Software Delivery 5 | 東情局 · DONG INTEL BUREAU</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Ai Software Delivery 5" />
+<meta name="author" content="東情局 / DONG INTEL BUREAU" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery-5.html" />
+<meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery-5.html" />
+<meta property="og:site_name" content="東情局 · DONG INTEL BUREAU" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-08-26T19:24:54+08:00" />
+<meta property="article:modified_time" content="2026-08-26T19:24:54+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Ai Software Delivery 5" />
+<meta name="twitter:site" content="@dongintbureau" />
+<meta name="twitter:creator" content="@東情局 / DONG INTEL BUREAU" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"東情局 / DONG INTEL BUREAU"},"dateModified":"2026-08-26T19:24:54+08:00","datePublished":"2026-08-26T19:24:54+08:00","description":"Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Ai Software Delivery 5","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery-5.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kylesking.github.io/ai-infosec-landing/assets/img/avatar.jpg"},"name":"東情局 / DONG INTEL BUREAU"},"url":"https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery-5.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  
+    <!-- _includes/seo-article.html — Article JSON-LD for post pages. --><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "规范驱动开发：从随意编程到可控交付",
+  "alternativeHeadline": "Spec-Driven AI Software Delivery: From Vibe Coding to Controlled Release Workflows",
+  "datePublished": "2026-08-26T19:24:54+08:00",
+  "dateModified": "2026-08-26T19:24:54+08:00",
+  "author": {
+    "@type": "Organization",
+    "name": "東情局 / DONG INTEL BUREAU",
+    "url": "https://KyleSKing.github.io/ai-infosec-landing"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "東情局",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://KyleSKing.github.io/ai-infosec-landing/assets/img/avatar.jpg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery-5.html"
+  },
+  "inLanguage": ["zh-CN", "en"],
+  "keywords": "spec-driven development,AI-assisted testing,release automation,coding agents,DevEx",
+  "articleSection": "Trend Analysis",
+  "description": "AI辅助软件交付正从随意的vibe coding转向规范驱动开发，清晰规范引导编码代理完成实现、测试、审查和发布。该趋势减少错误、跨会话保留上下文，并让人工保持对业务关键决策的掌控。"
+}</script>
+
+  
+  <meta name="theme-color" content="#05070a">
+  <meta name="generator" content="Jekyll + Supabase">
+  <script>
+    window.SUPABASE_CONFIG = {
+      url: "https://vncoryzptkkxozjeitbz.supabase.co",
+      anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuY29yeXpwdGtreG96amVpdGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MzE3NjAsImV4cCI6MjEwMzMwNzc2MH0.mw8ZKAYMVVzgRbTTeDY6RLD24K2gBgMX96bcSJ4RzNA"
+    };
+  </script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="東情局首页">
+      <div class="logo-mark"><span></span></div>
+      <div>
+        <div class="logo-text">東情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
+      </div>
+    </a>
+
+    <div class="nav-cats" aria-label="Category filters">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI</span><span class="en">AI</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全合规</span><span class="en">Security</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="live-pill" title="Live signal monitoring">
+        <div class="live-dot"></div>
+        <span>LIVE</span>
+      </div>
+      <div class="lang-toggle" aria-label="Language switcher">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="post-wrap">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">東情局 / DONG INTEL BUREAU</div>
+    <div class="post-head-meta">
+      <span class="cat-chip chip-ai">AI</span>
+      
+      <span class="type-chip"><span class="zh">趋势分析</span><span class="en">Trend Analysis</span></span>
+      
+      <span class="art-date">2026.08.26</span>
+    </div>
+
+    <h1 class="post-title-cn zh">规范驱动开发：从随意编程到可控交付</h1>
+    <h1 class="post-title-en en">Spec-Driven AI Software Delivery: From Vibe Coding to Controlled Release Workflows</h1>
+
+    <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
+      <p class="zh">AI辅助软件交付正从随意的vibe coding转向规范驱动开发，清晰规范引导编码代理完成实现、测试、审查和发布。该趋势减少错误、跨会话保留上下文，并让人工保持对业务关键决策的掌控。</p>
+      <p class="en">AI-assisted software delivery is shifting from ad-hoc vibe coding to spec-driven workflows where clear specifications guide coding agents through implementation, testing, review, and release. This trend reduces errors, preserves context across sessions, and keeps human oversight on business-critical decisions.</p>
+    </div>
+
+    <div class="post-tags-row">
+      <span class="tag">spec-driven development</span><span class="tag">AI-assisted testing</span><span class="tag">release automation</span><span class="tag">coding agents</span><span class="tag">DevEx</span>
+    </div>
+  </article>
+
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
+  </div>
+
+  <div class="post-body post-content">
+    <!-- Chinese Version -->
+<div class="lang-cn">
+
+  <h2 id="section">规范驱动开发：从随意编程到可控交付</h2>
+
+  <h1 id="section-1">规范驱动开发：从随意编程到可控交付</h1>
+
+  <h2 id="section-2">这个趋势是什么</h2>
+
+  <p>“规范驱动开发”（Spec-Driven Development）正在成为AI辅助编码时代的一种新工作范式。它的核心流程是：在让AI代理（coding agent）写代码之前，先由人编写一份清晰的、结构化的规范文档（通常用Markdown），定义要构建的功能、技术栈、验收标准、边界条件等。然后，AI代理根据这份规范生成代码，人再对代码进行审查和测试。这与当前流行的“vibe coding”（凭感觉编程）形成鲜明对比——后者依赖开发者或产品经理口头描述需求，AI直接生成代码，结果往往与预期偏差很大。</p>
+
+  <p>这个趋势由Andrew Ng的DeepLearning.AI与JetBrains合作推出的课程《Spec-Driven Development with Coding Agents》正式推向大众。课程讲师Paul Everitt指出，许多顶尖开发者已经在使用这种方式：先写规范，再让AI实现。规范不仅控制代码生成，还能在多个AI会话之间保持上下文，减少认知负荷，提高意图保真度。</p>
+
+  <p>与此同时，AI辅助软件交付的其他环节也在规范化：自动化测试生成、代码审查的两阶段（自动扫描+人工聚焦）、发布说明的AI自动生成（如GitProtect在Jira工作流中的实践）等。这些共同构成了一个更可控的AI驱动交付流水线。</p>
+
+  <h2 id="section-3">为什么现在重要</h2>
+
+  <p>过去两年，AI编码工具（如GitHub Copilot、Claude Code、Cursor等）大幅降低了代码生成的门槛。开发者可以快速产出大量代码，但随之而来的是“代码质量失控”问题：AI生成的代码可能逻辑正确但不符合业务意图，或者遗漏了边界情况，甚至引入安全漏洞。在团队协作中，缺乏统一规范的AI生成代码会导致维护成本飙升。</p>
+
+  <p>规范驱动开发解决了三个关键痛点：</p>
+
+  <ol>
+    <li><strong>意图对齐</strong>：AI不理解业务上下文，但规范可以精确描述。例如，一个“用户注册”功能，规范可以写明“邮箱地址必须支持土耳其字符İ”，AI生成测试时就会覆盖这个边界。</li>
+    <li><strong>上下文持久化</strong>：AI会话是短暂的，但规范是持久文档。下次继续开发时，AI可以重新加载规范，无需重复解释。</li>
+    <li><strong>可审查性</strong>：人审查AI代码时，规范是唯一的评判标准。没有规范，审查者只能凭感觉判断“这代码对不对”。</li>
+  </ol>
+
+  <p>此外，从工程管理角度看，规范驱动开发让AI的产出变得可预测、可度量。FirstLine Software的文章指出，AI加速工程工作流的关键在于“将规范、审查和批准保留在人类手中”，而将实现、测试脚手架和文档任务分配给AI代理。这种分工提高了交付速度，同时保持了控制。</p>
+
+  <h2 id="section-4">它和旧做法的区别</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>维度</th>
+        <th>旧做法（vibe coding / 无规范）</th>
+        <th>规范驱动开发</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>需求传递</td>
+        <td>口头描述、即时聊天、模糊的Jira ticket</td>
+        <td>结构化的Markdown规范，包含验收标准、边界条件</td>
+      </tr>
+      <tr>
+        <td>AI角色</td>
+        <td>直接生成代码，人被动接受</td>
+        <td>根据规范实现，人主动定义</td>
+      </tr>
+      <tr>
+        <td>审查方式</td>
+        <td>人通读代码，凭经验判断</td>
+        <td>自动扫描逻辑/安全/风格问题，人工聚焦业务逻辑</td>
+      </tr>
+      <tr>
+        <td>测试覆盖</td>
+        <td>AI生成通用测试，遗漏业务边界</td>
+        <td>规范驱动测试生成，人工补充领域专家案例</td>
+      </tr>
+      <tr>
+        <td>上下文保持</td>
+        <td>每次新会话需要重新描述</td>
+        <td>规范作为持久上下文，跨会话复用</td>
+      </tr>
+      <tr>
+        <td>变更控制</td>
+        <td>难以追溯“为什么这样写”</td>
+        <td>规范版本化，变更先改规范</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>具体例子：在旧做法中，开发者告诉AI“写一个日期验证函数”，AI可能生成一个检查YYYY-MM-DD格式的函数，但忽略了闰年或2月30日。在规范驱动开发中，规范会明确列出“必须验证日期存在性，包括闰年、月份天数、2月29日仅在闰年有效”，AI生成的测试就会覆盖这些边界。</p>
+
+  <h2 id="section-5">可以怎么开始试</h2>
+
+  <p>以下是一个可立即执行的步骤清单，适用于个人开发者或团队：</p>
+
+  <ol>
+    <li><strong>选择一个项目</strong>：最好是一个新功能或重构任务，避免在遗留代码中首次尝试。</li>
+    <li><strong>编写规范文档</strong>：用Markdown创建<code class="language-plaintext highlighter-rouge">spec.md</code>，包含：
+      <ul>
+        <li>功能名称和目标</li>
+        <li>技术栈和约束（例如“使用Python 3.11+，依赖FastAPI”）</li>
+        <li>输入/输出定义</li>
+        <li>正常路径和异常路径（至少5个边界案例）</li>
+        <li>验收标准（例如“所有测试通过，无安全警告”）</li>
+      </ul>
+    </li>
+    <li><strong>配置AI代理</strong>：使用支持规范驱动的工具（如Claude Code、Cursor的Agent模式、JetBrains AI Assistant）。将规范文件作为系统提示或初始上下文。</li>
+    <li><strong>迭代生成</strong>：让AI根据规范生成代码和测试。每次生成后，对照规范检查：
+      <ul>
+        <li>是否所有验收标准都实现了？</li>
+        <li>是否有未在规范中定义的额外行为？</li>
+        <li>测试是否覆盖了规范列出的边界？</li>
+      </ul>
+    </li>
+    <li><strong>两阶段审查</strong>：
+      <ul>
+        <li>第一阶段：自动扫描（使用linter、SAST工具、类型检查器）检测逻辑错误、安全弱点、风格违规。</li>
+        <li>第二阶段：人工审查，聚焦业务逻辑和规范中未覆盖的领域专家案例。</li>
+      </ul>
+    </li>
+    <li><strong>更新规范</strong>：如果发现规范遗漏，先更新规范，再让AI重新生成。规范是“真理源”。</li>
+    <li><strong>纳入CI/CD</strong>：将规范文档作为制品，与代码一同版本化。可以在CI中检查规范是否与代码一致（例如，通过关键字匹配或自定义脚本）。</li>
+  </ol>
+
+  <p>对于团队，可以进一步：</p>
+  <ul>
+    <li>建立规范模板库（如“API端点规范”、“数据处理规范”）。</li>
+    <li>在Jira ticket中嵌入规范链接，让AI在生成代码时自动读取。</li>
+    <li>使用AI自动生成发布说明（如GitProtect的做法），但确保发布说明基于规范变更而非代码差异。</li>
+  </ul>
+
+  <h2 id="section-6">风险和限制</h2>
+
+  <ul>
+    <li><strong>规范本身可能不完整</strong>：如果规范写得太粗略，AI仍然会产出不符合预期的代码。规范驱动开发并不降低对领域知识的要求，反而要求开发者具备更强的抽象和定义能力。</li>
+    <li><strong>过度规范导致僵化</strong>：对于快速原型或探索性任务，写详细规范可能拖慢速度。规范驱动更适合有明确需求的生产级功能。</li>
+    <li><strong>AI对规范的理解偏差</strong>：当前AI模型对长文档的上下文理解仍有限，规范过长或逻辑复杂时，AI可能遗漏细节。建议规范控制在500-1000字以内，或分模块。</li>
+    <li><strong>团队协作成本</strong>：规范需要维护和同步，多人编写规范时可能产生冲突。需要引入规范审查流程。</li>
+    <li><strong>安全风险</strong>：AI生成的代码可能包含漏洞，规范中应包含安全要求（如输入验证、权限检查），但自动扫描不能替代人工安全审查。</li>
+  </ul>
+
+  <h2 id="section-7">我的判断</h2>
+
+  <p>规范驱动开发不是“银弹”，但它是当前AI辅助编码中最务实的进步。它把AI从“黑盒生成器”变成了“可解释的执行器”，让人重新回到控制位。对于任何需要长期维护、多人协作或合规要求的项目，规范驱动开发应该成为默认工作流。</p>
+
+  <p>建议团队在下一个迭代中，选一个中等复杂度的功能，完整走一遍“写规范→AI实现→两阶段审查→更新规范”的循环。你会立即感受到：虽然前期写规范多花了30分钟，但后期调试和返工的时间减少了至少一半。</p>
+
+  <p><strong>适合人群</strong>：工程经理、DevEx负责人、需要交付可靠产品的开发者、合规敏感团队。</p>
+
+  <p><strong>不适合人群</strong>：纯探索性黑客马拉松、一次性脚本编写、对代码质量无要求的快速原型。</p>
+
+  <p><strong>风险提示</strong>：不要迷信AI能理解所有规范。始终保留人类对“规范是否合理”的最终判断权。</p>
+
+</div>
+
+<hr />
+
+<!-- English Version -->
+<div class="lang-en">
+
+  <h2 id="spec-driven-ai-software-delivery-from-vibe-coding-to-controlled-release-workflows">Spec-Driven AI Software Delivery: From Vibe Coding to Controlled Release Workflows</h2>
+
+  <h1 id="spec-driven-ai-software-delivery-from-vibe-coding-to-controlled-release-workflows-1">Spec-Driven AI Software Delivery: From Vibe Coding to Controlled Release Workflows</h1>
+
+  <p><strong>What it is</strong></p>
+
+  <p>A structured workflow where AI agents handle implementation, test scaffolding, and release documentation—but humans own specification, review, and approval. The key shift: moving from “vibe coding” (AI writes code from vague prompts) to <strong>spec-driven development</strong>, where a detailed markdown spec defines what to build, and the coding agent implements against it.</p>
+
+  <p><strong>Why it matters now</strong></p>
+
+  <ul>
+    <li>Vibe coding produces code that often doesn’t match intent, creating rework and security holes.</li>
+    <li>Engineering teams need to scale delivery without multiplying headcount or risks.</li>
+    <li>CI/CD pipelines are integrating AI agents for test generation, vulnerability scanning, and release note summarization. The bottleneck is no longer code generation—it’s <strong>spec quality and review capacity</strong>.</li>
+  </ul>
+
+  <p><strong>How it works in practice</strong></p>
+
+  <ol>
+    <li><strong>Specification</strong> – A human writes a “project constitution”: tech stack, mission, roadmap, and per-feature specs in markdown. This preserves context across agent sessions.</li>
+    <li><strong>Implementation</strong> – AI agents (Claude Code, JetBrains AI, Copilot) generate code against the spec, reducing hallucination and misalignment.</li>
+    <li><strong>Automated review</strong> – First pass by AI scanners for logic errors, security weaknesses, style violations.</li>
+    <li><strong>Human review</strong> – Domain experts focus on edge cases AI can’t anticipate (e.g., a Turkish character in an email field). This is the highest-value human contribution.</li>
+    <li><strong>Release automation</strong> – AI pulls Jira tickets, writes release notes, categorizes changes, and posts to Slack/email/Confluence with consistent templates.</li>
+  </ol>
+
+  <p><strong>Practical next steps for teams</strong></p>
+
+  <ul>
+    <li>Write a spec before any AI coding session. Start with a one-page markdown defining scope, constraints, and success criteria.</li>
+    <li>Add a CI step that validates spec coverage in generated code (e.g., all listed test cases exist).</li>
+    <li>Assign humans to review only “less obvious failures” specific to your domain—not generic patterns AI already handles.</li>
+    <li>Automate release note generation from Jira metadata but require a human final sign-off.</li>
+  </ul>
+
+  <p><strong>Risks and operational notes</strong></p>
+
+  <ul>
+    <li>Specs become stale quickly if not maintained alongside code. Treat spec as a living document, not a one-time artifact.</li>
+    <li>AI-generated tests cover happy paths but miss business-specific edge cases. You need domain experts, not just QA generalists.</li>
+    <li>Release notes generated from Jira tickets may miss context that a developer’s commit message captures. Consider combining both sources.</li>
+    <li>Over-reliance on AI for review can introduce consistent blind spots. Rotate human reviewers to catch different error types.</li>
+  </ul>
+
+  <p><strong>Who this is for</strong> – Engineering managers, DevEx leads, and teams shipping production software with velocity requirements.</p>
+
+  <p><strong>Who this is not for</strong> – Solo prototypes, exploratory research, or teams without strong spec-writing discipline.</p>
+
+  <p><strong>Take</strong></p>
+
+  <p>Spec-driven delivery doesn’t slow teams down—it reduces the rework cycles that vibe coding creates. The fastest way to ship is to slow down on spec writing. Teams that adopt this pattern report fewer post-deployment incidents, lower review fatigue, and better alignment between AI output and product intent. The workflow is mature enough to adopt today: write the spec, let the agent code, review the edge cases, and automate the release notes.</p>
+
+</div>
+
+<hr />
+
+<h3 id="参考来源--sources">参考来源 / Sources</h3>
+
+<ul>
+  <li><a href="https://devcom.com/tech-blog/ai-assisted-software-development">AI-Assisted Software Development: Workflow, Risks &amp; ROI</a></li>
+  <li><a href="https://firstlinesoftware.com/blog/blog-ai-accelerated-engineering-workflow">AI-Accelerated Engineering Workflow: Ticket to Merge</a></li>
+  <li><a href="https://gitprotect.io/blog/how-ai-automation-is-transforming-release-notes-reports">How AI Automation Is Transforming Release Notes &amp; Reports</a></li>
+  <li><a href="https://www.deeplearning.ai/courses/spec-driven-development-with-coding-agents">Spec-Driven Development with Coding Agents</a></li>
+  <li><a href="https://www.facebook.com/andrew.ng.96/videos/new-course-spec-driven-development-with-coding-agents-built-in-partnership-with-/1509071804123051">New course: Spec-Driven Development with Coding …</a></li>
+</ul>
+
+  </div><div class="post-engage" data-slug="2026-08-26-ai-software-delivery-5">
+    <div class="engage-stats">
+      <span class="engage-item view-count" title="浏览量 / views">
+        <span class="engage-ico" aria-hidden="true">◉</span>
+        <span class="engage-num" data-stat="views">—</span>
+        <span class="engage-lbl"><span class="zh">浏览</span><span class="en">views</span></span>
+      </span>
+      <span class="engage-item like-count" title="点赞 / likes">
+        <span class="engage-ico" aria-hidden="true">♥</span>
+        <span class="engage-num" data-stat="likes">—</span>
+        <span class="engage-lbl"><span class="zh">点赞</span><span class="en">likes</span></span>
+      </span>
+    </div>
+    <button class="like-btn" type="button" aria-pressed="false">
+      <span class="like-icon" aria-hidden="true">♥</span>
+      <span class="like-label"><span class="zh">点赞</span><span class="en">Like</span></span>
+    </button>
+  </div>
+
+  <div class="post-nav">
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
+    <a href="/ai-infosec-landing/feed.xml" class="back-link rss-back-link">RSS FEED</a>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">東情局 / DONG INTEL BUREAU</div>
+      <p>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p>LIVE SIGNAL MONITORING · UPDATED WEEKLY · MONDAY 00:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+      <p class="footer-privacy"><span class="zh">本站使用 Supabase 统计访问数据（仅记录 IP 哈希用于去重）</span><span class="en">Anonymous view stats via Supabase (IP-hash only)</span></p>
+    </div>
+  </div>
+</footer>
+
+<script src="/ai-infosec-landing/assets/js/main.js?v=2026-08-26" defer></script>
+</body>
+</html>
