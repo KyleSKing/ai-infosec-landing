@@ -134,7 +134,7 @@ layout: default
       <div class="sidebar-block profile-block">
         <h3>PROFILE</h3>
         <div class="profile-card">
-          <img class="profile-avatar" src="{{ '/assets/img/avatar.jpg' | relative_url }}" alt="硅仙人 avatar" width="52" height="52">
+          <img class="profile-avatar" src="{{ '/assets/img/avatar.jpg' | relative_url }}" alt="硅仙人 avatar" width="52" height="52" decoding="async">
           <div class="profile-meta">
             <div class="profile-name">硅仙人 · Silicon Sage</div>
             <div class="profile-role">東情局 / DONG INTEL BUREAU</div>
@@ -146,13 +146,14 @@ layout: default
         </a>
       </div>
 
+      {%- assign totals = site.data.stats.totals | default: {} -%}
       <div class="sidebar-block control-panel">
         <h3>SIGNAL BOARD</h3>
         <div class="stat-grid">
-          <div class="stat-cell"><div class="stat-n">{{ site.posts.size }}</div><div class="stat-l">Intel<br>Items</div></div>
-          <div class="stat-cell"><div class="stat-n">00<span>:00</span></div><div class="stat-l">CST<br>Weekly</div></div>
-          <div class="stat-cell"><div class="stat-n">CN<span>/EN</span></div><div class="stat-l">Bilingual<br>Briefs</div></div>
-          <div class="stat-cell"><div class="stat-n">4</div><div class="stat-l">Signal<br>Types</div></div>
+          <div class="stat-cell"><div class="stat-n" data-stat="total-pv">{{ totals.total_pv | default: site.posts.size }}</div><div class="stat-l"><span class="zh">总浏览</span><span class="en">Total PV</span></div></div>
+          <div class="stat-cell"><div class="stat-n" data-stat="total-uv">{{ totals.total_uv | default: 0 }}</div><div class="stat-l"><span class="zh">访客数</span><span class="en">UV</span></div></div>
+          <div class="stat-cell"><div class="stat-n" data-stat="total-likes">{{ totals.total_likes | default: 0 }}</div><div class="stat-l"><span class="zh">总点赞</span><span class="en">Likes</span></div></div>
+          <div class="stat-cell"><div class="stat-n">{{ site.posts.size }}</div><div class="stat-l"><span class="zh">文章数</span><span class="en">Briefs</span></div></div>
         </div>
       </div>
 
@@ -163,6 +164,67 @@ layout: default
           <p>&gt; parsing policy updates...</p>
           <p>&gt; ranking security signals...</p>
           <p>&gt; briefing generated<span class="cursor">_</span></p>
+        </div>
+      </div>
+
+      <div class="sidebar-block popular-block">
+        <h3><span class="zh">本周热门</span><span class="en">Top This Week</span></h3>
+        <ol class="popular-list" id="popular-list" data-source="supabase">
+          {%- if site.posts.size > 0 -%}
+            {%- assign post_slugs = "" -%}
+            {%- for p in site.posts -%}
+              {%- assign ps = p.path | split: '/' | last | replace: '.md', '' | replace: '.MD', '' -%}
+              {%- if post_slugs == "" -%}
+                {%- assign post_slugs = ps -%}
+              {%- else -%}
+                {%- assign post_slugs = post_slugs | append: "," | append: ps -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+          {%- if site.data.stats and site.data.stats.top -%}
+            {%- for item in site.data.stats.top -%}
+              {%- assign item_slug = item.slug | append: '' -%}
+              {%- assign found_url = '' -%}
+              {%- assign found_title = item_slug -%}
+              {%- for p in site.posts -%}
+                {%- assign ps = p.path | split: '/' | last | replace: '.md', '' | replace: '.MD', '' -%}
+                {%- if ps == item_slug -%}
+                  {%- assign found_url = p.url -%}
+                  {%- assign found_title = p.title_cn | default: p.title | truncate: 22 -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if found_url != '' -%}
+                <li class="popular-item">
+                  <a href="{{ found_url | relative_url }}" class="popular-link">
+                    <span class="popular-rank">{{ forloop.index }}</span>
+                    <span class="popular-title zh">{{ found_title }}</span>
+                    <span class="popular-meta"><b>{{ item.views }}</b> views · <b>{{ item.likes }}</b> ♥</span>
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          {%- else -%}
+            <li class="popular-empty">No data yet.</li>
+          {%- endif -%}
+        </ol>
+        <div class="sparkline-wrap">
+          <div class="sparkline-label">30D PV <span id="spark-pv-total">—</span></div>
+          <svg class="sparkline" id="daily-spark" viewBox="0 0 200 36" preserveAspectRatio="none" aria-label="30 day traffic">
+            {%- if site.data.stats and site.data.stats.daily -%}
+              {%- assign max_pv = 0 -%}
+              {%- for d in site.data.stats.daily -%}{%- if d.pv > max_pv -%}{%- assign max_pv = d.pv -%}{%- endif -%}{%- endfor -%}
+              {%- if max_pv > 0 -%}
+                <polyline class="spark-poly" fill="none" stroke="currentColor" stroke-width="1.5" points="
+                  {%- for d in site.data.stats.daily -%}
+                    {%- assign x = forloop.index0 | times: 200 | divided_by: site.data.stats.daily.size -%}
+                    {%- assign y = 36 | minus: d.pv | times: 32 | divided_by: max_pv | minus: 2 -%}
+                    {{ x }},{{ y }}
+                  {%- endfor -%}
+                "/>
+              {%- endif -%}
+            {%- endif -%}
+          </svg>
         </div>
       </div>
 

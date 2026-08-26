@@ -1,0 +1,33 @@
+<!-- _includes/seo-article.html — Article JSON-LD for post pages. -->
+{%- capture ld_json -%}
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ page.title_cn | default: page.title | jsonify }},
+  "alternativeHeadline": {{ page.title_en | jsonify }},
+  "datePublished": {{ page.date | date_to_xmlschema | jsonify }},
+  "dateModified": {{ page.date | date_to_xmlschema | jsonify }},
+  "author": {
+    "@type": "Organization",
+    "name": {{ site.author | jsonify }},
+    "url": {{ site.url | append: site.baseurl | jsonify }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "東情局",
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ site.url | append: site.baseurl | append: '/assets/img/avatar.jpg' | jsonify }}
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ page.url | absolute_url | jsonify }}
+  },
+  "inLanguage": ["zh-CN", "en"],
+  "keywords": {{ page.tags | join: ',' | jsonify }},
+  "articleSection": {{ page.content_type_en | jsonify }},
+  "description": {{ page.summary_cn | default: site.description | jsonify }}
+}
+{%- endcapture -%}
+<script type="application/ld+json">{{ ld_json }}</script>

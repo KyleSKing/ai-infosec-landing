@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#05070a">
   <title>{% if page.title_cn %}{{ page.title_cn }} | {% endif %}東情局 · DONG INTEL BUREAU</title>
   <meta name="description" content="{{ page.summary_cn | default: site.description }}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,7 +10,24 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v=radar-dot-brightness-v1">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title | escape }} RSS" href="{{ '/feed.xml' | absolute_url }}">
+  <link rel="canonical" href="{{ page.url | absolute_url }}">
+  <link rel="alternate" hreflang="zh-CN" href="{{ page.url | absolute_url }}">
+  <link rel="alternate" hreflang="en" href="{{ page.url | absolute_url }}">
+  <link rel="alternate" hreflang="x-default" href="{{ page.url | absolute_url }}">
   {% seo %}
+  {% if page.layout == 'post' %}
+    {% include seo-article.html %}
+  {% else %}
+    {% include seo-website.html %}
+  {% endif %}
+  <meta name="theme-color" content="#05070a">
+  <meta name="generator" content="Jekyll + Supabase">
+  <script>
+    window.SUPABASE_CONFIG = {
+      url: {{ site.supabase.url | jsonify }},
+      anonKey: {{ site.supabase.anon_key | jsonify }}
+    };
+  </script>
 </head>
 <body>
 
@@ -76,10 +92,11 @@
     <div class="footer-right">
       <p>LIVE SIGNAL MONITORING · UPDATED WEEKLY · MONDAY 00:00 CST</p>
       <p>Jekyll · GitHub Actions · GitHub Pages</p>
+      <p class="footer-privacy"><span class="zh">本站使用 Supabase 统计访问数据（仅记录 IP 哈希用于去重）</span><span class="en">Anonymous view stats via Supabase (IP-hash only)</span></p>
     </div>
   </div>
 </footer>
 
-<script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
 </body>
 </html>

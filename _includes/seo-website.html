@@ -1,0 +1,20 @@
+<!-- _includes/seo-website.html — WebSite JSON-LD for the homepage. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ site.title | jsonify }},
+  "alternateName": "DONG INTEL BUREAU",
+  "url": {{ site.url | append: site.baseurl | jsonify }},
+  "description": {{ site.description | jsonify }},
+  "inLanguage": ["zh-CN", "en"],
+  "publisher": {
+    "@type": "Organization",
+    "name": "東情局",
+    "logo": {
+      "@type": "ImageObject",
+      "url": {{ site.url | append: site.baseurl | append: '/assets/img/avatar.jpg' | jsonify }}
+    }
+  }
+}
+</script>

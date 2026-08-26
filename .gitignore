@@ -8,3 +8,6 @@ Gemfile.lock
 vendor/
 _posts/
 archive/
+__pycache__/
+*.pyc
+.claude/
