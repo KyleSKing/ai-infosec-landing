@@ -1,1 +1,5 @@
-Sitemap: https://kylesking.github.io/ai-infosec-landing/sitemap.xml
+User-agent: *
+Allow: /
+
+Sitemap: https://KyleSKing.github.io/ai-infosec-landing/sitemap.xml
+Sitemap: https://KyleSKing.github.io/ai-infosec-landing/feed.xml

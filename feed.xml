@@ -10,10 +10,249 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 24 Aug 2026 00:32:28 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 26 Aug 2026 18:04:26 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>AI辅助软件交付：规范驱动、人工验证的测试与发布新范式 — AI-Assisted Software Delivery: Spec-Driven, Human-Validated Workflow for Testing, Review, and Release</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/08/26/ai-software-delivery.html</guid>
+      <pubDate>Wed, 26 Aug 2026 18:04:18 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">ai</category>
+      <category domain="content_type">Trend Analysis</category>
+      <category domain="tag">spec-driven development</category><category domain="tag">AI-assisted testing</category><category domain="tag">code review workflow</category><category domain="tag">release cycle optimization</category><category domain="tag">human-in-the-loop</category>
+      <description>开发者正转向规范驱动式开发：AI依据详细规范生成代码和测试，人类负责规格定义、审批和边界场景验证。这一趋势缩短交付周期、降低认知负荷，但需要团队具备编写清晰规范的能力，并保留人工对非预期失败的审查。&#10;&#10;Developers are adopting a disciplined workflow where AI agents generate code and tests from detailed specs, while humans own specification, approval, and edge-case validation. This trend reduces cycle time and cognitive load but demands strong spec-writing skills and human review of non-obvious failures.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;ai&quot;&gt;AI辅助软件交付：规范驱动、人工验证的测试与发布新范式&lt;/h2&gt;
+
+  &lt;h1 id=&quot;ai-1&quot;&gt;AI辅助软件交付：规范驱动、人工验证的测试与发布新范式&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;这个趋势是什么&lt;/h2&gt;
+
+  &lt;p&gt;2026年，软件交付正在经历一次结构性的转变：AI不再只是辅助写代码的工具，而是深度嵌入到测试编写、代码审查、发布决策和回归验证的完整流程中。这不是“AI替代工程师”，而是“AI负责低歧义、高频重复的工作，工程师集中精力处理高歧义、业务敏感的环节”。&lt;/p&gt;
+
+  &lt;p&gt;这个趋势有明确的两条支线：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;AI加速工程流程&lt;/strong&gt;：从ticket到merge，AI代理负责实现、测试框架搭建、文档生成，但规范定义、最终审查和发布批准始终由人类控制。First Line Software、DevCom等公司已有明确定义的工作流。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;规范驱动开发（Spec-Driven Development）&lt;/strong&gt;：Andrew Ng和JetBrains联合推出的课程明确提出，用详细的Markdown规范指导编码代理，保持上下文跨会话连续，提高意图保真度。这被描述为“vibe coding”的纪律性替代方案。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;合在一起，意味着测试和发布不再依赖“先写代码再补测试”的线性流程，而是&lt;strong&gt;规范先写、AI先测、人类再审、迭代验证&lt;/strong&gt;的循环结构。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;为什么现在重要&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-2&quot;&gt;1. 旧问题：测试覆盖率≠业务覆盖率&lt;/h3&gt;
+
+  &lt;p&gt;传统自动化测试擅长覆盖“预期成功路径”，但大量真实世界的缺陷来自业务领域知识的缺失。比如：AI能自动生成一个有效的邮箱验证测试，但可能漏掉土耳其字符i导致文本处理崩溃的边界情况——这是DevCom明确指出的场景。&lt;/p&gt;
+
+  &lt;p&gt;旧做法是“手工补边界测试”，但手工成本高、覆盖率不稳定。AI可以帮你把测试框架搭好、常规路径写完，业务专家只需聚焦于那些只有他们才能想到的失败模式。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-3&quot;&gt;2. 旧问题：审查和发布周期过长&lt;/h3&gt;
+
+  &lt;p&gt;First Line Software描述的AI加速流程中，ticket到merge的周期缩短明显，但瓶颈从“写代码”转移到了“审查和发布决策”。如果没有规范驱动，AI代码的意图度降低，人类审查者需要从头理解AI的每一段输出，审阅反而更累。&lt;/p&gt;
+
+  &lt;p&gt;规范驱动开发的核心价值就在于此：当规范是明确写的，AI的输出可直接对照规范校验，人类审查只需回答“这是否符合规范意图”而非“这段代码想干什么”。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;3. 旧问题：上下文碎片化&lt;/h3&gt;
+
+  &lt;p&gt;Vibe coding的典型问题是：你在一次会话里写了300行代码，第二天打开新会话，AI根本不记得昨天的上下文。规范驱动开发把规范和架构决策保持在单个Markdown文件中，跨会话保留，减少认知债务。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-5&quot;&gt;它和旧做法的区别&lt;/h2&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;维度&lt;/th&gt;
+        &lt;th&gt;传统做法&lt;/th&gt;
+        &lt;th&gt;规范驱动+AI辅助做法&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;测试编写&lt;/td&gt;
+        &lt;td&gt;人工写大部分测试用例，边界测试随缘&lt;/td&gt;
+        &lt;td&gt;AI从现有代码生成测试骨架和常规路径，人类只补业务边界&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;审查流程&lt;/td&gt;
+        &lt;td&gt;一次性人工审查全部代码&lt;/td&gt;
+        &lt;td&gt;两轮：先AI扫描逻辑/安全/风格问题，人工只审查高风险和业务逻辑&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;发布决策&lt;/td&gt;
+        &lt;td&gt;依赖手动测试报告和直觉&lt;/td&gt;
+        &lt;td&gt;由统一测试管理平台（如TestRail）聚合AI回归覆盖+人工探索测试，给出明确的覆盖率和风险仪表盘&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;上下文保持&lt;/td&gt;
+        &lt;td&gt;靠工程师记忆和零散文档&lt;/td&gt;
+        &lt;td&gt;规范文件（Markdown）作为唯一真相源，跨会话、跨工具保持一致&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;从ticket到merge&lt;/td&gt;
+        &lt;td&gt;线性：写代码→写测试→审查→修bug→merge&lt;/td&gt;
+        &lt;td&gt;循环：写规范→AI实现→AI生成测试→人类审查批量和边界→修改→最终人类批准&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p&gt;&lt;strong&gt;一个关键变化&lt;/strong&gt;：测试不再是事后活动，而是与规范编写同步进行。你写规范时就已经决定了哪些是成功路径、哪些是边界条件。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-6&quot;&gt;可以怎么开始试&lt;/h2&gt;
+
+  &lt;p&gt;以下步骤适配到2026年可落地的工具和环境（Claude Code、Cursor、GitHub Copilot、TestRail等）：&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-7&quot;&gt;第一步：为下一个功能写规范文件&lt;/h3&gt;
+
+  &lt;p&gt;不要急着写代码。创建一个&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SPEC.md&lt;/code&gt;文件，包含：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;功能的目标和非目标&lt;/li&gt;
+    &lt;li&gt;技术栈和约束&lt;/li&gt;
+    &lt;li&gt;成功路径的明确列表&lt;/li&gt;
+    &lt;li&gt;已知边界条件和异常情况（尤其是业务相关的）&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;这个规范将成为你和AI之间的合约。&lt;/p&gt;
+
+  &lt;h3 id=&quot;ai-2&quot;&gt;第二步：用AI生成测试骨架&lt;/h3&gt;
+
+  &lt;p&gt;让AI（Claude Code、Copilot等）读取规范并生成测试文件：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;先覆盖规范中列出的所有成功路径&lt;/li&gt;
+    &lt;li&gt;AI会自动补上它知道的常见边界（空输入、超长字符串等）&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;你只添加那些只有你才知道的业务边界&lt;/strong&gt;（如：土耳其字符、特定语言的日期格式、行业特有的数据约束）&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-8&quot;&gt;第三步：两轮审查流程落地&lt;/h3&gt;
+
+  &lt;p&gt;作为PR审查者，不要直接读全部代码：&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;第一轮&lt;/strong&gt;：跑AI扫描工具（SonarQube AI插件、CodeRabbit，或直接用Claude Code的scan命令），修复所有可以自动修复的逻辑、安全和风格问题&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;第二轮&lt;/strong&gt;：只审查高风险模块和业务逻辑部分。对于AI生成的常规测试，信任即可，不用逐行看&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h3 id=&quot;section-9&quot;&gt;第四步：用统一的测试管理仪表盘&lt;/h3&gt;
+
+  &lt;p&gt;如果你的团队使用TestRail或类似平台，将CI/CD中的AI自动化测试结果与人工探索测试结果聚合到同一个看板。发布决策时，看的是：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;自动化覆盖了多少规范路径&lt;/li&gt;
+    &lt;li&gt;人工测了多少业务边界&lt;/li&gt;
+    &lt;li&gt;风险和覆盖率的对比&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;不要只看“测试通过数”。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-10&quot;&gt;第五步：规范复用和迭代&lt;/h3&gt;
+
+  &lt;p&gt;这个规范文件不仅用于当前功能。下次迭代新版本时，更新规范文件，让AI知道哪些保持不变、哪些改了。这比重新解释给AI听要可靠得多。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-11&quot;&gt;风险和限制&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;规范本身的质量决定一切&lt;/strong&gt;。如果规范写得不清晰或遗漏了关键边界，AI生成的测试和代码都会偏离方向。这需要团队投入时间训练写规范的技能。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;业务边界仍然是人类的责任&lt;/strong&gt;。AI无法预知你的行业特定的奇怪行为。DevCom的例子很典型：土耳其字符i导致的文本处理错误，AI不会自动覆盖。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;审查负载没有消失，只是转移了&lt;/strong&gt;。从审查所有代码变为审查规范+高风险代码+业务测试。如果团队不调整分工，会形成新的瓶颈。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;依赖单一AI工具的锁定风险&lt;/strong&gt;。不同的AI工具在测试生成质量上差异显著。建议团队至少准备两套工具方案，避免单点故障。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;合规和审计问题&lt;/strong&gt;。在受监管行业（金融、医疗），AI生成的测试可能不满足审计要求。需要额外的记录追踪，证明测试覆盖了合规要求。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;section-12&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;这个趋势不是“AI会替你做测试”的旧说法，而是“规范成为新的控制点，AI变成执行层”。&lt;/p&gt;
+
+  &lt;p&gt;对团队来说，明确的行动路径是：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;适合的团队&lt;/strong&gt;：已经有相对成熟的Sprint和PR流程的工程团队，愿意花时间写规范（而不是直接写代码），并且有业务领域专家可以补充边界测试。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;不适合的团队&lt;/strong&gt;：团队完全没有规范文化或测试文化，指望AI一步到位产出生产级代码。先补基础工程实践，再谈AI辅助。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;最终我认为，2026年的赢家不是那些最快部署AI的团队，而是那些&lt;strong&gt;把规范、测试和审查结构做得最清晰&lt;/strong&gt;的团队。AI只是把结构清晰的执行速度拉满，把结构混乱的速度加速到同样混乱。&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;ai-assisted-software-delivery-spec-driven-human-validated-workflow-for-testing-review-and-release&quot;&gt;AI-Assisted Software Delivery: Spec-Driven, Human-Validated Workflow for Testing, Review, and Release&lt;/h2&gt;
+
+  &lt;h1 id=&quot;ai-assisted-software-delivery-spec-driven-human-validated-workflow-for-testing-review-and-release-1&quot;&gt;AI-Assisted Software Delivery: Spec-Driven, Human-Validated Workflow for Testing, Review, and Release&lt;/h1&gt;
+
+  &lt;p&gt;AI-assisted delivery is shifting from “AI writes everything” to a division of labor: AI handles implementation, test scaffolding, and documentation, while humans own specification, review, and release approval. The emerging pattern is spec-driven development — write a detailed spec first, then let coding agents execute against it in iterative loops.&lt;/p&gt;
+
+  &lt;h2 id=&quot;what-it-is&quot;&gt;What it is&lt;/h2&gt;
+
+  &lt;p&gt;Teams are converging on a two-track workflow. On the implementation side, coding agents (e.g., Claude Code) take tickets from backlog to merged code faster by generating code, tests, and docs. On the validation side, AI writes the bulk of tests covering expected success cases, while human domain experts supply the edge cases AI can’t anticipate — the Turkish character in an email address that breaks text handling, the business rule no codebase documents.&lt;/p&gt;
+
+  &lt;p&gt;Reviews run in two passes: automated scans for logic errors, security weaknesses, and style violations, followed by human review focused on intent, tradeoffs, and business correctness. Test tools like TestRail pull AI-assisted regression results from CI/CD and link them to requirements and defects, giving teams a single view of coverage and release risk.&lt;/p&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why it matters now&lt;/h2&gt;
+
+  &lt;p&gt;Vibe coding is fast but produces code that doesn’t match intent. Spec-driven development is the disciplined alternative: a markdown spec defines the mission, tech stack, and roadmap, preserving context across agent sessions and keeping agents aligned as complexity grows. The workflow is no longer theoretical — engineering teams are running it on production systems, and tooling (including a new DeepLearning.AI course built with JetBrains) is formalizing the practice.&lt;/p&gt;
+
+  &lt;p&gt;For engineering managers and DevEx leads, the question has shifted from “should we use AI agents?” to “where does AI execute, where do humans validate, and what does that mean for cycle time and team structure?”&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical next steps&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Write a spec before code.&lt;/strong&gt; Define what to build in a clear markdown document: mission, tech stack, constraints, and acceptance criteria. Use it to control large changes and preserve context across agent sessions.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Split review into two passes.&lt;/strong&gt; Automated scans catch logic and security issues; human review focuses on business correctness and edge cases. Don’t let either replace the other.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Assign AI to tests, humans to edge cases.&lt;/strong&gt; Have AI generate the standard test suite, then have domain experts add failure cases based on business knowledge.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Tie AI test output to real risk.&lt;/strong&gt; Pull automated results into a unified test run, link them to requirements, and make release decisions on visible coverage — not on vibes.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;risks-and-limits&quot;&gt;Risks and limits&lt;/h2&gt;
+
+  &lt;p&gt;AI-generated tests cover expected cases but miss the unexpected ones; skipping human domain review is the fastest way to ship blind. Specs lose value if they’re not maintained or if agents aren’t constrained to them. And automated scans catch known vulnerability patterns — not novel logic flaws. The benefit of AI test automation depends entirely on how output is reviewed, organized, and connected to actual release risk.&lt;/p&gt;
+
+  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
+
+  &lt;p&gt;Use AI agents for execution speed, but keep specification, edge-case testing, and release approval in human hands. A written spec is the control mechanism that keeps AI output aligned with intent — and the teams that formalize this split will deliver faster without giving up quality.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[AI-Assisted Software Development: Workflow, Risks &amp;amp; ROI&lt;/td&gt;
+          &lt;td&gt;DevСom](https://devcom.com/tech-blog/ai-assisted-software-development)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://firstlinesoftware.com/blog/blog-ai-accelerated-engineering-workflow&quot;&gt;AI-Accelerated Engineering Workflow: Ticket to Merge - First Line Software&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.testrail.com/blog/ai-in-test-automation&quot;&gt;AI in Test Automation: Tools, Use Cases, and Real Results&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[65K views · 549 reactions&lt;/td&gt;
+          &lt;td&gt;New course: Spec-Driven Development with Coding Agents, built in partnership with JetBrains, and taught by Paul Everitt.&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Vibe codin](https://www.facebook.com/andrew.ng.96/videos/new-course-spec-driven-development-with-coding-agents-built-in-partnership-with-/1509071804123051)&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.deeplearning.ai/courses/spec-driven-development-with-coding-agents&quot;&gt;Spec-Driven Development with Coding Agents - DeepLearning.AI&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>AI软件交付：从规格驱动到自动发布 — AI-Assisted Software Delivery: From Spec-Driven Development to Automated Release</title>
