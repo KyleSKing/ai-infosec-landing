@@ -4,11 +4,19 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const IP_SALT = Deno.env.get("SUPABASE_IP_SALT") ?? "fallback-salt";
+const SUPABASE_URL = Deno.env.get("PROJECT_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SERVICE_ROLE_KEY")!;
+const IP_SALT = Deno.env.get("IP_SALT") ?? "fallback-salt";
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,80}$/i;
+
+const CORS_HEADERS = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "POST, OPTIONS",
+  "access-control-allow-headers":
+    "authorization, content-type, apikey, x-client-info",
+  "access-control-max-age": "86400",
+};
 
 async function hashIp(ip: string): Promise<string> {
   const data = new TextEncoder().encode(ip + IP_SALT);
@@ -27,11 +35,14 @@ function getClientIp(req: Request): string {
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { "content-type": "application/json" },
+    headers: { "content-type": "application/json", ...CORS_HEADERS },
   });
 }
 
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
   if (req.method !== "POST") {
     return jsonResponse({ error: "method not allowed" }, 405);
   }

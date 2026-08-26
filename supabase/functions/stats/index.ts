@@ -4,8 +4,16 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const SUPABASE_URL = Deno.env.get("PROJECT_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SERVICE_ROLE_KEY")!;
+
+const CORS_HEADERS = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "GET, OPTIONS",
+  "access-control-allow-headers":
+    "authorization, content-type, apikey, x-client-info",
+  "access-control-max-age": "86400",
+};
 
 function jsonResponse(body: unknown, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -13,6 +21,7 @@ function jsonResponse(body: unknown, status = 200) {
     headers: {
       "content-type": "application/json",
       "cache-control": "public, max-age=300",
+      ...CORS_HEADERS,
     },
   });
 }
@@ -24,6 +33,9 @@ function clampInt(v: string | null, def: number, min: number, max: number) {
 }
 
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
   if (req.method !== "GET") {
     return jsonResponse({ error: "method not allowed" }, 405);
   }

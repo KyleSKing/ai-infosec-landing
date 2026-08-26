@@ -11,3 +11,4 @@ archive/
 __pycache__/
 *.pyc
 .claude/
+supabase/.temp/
