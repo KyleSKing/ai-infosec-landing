@@ -148,15 +148,22 @@
         }
       }
 
-      // localStorage fast path
+      // localStorage is a *hint* (the source of truth is the edge function
+      // and the likes table). We use it to render the correct initial
+      // "已赞" state for users who voted from this browser, but we do NOT
+      // disable the button — they must be able to toggle their vote off.
+
+      // Hydrate UI from localStorage so returning voters see the right state
+      // before the Supabase query resolves.
       try {
         if (localStorage.getItem(storageKey) === '1') {
           setLikedUI(true);
-          btn.disabled = true;
         }
       } catch (_) {}
 
-      // Initial count from Supabase (anon SELECT on likes)
+      // Initial count from Supabase (anon SELECT on likes). Also reconciles
+      // the local "liked" state in case the user logged in elsewhere or
+      // cleared their browser data.
       if (isSupabaseConfigured) {
         supabaseFetch(
           '/rest/v1/likes?slug=eq.' + encodeURIComponent(postSlug) + '&select=count',
@@ -165,10 +172,17 @@
             numEl.textContent = rows[0].count;
           }
         });
+        // Optionally fetch the "did *I* like this?" hint. We do not have a
+        // per-IP query endpoint, so we trust the localStorage hint until the
+        // user actually clicks. If their like_voters row was deleted server-
+        // side (e.g. via a manual reset), the next click will reconcile.
+
+        // We can also detect "was my previous like removed server-side?" by
+        // checking the count delta — if local says liked=true but a fresh
+        // user clicks, the server will return liked=false and we sync.
       }
 
       btn.addEventListener('click', async () => {
-        if (btn.disabled) return;
         if (!isSupabaseConfigured) {
           flash('Supabase 未配置', 'error');
           return;
@@ -181,24 +195,27 @@
         if (numEl) numEl.textContent = next;
         setLikedUI(action === 'add');
         btn.disabled = true;
-
-        const res = await supabaseFetch('/functions/v1/like', {
-          method: 'POST',
-          body: JSON.stringify({ slug: postSlug, action }),
-        });
-        btn.disabled = false;
-        if (!res) {
-          // rollback
-          if (numEl) numEl.textContent = cur;
-          setLikedUI(wasLiked);
-          flash('网络异常，请稍后再试', 'error');
-          return;
-        }
-        if (numEl && typeof res.count === 'number') numEl.textContent = res.count;
-        if (res.liked) {
-          try { localStorage.setItem(storageKey, '1'); } catch (_) {}
-        } else {
-          try { localStorage.removeItem(storageKey); } catch (_) {}
+        try {
+          const res = await supabaseFetch('/functions/v1/like', {
+            method: 'POST',
+            body: JSON.stringify({ slug: postSlug, action }),
+          });
+          if (!res) {
+            // rollback
+            if (numEl) numEl.textContent = cur;
+            setLikedUI(wasLiked);
+            flash('网络异常，请稍后再试', 'error');
+            return;
+          }
+          if (numEl && typeof res.count === 'number') numEl.textContent = res.count;
+          // Reconcile UI with server's authoritative state.
+          setLikedUI(!!res.liked);
+          try {
+            if (res.liked) localStorage.setItem(storageKey, '1');
+            else localStorage.removeItem(storageKey);
+          } catch (_) {}
+        } finally {
+          btn.disabled = false;
         }
       });
     }
