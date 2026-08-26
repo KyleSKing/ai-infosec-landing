@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% if page.title_cn %}{{ page.title_cn }} | {% endif %}東情局 · DONG INTEL BUREAU</title>
   <meta name="description" content="{{ page.summary_cn | default: site.description }}">
+  <link rel="icon" type="image/svg+xml" href="{{ '/assets/img/favicon.svg' | relative_url }}">
+  <link rel="apple-touch-icon" href="{{ '/assets/img/avatar.jpg' | relative_url }}">
+  <meta name="theme-color" content="#05070a">
+  <meta name="msapplication-TileColor" content="#05070a">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
@@ -20,7 +24,6 @@
   {% else %}
     {% include seo-website.html %}
   {% endif %}
-  <meta name="theme-color" content="#05070a">
   <meta name="generator" content="Jekyll + Supabase">
   <script>
     window.SUPABASE_CONFIG = {
