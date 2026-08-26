@@ -39,6 +39,26 @@ layout: default
     {{ content }}
   </div>
 
+  {%- assign post_slug = page.path | replace: '_posts/', '' | replace: '.md', '' | replace: '_posts\', '' -%}
+  <div class="post-engage" data-slug="{{ post_slug }}">
+    <div class="engage-stats">
+      <span class="engage-item view-count" title="浏览量 / views">
+        <span class="engage-ico" aria-hidden="true">◉</span>
+        <span class="engage-num" data-stat="views">—</span>
+        <span class="engage-lbl"><span class="zh">浏览</span><span class="en">views</span></span>
+      </span>
+      <span class="engage-item like-count" title="点赞 / likes">
+        <span class="engage-ico" aria-hidden="true">♥</span>
+        <span class="engage-num" data-stat="likes">—</span>
+        <span class="engage-lbl"><span class="zh">点赞</span><span class="en">likes</span></span>
+      </span>
+    </div>
+    <button class="like-btn" type="button" aria-pressed="false">
+      <span class="like-icon" aria-hidden="true">♥</span>
+      <span class="like-label"><span class="zh">点赞</span><span class="en">Like</span></span>
+    </button>
+  </div>
+
   <div class="post-nav">
     <a href="{{ '/' | relative_url }}" class="back-link">← BACK TO INTEL BOARD</a>
     <a href="{{ '/feed.xml' | relative_url }}" class="back-link rss-back-link">RSS FEED</a>
