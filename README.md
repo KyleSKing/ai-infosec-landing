@@ -81,4 +81,53 @@ bundle exec jekyll serve
 - GitHub Actions 自动化
 - DeepSeek V4 Flash via OpenRouter
 - Tavily Search API
+- Supabase（访问统计 / 点赞 / JSON-LD SEO 元数据）
 - GitHub Pages 托管
+
+## 可选：Supabase 接入（访问统计 + 点赞）
+
+跳过也能用，但所有"浏览数 / 点赞 / 热门榜单"会显示"—"占位。
+
+### 1. 创建 Supabase 项目
+
+1. 打开 https://supabase.com → New project，命名如 `ai-infosec-landing`
+2. Settings → API，记下 `Project URL` 和 `service_role` key
+
+### 2. 跑 schema
+
+在 SQL Editor 粘贴并执行 [supabase/migrations/0001_init.sql](supabase/migrations/0001_init.sql)。
+
+### 3. 部署 Edge Functions
+
+```bash
+# 本地或 GitHub Actions 容器内
+supabase link --project-ref <your-ref>
+supabase secrets set SUPABASE_URL=https://<your-ref>.supabase.co
+supabase secrets set SUPABASE_SERVICE_ROLE_KEY=<service-role-key>
+supabase secrets set SUPABASE_IP_SALT=<32-char-random>
+supabase functions deploy like view stats
+```
+
+### 4. GitHub Secrets 新增
+
+| Secret | 说明 |
+|---|---|
+| `SUPABASE_URL` | `https://<your-ref>.supabase.co` |
+| `SUPABASE_ANON_KEY` | 浏览器公开 key（仅 SELECT 权限） |
+| `SUPABASE_SERVICE_ROLE_KEY` | **仅 CI 用**，调 Edge Function + sync stats |
+| `SUPABASE_IP_SALT` | 32 字符随机串，加盐用 |
+
+跑一次 workflow → 首页 sidebar 应出现 PV/UV/点赞数；点文章页点赞按钮可写入。
+
+## SEO 自检
+
+- `robots.txt` + `sitemap.xml` 已生成
+- 每篇文章注入 JSON-LD `Article` schema
+- 首页注入 `WebSite` schema
+- `<link rel="canonical">` + hreflang `zh-CN` / `en` / `x-default`
+- Open Graph + Twitter Card（`jekyll-seo-tag` 增强）
+
+部署后到以下工具校验：
+- https://search.google.com/test/rich-results
+- https://www.opengraph.xyz/
+- Chrome DevTools → Lighthouse → SEO 审计

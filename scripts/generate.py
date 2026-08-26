@@ -387,6 +387,7 @@ tags:
 {tags_str}
 summary_en: {yaml_scalar(article['summary_en'])}
 summary_cn: {yaml_scalar(article['summary_cn'])}
+view_count_seed: 0
 ---
 
 <!-- Chinese Version -->
