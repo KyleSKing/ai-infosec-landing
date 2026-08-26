@@ -218,6 +218,20 @@
     setupLikes();
 
     // ---------- 5. Popular + sparkline (homepage) ----------
+    async function loadSiteTotals() {
+      if (!isSupabaseConfigured) return;
+      const data = await supabaseFetch('/functions/v1/stats?type=site');
+      if (!data || !data.totals) return;
+      const t = data.totals;
+      const setIfPresent = (key, val) => {
+        const el = document.querySelector('[data-stat="' + key + '"]');
+        if (el && typeof val === 'number') el.textContent = val;
+      };
+      setIfPresent('total-pv', t.total_pv);
+      setIfPresent('total-uv', t.total_uv);
+      setIfPresent('total-likes', t.total_likes);
+    }
+
     async function loadPopular() {
       if (!isSupabaseConfigured) return;
       const list = document.getElementById('popular-list');
@@ -284,6 +298,7 @@
       }
     }
 
+    loadSiteTotals();
     loadPopular();
     loadSparkline();
   });

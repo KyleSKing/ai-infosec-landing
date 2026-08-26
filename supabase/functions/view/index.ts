@@ -3,12 +3,20 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-const IP_SALT = Deno.env.get("SUPABASE_IP_SALT") ?? "fallback-salt";
+const SUPABASE_URL = Deno.env.get("PROJECT_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SERVICE_ROLE_KEY")!;
+const IP_SALT = Deno.env.get("IP_SALT") ?? "fallback-salt";
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,80}$/i;
 const DEDUP_WINDOW_MIN = 30;
+
+const CORS_HEADERS = {
+  "access-control-allow-origin": "*",
+  "access-control-allow-methods": "POST, OPTIONS",
+  "access-control-allow-headers":
+    "authorization, content-type, apikey, x-client-info",
+  "access-control-max-age": "86400",
+};
 
 async function hashString(s: string): Promise<string> {
   const buf = await crypto.subtle.digest(
@@ -27,8 +35,11 @@ function getClientIp(req: Request): string {
 }
 
 Deno.serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
+  }
   if (req.method !== "POST") {
-    return new Response("method not allowed", { status: 405 });
+    return new Response("method not allowed", { status: 405, headers: CORS_HEADERS });
   }
 
   let body: { slug?: string; lang?: string };
@@ -70,7 +81,7 @@ Deno.serve(async (req) => {
     .maybeSingle();
 
   if (recent) {
-    return new Response(null, { status: 204 });
+    return new Response(null, { status: 204, headers: CORS_HEADERS });
   }
 
   const { error } = await supabase.from("views").insert({
@@ -81,8 +92,8 @@ Deno.serve(async (req) => {
   });
 
   if (error) {
-    return new Response(error.message, { status: 500 });
+    return new Response(error.message, { status: 500, headers: CORS_HEADERS });
   }
 
-  return new Response(null, { status: 204 });
+  return new Response(null, { status: 204, headers: CORS_HEADERS });
 });
