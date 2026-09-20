@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026年开放Agent协议：MCP与A2A如何解决互操作性难题 | 東情局 · DONG INTEL BUREAU</title>
+  <meta name="description" content="Agent生态正围绕MCP（工具连接）和A2A（Agent间通信）标准化，替代了以往大量定制集成。但安全治理与跨生态落地仍是实际瓶颈。">
+  <link rel="icon" type="image/svg+xml" href="/ai-infosec-landing/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/ai-infosec-landing/assets/img/avatar.jpg">
+  <meta name="theme-color" content="#05070a">
+  <meta name="msapplication-TileColor" content="#05070a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css?v=radar-dot-brightness-v1">
+  <link rel="alternate" type="application/rss+xml" title="東情局 · DONG INTEL BUREAU RSS" href="https://kylesking.github.io/ai-infosec-landing/feed.xml">
+  <link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/09/21/agent-interoperability.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/09/21/agent-interoperability.html">
+  <link rel="alternate" hreflang="en" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/09/21/agent-interoperability.html">
+  <link rel="alternate" hreflang="x-default" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/09/21/agent-interoperability.html">
+  <!-- Begin Jekyll SEO tag v2.9.0 -->
+<title>Agent Interoperability | 東情局 · DONG INTEL BUREAU</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Agent Interoperability" />
+<meta name="author" content="東情局 / DONG INTEL BUREAU" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/09/21/agent-interoperability.html" />
+<meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/ai/2026/09/21/agent-interoperability.html" />
+<meta property="og:site_name" content="東情局 · DONG INTEL BUREAU" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-09-21T02:37:07+08:00" />
+<meta property="article:modified_time" content="2026-09-21T02:37:07+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Agent Interoperability" />
+<meta name="twitter:site" content="@dongintbureau" />
+<meta name="twitter:creator" content="@東情局 / DONG INTEL BUREAU" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"東情局 / DONG INTEL BUREAU"},"dateModified":"2026-09-21T02:37:07+08:00","datePublished":"2026-09-21T02:37:07+08:00","description":"Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Agent Interoperability","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/ai/2026/09/21/agent-interoperability.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kylesking.github.io/ai-infosec-landing/assets/img/avatar.jpg"},"name":"東情局 / DONG INTEL BUREAU"},"url":"https://kylesking.github.io/ai-infosec-landing/ai/2026/09/21/agent-interoperability.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  
+    <!-- _includes/seo-article.html — Article JSON-LD for post pages. --><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "2026年开放Agent协议：MCP与A2A如何解决互操作性难题",
+  "alternativeHeadline": "Open Agent Protocols in 2026: MCP, A2A, and the Real Limits of Interoperability",
+  "datePublished": "2026-09-21T02:37:07+08:00",
+  "dateModified": "2026-09-21T02:37:07+08:00",
+  "author": {
+    "@type": "Organization",
+    "name": "東情局 / DONG INTEL BUREAU",
+    "url": "https://KyleSKing.github.io/ai-infosec-landing"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "東情局",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://KyleSKing.github.io/ai-infosec-landing/assets/img/avatar.jpg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://kylesking.github.io/ai-infosec-landing/ai/2026/09/21/agent-interoperability.html"
+  },
+  "inLanguage": ["zh-CN", "en"],
+  "keywords": "Agent Interoperability,MCP,A2A,Agent Protocols,AI Infrastructure",
+  "articleSection": "Trend Analysis",
+  "description": "Agent生态正围绕MCP（工具连接）和A2A（Agent间通信）标准化，替代了以往大量定制集成。但安全治理与跨生态落地仍是实际瓶颈。"
+}</script><meta property="og:image" content="https://KyleSKing.github.io/ai-infosec-landing/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://KyleSKing.github.io/ai-infosec-landing/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+
+  
+  <meta name="generator" content="Jekyll + Supabase">
+  <script>
+    window.SUPABASE_CONFIG = {
+      url: "https://vncoryzptkkxozjeitbz.supabase.co",
+      anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuY29yeXpwdGtreG96amVpdGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MzE3NjAsImV4cCI6MjEwMzMwNzc2MH0.mw8ZKAYMVVzgRbTTeDY6RLD24K2gBgMX96bcSJ4RzNA"
+    };
+  </script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="東情局首页">
+      <div class="logo-mark"><span></span></div>
+      <div>
+        <div class="logo-text">東情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
+      </div>
+    </a>
+
+    <div class="nav-cats" aria-label="Category filters">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI</span><span class="en">AI</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全合规</span><span class="en">Security</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="live-pill" title="Live signal monitoring">
+        <div class="live-dot"></div>
+        <span>LIVE</span>
+      </div>
+      <div class="lang-toggle" aria-label="Language switcher">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="post-wrap">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">東情局 / DONG INTEL BUREAU</div>
+    <div class="post-head-meta">
+      <span class="cat-chip chip-ai">AI</span>
+      
+      <span class="type-chip"><span class="zh">趋势分析</span><span class="en">Trend Analysis</span></span>
+      
+      <span class="art-date">2026.09.21</span>
+    </div>
+
+    <h1 class="post-title-cn zh">2026年开放Agent协议：MCP与A2A如何解决互操作性难题</h1>
+    <h1 class="post-title-en en">Open Agent Protocols in 2026: MCP, A2A, and the Real Limits of Interoperability</h1>
+
+    <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
+      <p class="zh">Agent生态正围绕MCP（工具连接）和A2A（Agent间通信）标准化，替代了以往大量定制集成。但安全治理与跨生态落地仍是实际瓶颈。</p>
+      <p class="en">The agent ecosystem is converging around MCP for tool connectivity and A2A for agent-to-agent communication, replacing custom integrations. However, real-world limits remain in security, governance, and cross-ecosystem adoption.</p>
+    </div>
+
+    <div class="post-tags-row">
+      <span class="tag">Agent Interoperability</span><span class="tag">MCP</span><span class="tag">A2A</span><span class="tag">Agent Protocols</span><span class="tag">AI Infrastructure</span>
+    </div>
+  </article>
+
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
+  </div>
+
+  <div class="post-body post-content">
+    <!-- Chinese Version -->
+<div class="lang-cn">
+
+  <h2 id="agentmcpa2a">2026年开放Agent协议：MCP与A2A如何解决互操作性难题</h2>
+
+  <h1 id="agentmcpa2a-1">2026年开放Agent协议：MCP与A2A如何解决互操作性难题</h1>
+
+  <h2 id="section">这个趋势是什么</h2>
+
+  <p>2025年下半年到2026年，AI Agent领域出现了一个明确的分水岭：<strong>开放协议标准化</strong>。两个协议正在成为事实标准：</p>
+
+  <ul>
+    <li><strong>MCP（Model Context Protocol）</strong>：由Anthropic提出，标准化Agent与外部工具、数据源的交互方式。一个工具只要发布MCP Server，任何MCP兼容的Agent都能直接调用，无需写自定义集成代码。</li>
+    <li><strong>A2A（Agent-to-Agent）</strong>：由Google推出，标准化Agent之间的通信。一个Agent通过发布“Agent Card”暴露自身能力，其他Agent可以自动发现并调用它，实现任务委托和协作。</li>
+  </ul>
+
+  <p>同时，LangChain也推出了自己的Agent Protocol（OpenAPI规范），但生态影响力不及前两者。目前AWS、Salesforce、Claude、Cursor等主流平台均已宣布支持MCP和A2A。</p>
+
+  <h2 id="section-1">为什么现在重要</h2>
+
+  <p>2024-2025年，AI Agent从概念验证进入生产部署，但很快遇到<strong>互操作性瓶颈</strong>：</p>
+
+  <ul>
+    <li>每个Agent框架（LangChain、CrewAI、AutoGen等）都有自己的工具调用方式，集成一个新工具平均需要18小时手工编码。</li>
+    <li>Agent之间无法直接通信，跨系统协作只能靠硬编码API调用，无法动态发现和适配。</li>
+    <li>企业同时使用多个Agent平台（Salesforce Agentforce、AWS Bedrock、自定义Agent），每个都需要独立集成，重复劳动严重。</li>
+  </ul>
+
+  <p>MCP和A2A的出现，让<strong>一次集成、到处可用</strong>成为可能。MCP解决“Agent如何调用工具”，A2A解决“Agent如何调用其他Agent”。两者互补，构成了Agent生态的“TCP/IP时刻”。</p>
+
+  <h2 id="section-2">它和旧做法的区别</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>维度</th>
+        <th>旧做法</th>
+        <th>新做法（MCP + A2A）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>工具集成</td>
+        <td>每个框架写自定义适配器，N个框架×M个工具 = N×M集成</td>
+        <td>工具发布MCP Server，所有MCP Agent自动可用，集成数 = M</td>
+      </tr>
+      <tr>
+        <td>Agent通信</td>
+        <td>硬编码REST API，需双方协商接口，不支持动态发现</td>
+        <td>A2A Agent Card自动暴露能力，Agent可发现并调用，支持异步长任务</td>
+      </tr>
+      <tr>
+        <td>框架依赖</td>
+        <td>锁定特定框架（如LangChain），迁移成本高</td>
+        <td>协议层抽象，Agent可跨框架运行（只要实现MCP/A2A）</td>
+      </tr>
+      <tr>
+        <td>开发效率</td>
+        <td>新工具接入平均18小时</td>
+        <td>接入MCP Server后，Agent端零配置，工具端一次发布即可</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>具体例子：一个CRM系统暴露MCP Server后，Claude、Cursor、自定义Agent都能直接查询客户数据，无需为每个平台写独立插件。一个数据分析Agent通过A2A调用另一个Agent的“生成报告”能力，后者可以异步返回结果，双方无需共享代码库。</p>
+
+  <h2 id="section-3">可以怎么开始试</h2>
+
+  <h3 id="mcp">第一步：用MCP暴露你的工具</h3>
+  <p>如果你有一个内部API或SaaS工具，可以快速包装成MCP Server：</p>
+  <ul>
+    <li>使用官方MCP SDK（Python/TypeScript/Java）实现<code class="language-plaintext highlighter-rouge">list_tools</code>和<code class="language-plaintext highlighter-rouge">call_tool</code>端点。</li>
+    <li>部署为HTTP服务或通过stdio子进程运行（本地开发）。</li>
+    <li>测试：用Claude Desktop或Cursor的MCP配置指向你的Server，直接调用。</li>
+  </ul>
+
+  <h3 id="agenta2a">第二步：让Agent支持A2A</h3>
+  <p>如果你的Agent需要与其他Agent协作：</p>
+  <ul>
+    <li>实现A2A Agent Card（JSON格式，描述能力、输入输出、安全策略）。</li>
+    <li>部署A2A HTTP端点（<code class="language-plaintext highlighter-rouge">/agent</code>），支持<code class="language-plaintext highlighter-rouge">send_task</code>和<code class="language-plaintext highlighter-rouge">get_task</code>（异步任务生命周期）。</li>
+    <li>使用AWS Bedrock或Google Vertex AI的A2A支持进行测试。</li>
+  </ul>
+
+  <h3 id="section-4">第三步：在现有平台中启用</h3>
+  <ul>
+    <li>Claude Desktop：在设置中添加MCP Server URL。</li>
+    <li>Cursor：在<code class="language-plaintext highlighter-rouge">mcp.json</code>中配置。</li>
+    <li>AWS Bedrock：已支持MCP工具集成和A2A Agent调用。</li>
+    <li>Salesforce Agentforce：支持A2A标准，可调用外部Agent。</li>
+  </ul>
+
+  <h3 id="section-5">适合人群</h3>
+  <ul>
+    <li><strong>AI应用开发者</strong>：需要快速集成多种工具，减少重复工作。</li>
+    <li><strong>平台工程师</strong>：构建内部Agent平台，希望支持多框架、多工具。</li>
+    <li><strong>SaaS团队</strong>：希望自己的产品能被AI Agent直接调用，降低集成门槛。</li>
+    <li><strong>安全/合规团队</strong>：需要统一管控Agent对工具的访问（MCP Server可集中审计）。</li>
+  </ul>
+
+  <h2 id="section-6">风险和限制</h2>
+
+  <ol>
+    <li><strong>标准仍在演进</strong>：MCP和A2A的规范尚未完全冻结，部分细节（如错误处理、认证机制）还在社区讨论中。早期采用者可能面临接口变更。</li>
+    <li><strong>安全模型不成熟</strong>：MCP Server默认信任调用方，缺乏细粒度权限控制。A2A的Agent Card包含安全策略字段，但实际落地需要配合OAuth、API Key等机制。目前没有统一的安全框架。</li>
+    <li><strong>异步通信复杂性</strong>：A2A支持长任务异步返回，但任务状态同步、超时、重试等生产级特性需要额外实现。</li>
+    <li><strong>厂商支持差异</strong>：虽然AWS、Google、Anthropic、Salesforce都表态支持，但具体实现细节（如MCP版本、A2A扩展字段）可能不兼容。跨厂商互操作仍需测试。</li>
+    <li><strong>性能开销</strong>：MCP和A2A都引入额外的HTTP/JSON序列化，对高频调用场景（如实时推荐）可能增加延迟。本地MCP（stdio）延迟较低，但远程MCP需要网络优化。</li>
+  </ol>
+
+  <h2 id="section-7">我的判断</h2>
+
+  <p>MCP和A2A正在成为AI Agent生态的“基础设施协议”，其重要性不亚于HTTP之于Web。<strong>它们解决的是真实的生产力瓶颈</strong>：集成成本从小时级降至分钟级，Agent间协作从硬编码变为动态发现。</p>
+
+  <p>我的建议：</p>
+  <ul>
+    <li><strong>立即开始试验MCP</strong>：将内部工具包装成MCP Server，这是成本最低的切入点。即使标准有变化，MCP的设计理念（工具、资源、提示）不会过时。</li>
+    <li><strong>关注A2A但不必急于全量部署</strong>：A2A的异步协作模式更适合复杂工作流，但当前生态支持度不如MCP。可以先在非关键场景试用。</li>
+    <li><strong>安全先行</strong>：在MCP Server入口增加认证和审计日志，不要默认信任所有调用方。A2A Agent Card中明确声明安全策略，并实现OAuth 2.0授权。</li>
+    <li><strong>避免厂商锁定</strong>：优先使用开源实现（MCP SDK、A2A参考实现），确保可以迁移到不同平台。</li>
+  </ul>
+
+  <p>未来1-2年内，MCP和A2A的兼容性将成为Agent平台的核心竞争力。早期采用者将获得显著的集成效率优势，但需要谨慎管理标准演进带来的兼容性风险。</p>
+
+</div>
+
+<hr />
+
+<!-- English Version -->
+<div class="lang-en">
+
+  <h2 id="open-agent-protocols-in-2026-mcp-a2a-and-the-real-limits-of-interoperability">Open Agent Protocols in 2026: MCP, A2A, and the Real Limits of Interoperability</h2>
+
+  <h1 id="open-agent-protocols-in-2026-mcp-a2a-and-the-real-limits-of-interoperability-1">Open Agent Protocols in 2026: MCP, A2A, and the Real Limits of Interoperability</h1>
+
+  <h2 id="whats-happening">What’s happening</h2>
+
+  <p>Agent interoperability has moved from a nice-to-have to a practical engineering problem. Two open standards now carry most of the weight: <strong>MCP (Model Context Protocol)</strong> standardizes how an agent connects to tools, while <strong>A2A (Agent-to-Agent)</strong> standardizes how agents discover and call each other. A third effort, LangChain’s <strong>Agent Protocol</strong>, offers a framework-agnostic REST API specification for running agents, though it has not achieved the same industry-wide adoption as MCP and A2A.</p>
+
+  <p>The architecture is straightforward. An MCP host (the app the user interacts with) contains an MCP client that speaks to MCP servers exposing tools, resources, and prompts. A2A sits one layer up: agents publish machine-readable agent cards, and other agents discover and invoke them without custom glue code. The practical payoff is real—reported time to wire a new SaaS tool into an agent has dropped from roughly 18 hours of bespoke integration work to minutes when the tool exposes an MCP server.</p>
+
+  <h2 id="why-it-matters-now">Why it matters now</h2>
+
+  <p>The enterprise driver is vendor neutrality. Salesforce, AWS, and others have publicly backed A2A and MCP, signaling that neither standard is a single-vendor play. For engineering teams, this means the build-versus-buy calculus for agent infrastructure is shifting: you can now assume a baseline level of interoperability rather than planning for N frameworks times M bespoke integrations.</p>
+
+  <h2 id="practical-next-steps">Practical next steps</h2>
+
+  <ul>
+    <li><strong>Standardize on MCP for tool exposure.</strong> If you’re building internal tools or exposing SaaS data to agents, publish an MCP server. It is the closest thing to a universal adapter that exists today.</li>
+    <li><strong>Adopt A2A for cross-agent delegation.</strong> If you have multiple agents handling different domains, implement A2A agent cards so they can discover each other. Start with one pair of agents and measure the integration cost delta.</li>
+    <li><strong>Treat LangChain’s Agent Protocol as a framework-level convenience, not a strategic dependency.</strong> It solves a narrower problem (running agents via a common API) and is less broadly supported.</li>
+    <li><strong>Audit your existing agent integrations.</strong> List every custom connector you maintain. Prioritize migrating the ones with the highest maintenance burden to MCP or A2A.</li>
+  </ul>
+
+  <h2 id="risks-and-limits">Risks and limits</h2>
+
+  <ul>
+    <li><strong>Security surface expands.</strong> Every MCP server and A2A agent card is a new network-accessible endpoint. You need authentication, authorization, and input validation for agent-to-agent and agent-to-tool traffic—standard API security practices, but applied to a new, more autonomous attack surface.</li>
+    <li><strong>Standards are still maturing.</strong> MCP and A2A are backed by major vendors, but neither is an ISO-style standard. Breaking changes are possible as adoption grows.</li>
+    <li><strong>Interoperability is not a silver bullet.</strong> Two agents speaking A2A still need aligned semantics—one agent’s “customer” may not mean the same thing as another’s. Protocol compliance does not solve data-model alignment.</li>
+  </ul>
+
+  <h2 id="take">Take</h2>
+
+  <p>MCP and A2A are the right bets for agent interoperability in 2026. Adopt MCP for tool access and A2A for agent-to-agent communication, but treat them as protocols, not products. The hard problems—security, identity, and semantic alignment—remain yours to solve. The 18-hour integration problem is mostly solved; the governance problem is not.</p>
+
+</div>
+
+<hr />
+
+<h3 id="参考来源--sources">参考来源 / Sources</h3>
+
+<ul>
+  <li><a href="https://jtanruan.medium.com/open-standards-for-ai-agents-a-technical-comparison-of-a2a-mcp-langchain-agent-protocol-and-482be1101ad9">Medium</a></li>
+  <li><a href="https://www.truefoundry.com/blog/agent-interoperability">Agent Interoperability: One Control Plane, Any Framework</a></li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[Open Protocols for Agent Interoperability Part 4: Inter-Agent Communication on A2A</td>
+          <td>AWS Open Source Blog](https://aws.amazon.com/blogs/opensource/open-protocols-for-agent-interoperability-part-4-inter-agent-communication-on-a2a)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://atlan.com/know/agent-interoperability-protocols">Agent Interoperability Protocols: MCP, A2A, OSI Explained [2026]</a></li>
+  <li><a href="https://www.reddit.com/r/LLMDevs/comments/1lq6uxn/a_breakdown_of_a2a_mcp_and_agentic">A Breakdown of A2A, MCP, and Agentic Interoperability</a></li>
+</ul>
+
+  </div><div class="post-engage" data-slug="2026-09-21-agent-interoperability">
+    <div class="engage-stats">
+      <span class="engage-item view-count" title="浏览量 / views">
+        <span class="engage-ico" aria-hidden="true">◉</span>
+        <span class="engage-num" data-stat="views">—</span>
+        <span class="engage-lbl"><span class="zh">浏览</span><span class="en">views</span></span>
+      </span>
+      <span class="engage-item like-count" title="点赞 / likes">
+        <span class="engage-ico" aria-hidden="true">♥</span>
+        <span class="engage-num" data-stat="likes">—</span>
+        <span class="engage-lbl"><span class="zh">点赞</span><span class="en">likes</span></span>
+      </span>
+    </div>
+    <button class="like-btn" type="button" aria-pressed="false">
+      <span class="like-icon" aria-hidden="true">♥</span>
+      <span class="like-label"><span class="zh">点赞</span><span class="en">Like</span></span>
+    </button>
+  </div>
+
+  <div class="post-nav">
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
+    <a href="/ai-infosec-landing/feed.xml" class="back-link rss-back-link">RSS FEED</a>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">東情局 / DONG INTEL BUREAU</div>
+      <p>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p>LIVE SIGNAL MONITORING · UPDATED WEEKLY · MONDAY 00:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+      <p class="footer-privacy"><span class="zh">本站使用 Supabase 统计访问数据（仅记录 IP 哈希用于去重）</span><span class="en">Anonymous view stats via Supabase (IP-hash only)</span></p>
+    </div>
+  </div>
+</footer>
+
+<script src="/ai-infosec-landing/assets/js/main.js?v=1789929432" defer></script>
+</body>
+</html>
