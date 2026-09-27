@@ -10,10 +10,288 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 21 Sep 2026 02:37:12 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 28 Sep 2026 03:42:18 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>服务账户与密钥防御实操指南 — Hardening Service Accounts and Secrets: A Defensive Playbook for Engineering Teams</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/09/28/identity-secrets-defense.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/09/28/identity-secrets-defense.html</guid>
+      <pubDate>Mon, 28 Sep 2026 03:42:00 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">infosec</category>
+      <category domain="content_type">Defensive Playbook</category>
+      <category domain="tag">least privilege</category><category domain="tag">service accounts</category><category domain="tag">secret scanning</category><category domain="tag">IAM</category><category domain="tag">DevSecOps</category>
+      <description>服务账户和密钥因权限过大、轮换不足成为主要攻击目标。本文提供最小权限强制、自动密钥扫描和轮换流程的防御实操方案，缩小爆炸半径。&#10;&#10;Service accounts and secrets are prime attack targets due to excessive permissions and poor rotation. This playbook covers least-privilege enforcement, automated secret scanning, and rotation workflows to reduce blast radius.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;服务账户与密钥防御实操指南&lt;/h2&gt;
+
+  &lt;h1 id=&quot;section-1&quot;&gt;服务账户与密钥防御实操指南&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;风险是什么&lt;/h2&gt;
+
+  &lt;p&gt;服务账户（Service Account）和密钥（API Key、Token、证书）是云原生和CI/CD流水线中最容易被忽视的“隐形身份”。它们没有密码过期提醒，没有MFA，通常被硬编码在代码仓库、环境变量或配置文件中。一旦泄露，攻击者可以：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;利用过大的权限横向移动（例如一个只读的CI服务账户被赋予&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;*:*&lt;/code&gt;权限）&lt;/li&gt;
+    &lt;li&gt;持续访问资源（密钥不轮换，泄露后长期有效）&lt;/li&gt;
+    &lt;li&gt;绕过人工审计（服务账户通常不在常规访问审查范围内）&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;最小权限原则（PoLP）是限制爆炸半径的核心手段。但现实是：超过60%的服务账户拥有比实际需要更多的权限，且超过40%的密钥从未被轮换。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-3&quot;&gt;谁会受影响&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;开发团队&lt;/strong&gt;：在本地开发、测试中硬编码密钥，或在Docker镜像中嵌入凭据。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DevOps/SRE&lt;/strong&gt;：在CI/CD流水线（GitHub Actions、Jenkins、GitLab CI）中直接使用长期密钥，而非临时令牌。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;安全团队&lt;/strong&gt;：缺乏对服务账户权限的自动审查和密钥泄露的实时检测。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;云平台管理员&lt;/strong&gt;：跨AWS、Azure、GCP管理多个服务账户，权限分散，难以统一治理。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;合规团队&lt;/strong&gt;：需要满足SOC 2、ISO 27001、PIPL等对访问控制和密钥管理的审计要求。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-4&quot;&gt;怎么检查&lt;/h2&gt;
+
+  &lt;p&gt;以下检查清单可直接用于日常巡检或自动化扫描：&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-5&quot;&gt;1. 服务账户权限审计&lt;/h3&gt;
+
+  &lt;ul class=&quot;task-list&quot;&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;列出所有服务账户（IAM角色/用户），标记其关联的资源（云服务、API、数据库）。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;检查每个服务账户是否遵循“一个应用一个账户”原则，避免共享。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;使用云厂商的IAM Access Analyzer（AWS）、IAM Recommender（GCP）、Entra ID Access Reviews（Azure）生成权限使用报告。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;识别“未使用权限”：例如某服务账户被授予&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ec2:*&lt;/code&gt;但从未调用过&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RunInstances&lt;/code&gt;。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;检查信任策略：是否允许跨账户AssumeRole？是否允许匿名主体访问？&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;2. 密钥泄露检测&lt;/h3&gt;
+
+  &lt;ul class=&quot;task-list&quot;&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;扫描所有代码仓库（包括私有仓库、历史提交）中的硬编码密钥。工具：GitHub Secret Scanning、GitLeaks、TruffleHog、Cycode。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;检查环境变量、Dockerfile、Kubernetes ConfigMap/Secret中是否明文存储密钥。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;检查CI/CD日志输出是否意外打印了密钥（例如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;echo $API_KEY&lt;/code&gt;）。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;检查云平台密钥轮换策略：AWS IAM Access Key、GCP Service Account Key、Azure AD Client Secret的创建时间和上次使用时间。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-7&quot;&gt;3. 密钥轮换与生命周期&lt;/h3&gt;
+
+  &lt;ul class=&quot;task-list&quot;&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;确认所有长期密钥设置了自动轮换（例如AWS IAM密钥每90天轮换）。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;检查是否有密钥超过180天未轮换。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;确认轮换流程是否自动化（而非手动修改）。&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;检查密钥删除后是否仍有依赖该密钥的服务在运行（导致中断）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-8&quot;&gt;怎么修 / 怎么接入流程&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-9&quot;&gt;1. 最小权限落地&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;按应用拆分服务账户&lt;/strong&gt;：每个微服务/工作负载使用独立服务账户，不要复用。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;使用预定义角色&lt;/strong&gt;：优先使用云厂商预定义的最小权限角色（如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;roles/storage.objectViewer&lt;/code&gt;），而非自定义角色（容易过度授权）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;定期权限回收&lt;/strong&gt;：每季度运行一次权限使用报告，撤销90天内未使用的权限。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;实施Just-In-Time（JIT）访问&lt;/strong&gt;：对敏感操作（如删除资源、修改IAM策略）使用临时提升权限，而非长期持有。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;使用条件键&lt;/strong&gt;：在IAM策略中限制来源IP、VPC端点、MFA要求等。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;示例（GCP）：&lt;/strong&gt;&lt;/p&gt;
+  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 为审计员创建只读角色&lt;/span&gt;
+gcloud projects add-iam-policy-binding my-project &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--member&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;group:[email protected]&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--role&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;roles/iam.securityReviewer&quot;&lt;/span&gt;
+gcloud projects add-iam-policy-binding my-project &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--member&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;group:[email protected]&quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;--role&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;roles/logging.viewer&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h3 id=&quot;section-10&quot;&gt;2. 密钥管理自动化&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;使用密钥管理服务&lt;/strong&gt;：AWS Secrets Manager、GCP Secret Manager、Azure Key Vault。应用运行时从KMS读取，不硬编码。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;CI/CD中使用临时凭据&lt;/strong&gt;：GitHub Actions使用OIDC获取云平台临时令牌，避免存储长期密钥。AWS、GCP、Azure均支持。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;自动轮换&lt;/strong&gt;：设置Lambda/Cloud Function定期轮换密钥，并更新依赖该密钥的服务（如数据库密码）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;预提交钩子&lt;/strong&gt;：在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pre-commit&lt;/code&gt;阶段运行密钥扫描，阻止包含密钥的提交。工具：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pre-commit&lt;/code&gt; + &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;detect-secrets&lt;/code&gt;。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;示例（GitHub Actions + OIDC）：&lt;/strong&gt;&lt;/p&gt;
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;deploy&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;permissions&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;id-token&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;write&lt;/span&gt;
+      &lt;span class=&quot;na&quot;&gt;contents&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;read&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v4&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Configure AWS credentials&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;aws-actions/configure-aws-credentials@v4&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;role-to-assume&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;arn:aws:iam::123456789012:role/GitHubActionsRole&lt;/span&gt;
+          &lt;span class=&quot;na&quot;&gt;aws-region&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;us-east-1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h3 id=&quot;section-11&quot;&gt;3. 泄露响应流程&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;自动撤销&lt;/strong&gt;：一旦检测到密钥泄露，立即在云平台撤销该密钥（通过API或预置的自动化工作流）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;通知开发者&lt;/strong&gt;：在开发者IDE或工单系统中提供修复指引（例如“请删除该密钥，并使用Secret Manager重新生成”）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;验证修复&lt;/strong&gt;：自动扫描确认密钥已从仓库移除，且云平台中已轮换。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;记录事件&lt;/strong&gt;：将泄露事件纳入安全事件管理，分析根因（是开发者误操作还是CI日志泄露？）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-12&quot;&gt;注意事项&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-13&quot;&gt;工具限制&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;密钥扫描的误报&lt;/strong&gt;：Base64编码的随机字符串可能被误判为密钥。需要配置白名单（如测试密钥、示例代码）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;漏报&lt;/strong&gt;：扫描工具无法检测到通过加密、分段存储或动态生成的密钥。需要结合运行时监控（如异常API调用）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;权限审计的假阴性&lt;/strong&gt;：云厂商的“未使用权限”报告基于最近访问记录，如果服务账户仅在特定条件下使用（如每月一次），可能被误判为未使用。建议设置合理的时间窗口（90天以上）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-14&quot;&gt;操作风险&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;过度收紧权限导致服务中断&lt;/strong&gt;：在回收权限前，务必确认该权限确实未被使用。建议先在测试环境验证。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;自动轮换导致依赖失效&lt;/strong&gt;：如果密钥被多个服务共享，轮换后所有依赖方必须同步更新。建议使用密钥管理服务的自动更新回调，或采用临时凭据避免依赖。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;OIDC配置错误&lt;/strong&gt;：GitHub Actions的OIDC信任策略如果过于宽松（允许任何仓库AssumeRole），反而引入风险。必须限制&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sub&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aud&lt;/code&gt;声明。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-15&quot;&gt;团队流程&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;开发者抵触&lt;/strong&gt;：强制密钥扫描和权限审查可能降低开发效率。建议在CI中设置“警告”而非“阻断”，逐步过渡到“阻断”。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;审计疲劳&lt;/strong&gt;：权限审查报告如果太长，团队会忽略。建议只关注高风险项（如管理员权限、跨账户信任）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-16&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;服务账户和密钥管理是云安全中最容易被低估但回报最高的投入。&lt;strong&gt;最小权限 + 自动轮换 + 泄露检测&lt;/strong&gt;三者缺一不可。当前云厂商和开源工具已经提供了足够成熟的方案（OIDC、Secret Manager、IAM Access Analyzer），但落地难点在于团队习惯和流程设计。&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;优先做&lt;/strong&gt;：立即启用GitHub Secret Scanning（免费），并为所有CI/CD流水线切换到OIDC临时凭据。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;中期做&lt;/strong&gt;：每季度执行一次服务账户权限审计，撤销未使用权限。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;长期做&lt;/strong&gt;：建立密钥泄露自动化响应流程，并与事件管理平台集成。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;不要试图一次性“完美”治理，先解决最痛的泄露问题，再逐步收紧权限。对于合规要求高的团队（如金融、医疗），建议将服务账户纳入季度访问审查范围，并保留密钥轮换日志以应对审计。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;适合人群&lt;/strong&gt;：开发团队、DevOps/SRE、安全工程师、云平台管理员、合规负责人。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;不适合人群&lt;/strong&gt;：完全使用本地部署且无API密钥的小团队（但仍有数据库密码等凭据需要管理）。&lt;/p&gt;
+
+  &lt;hr /&gt;
+
+  &lt;h2 id=&quot;english-brief&quot;&gt;English Brief&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;Risk&lt;/strong&gt;: Service accounts and API keys are often over-privileged, never rotated, and hardcoded in code or CI/CD pipelines. A leaked key can lead to lateral movement, data exfiltration, or resource hijacking.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Affected Teams&lt;/strong&gt;: Developers, DevOps, SRE, security, cloud admins, compliance.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Checks&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Audit service account permissions (use IAM Access Analyzer, Recommender).&lt;/li&gt;
+    &lt;li&gt;Scan all repos and CI logs for hardcoded secrets (GitHub Secret Scanning, GitLeaks, TruffleHog).&lt;/li&gt;
+    &lt;li&gt;Verify key rotation policies (every 90 days recommended).&lt;/li&gt;
+    &lt;li&gt;Check for shared service accounts across applications.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Remediation Workflow&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;Apply least privilege: one service account per app, use predefined roles, revoke unused permissions quarterly.&lt;/li&gt;
+    &lt;li&gt;Use temporary credentials in CI/CD (OIDC with GitHub Actions, AWS/GCP/Azure).&lt;/li&gt;
+    &lt;li&gt;Store secrets in Secret Manager (AWS Secrets Manager, GCP Secret Manager, Azure Key Vault).&lt;/li&gt;
+    &lt;li&gt;Automate rotation and revocation on leak detection.&lt;/li&gt;
+    &lt;li&gt;Add pre-commit hooks to prevent secret commits.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;Caveats&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Secret scanners have false positives (test keys) and false negatives (encrypted secrets).&lt;/li&gt;
+    &lt;li&gt;Over-restricting permissions can break services; test in staging first.&lt;/li&gt;
+    &lt;li&gt;OIDC trust policies must be scoped to specific repos/roles.&lt;/li&gt;
+    &lt;li&gt;Team adoption requires gradual enforcement (warn first, then block).&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Take&lt;/strong&gt;: Start with secret scanning and OIDC for CI/CD. Then audit service account permissions quarterly. Automate rotation and incident response. This is the highest-ROI security investment for cloud-native teams.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;hardening-service-accounts-and-secrets-a-defensive-playbook-for-engineering-teams&quot;&gt;Hardening Service Accounts and Secrets: A Defensive Playbook for Engineering Teams&lt;/h2&gt;
+
+  &lt;h1 id=&quot;hardening-service-accounts-and-secrets-a-defensive-playbook-for-engineering-teams-1&quot;&gt;Hardening Service Accounts and Secrets: A Defensive Playbook for Engineering Teams&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
+
+  &lt;p&gt;This playbook focuses on two interconnected attack surfaces: over‑permissioned service accounts and leaked secrets. Service accounts (used by workloads, CI/CD pipelines, VMs, functions) often carry excessive permissions, run continuously, and are regularly omitted from access reviews – making them prime targets. Secrets (API keys, database passwords, tokens) stored in code, configs, or logs create instant compromise paths when exposed.&lt;/p&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
+
+  &lt;p&gt;Credential theft is the fastest path to a cloud breach. A single leaked secret with broad IAM permissions can give an attacker full control over an environment. Traditional human‑centric access reviews miss service accounts, and secret scanning is still reactive in many orgs. With cloud‑native architectures multiplying identities, the blast radius of a compromised non‑human identity grows unless explicitly contained.&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Enforce least privilege for every identity&lt;/strong&gt; – Not just users. IAM roles, service accounts, access keys, and function execution roles should each get the minimum permissions required. Don’t share service accounts across applications; create one per workload (source [3]). Use predefined roles (like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;roles/iam.securityReviewer&lt;/code&gt;) instead of custom admin roles where possible.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Treat service accounts as full‑scope identities&lt;/strong&gt; – Include them in quarterly access reviews, monitor their permissions drift, and apply the same zero‑trust assumptions as human identities. In multi‑cloud environments, centralise governance to maintain consistent visibility across AWS, Azure, and GCP (source [2]).&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Automate secret scanning end‑to‑end&lt;/strong&gt; – Scan code repositories, logs, CI/CD artifacts, and cloud storage for committed secrets. When a leak is detected:
+      &lt;ul&gt;
+        &lt;li&gt;Automatically revoke or rotate the secret in the target service (AWS, Azure, DB).&lt;/li&gt;
+        &lt;li&gt;Provide developers with actionable remediation steps inside their IDE or ticketing system.&lt;/li&gt;
+        &lt;li&gt;Verify removal from the repo &lt;strong&gt;and&lt;/strong&gt; rotation in the target system – only then close the ticket (source [4]).&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Embed rotation into the workflow&lt;/strong&gt; – Don’t rely on manual rotation. Establish automated workflows that rotate secrets on a schedule &lt;strong&gt;and&lt;/strong&gt; immediately after a detection. Monitor usage patterns to detect compromise early (source [5]).&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;risks-to-watch&quot;&gt;Risks to Watch&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;Over‑permissioned service accounts that are never reviewed – they drift over time.&lt;/li&gt;
+    &lt;li&gt;Shared service accounts between applications – increases blast radius and audit complexity.&lt;/li&gt;
+    &lt;li&gt;Secret rotation without verification – a secret may be rotated but still present in old code or backups.&lt;/li&gt;
+    &lt;li&gt;Developers bypassing prevention due to friction – make security guidance part of their normal workflow, not a separate ceremony.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;the-take&quot;&gt;The Take&lt;/h2&gt;
+
+  &lt;p&gt;The principle of least privilege is decades old, but its practical application to non‑human identities is still immature in many engineering orgs. The goal is to contain potential damage by design: every service account should be scoped to exactly what it needs, every secret should be short‑lived and automatically rotated, and scanning should be continuous, not periodic. Integrate these steps into your existing CI/CD and cloud governance – security that blocks delivery will be ignored; security that guides delivery gets adopted.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://orca.security/resources/blog/cloud-least-privilege-principles-best-practices&quot;&gt;Cloud Least Privilege: Best Practices Guide&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.securends.com/blog/least-privilege-cloud-environments&quot;&gt;Least Privilege in AWS, Azure &amp;amp; GCP Environments&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://oneuptime.com/blog/post/2026-02-17-how-to-implement-the-principle-of-least-privilege-with-predefined-iam-roles-in-gcp/view&quot;&gt;How to Use the Principle of Least Privilege with Predefined IAM Roles in GCP&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[Secret Scanning: The definitive guide&lt;/td&gt;
+          &lt;td&gt;Cycode](https://cycode.com/blog/secret-scanning-guide)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.cloudbees.com/docs/cloudbees-unify/latest/application-security/how-to-guides/configure-secret-scanning&quot;&gt;Configure secret scanning&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>2026年开放Agent协议：MCP与A2A如何解决互操作性难题 — Open Agent Protocols in 2026: MCP, A2A, and the Real Limits of Interoperability</title>
@@ -7721,219 +7999,6 @@ openrouter rate-limit &lt;span class=&quot;nt&quot;&gt;--model&lt;/span&gt; goog
   &lt;li&gt;&lt;a href=&quot;https://devsecopsschool.com/blog/github-actions-in-devsecops-a-comprehensive-tutorial&quot;&gt;GitHub Actions in DevSecOps: A Comprehensive Tutorial - DevSecOps School&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://checkmarx.com/learn/supply-chain-security/software-supply-chain-security-guide&quot;&gt;Software Supply Chain Security Ultimate Guide&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.endorlabs.com/learn/best-software-supply-chain-security-tools-a816d&quot;&gt;Best Software Supply Chain Security Tools for AppSec Teams&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-    </item>
-    
-    <item>
-      <title>Agent 循环与 Harness：生产级 AI 工作流的缺失层 — Agent Loops and Harnesses: The Missing Layer for Production AI Workflows</title>
-      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/06/18/ai-trend-explainer-2.html</link>
-      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/06/18/ai-trend-explainer-2.html</guid>
-      <pubDate>Thu, 18 Jun 2026 11:31:25 +0800</pubDate>
-      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
-      <category domain="category">ai</category>
-      <category domain="content_type">Trend Analysis</category>
-      <category domain="tag">AI Agent Loop</category><category domain="tag">Loop Engineering</category><category domain="tag">Agent Harness</category><category domain="tag">Production AI Workflow</category>
-      <description>AI Agent 正在从单次提示转向“感知-推理-规划-执行-观察”的迭代循环，但生产可靠性依赖于 Harness（数据治理、权限、评估、护栏）。本文分析这一趋势，对比旧有模式，并给出立即尝试的实操步骤。&#10;&#10;AI agents are moving from single-shot prompts to iterative perceive-reason-plan-act-observe loops, but production reliability requires a harness: governed data, permissions, evals, and guardrails. This trend analysis explains the architecture, compares it with older prompt-and-call patterns, and gives practical steps to build or adopt agent loops today.</description>
-      <content:encoded>&lt;!-- Chinese Version --&gt;
-&lt;div class=&quot;lang-cn&quot;&gt;
-
-  &lt;h2 id=&quot;agent--harness-ai-&quot;&gt;Agent 循环与 Harness：生产级 AI 工作流的缺失层&lt;/h2&gt;
-
-  &lt;h1 id=&quot;agent--harness-ai--1&quot;&gt;Agent 循环与 Harness：生产级 AI 工作流的缺失层&lt;/h1&gt;
-
-  &lt;h2 id=&quot;section&quot;&gt;这个趋势是什么&lt;/h2&gt;
-
-  &lt;p&gt;&lt;strong&gt;Agent loop 和 harness&lt;/strong&gt; 正在成为生产级 AI 工作流的标准架构，解决从原型到可靠自动化的最后一公里问题。&lt;/p&gt;
-
-  &lt;p&gt;Agent loop 是一套迭代执行的五阶段模式：感知 (Perceive) → 推理 (Reason) → 规划 (Plan) → 行动 (Act) → 观察 (Observe)。Loop 结束后，根据结果决定是否终止或继续循环。这个模式最早由 Oracle 在其 agent 架构文档中系统化提出[1]，现在已被广泛采用。&lt;/p&gt;
-
-  &lt;p&gt;AI harness 是“围绕 Agent 的一切基础设施”：包括 loop 编排、工具注册、状态管理、权限控制、数据层、评估基准和监控。它正式化了一个概念：AI 模型本身不可信，可信的是它被使用的环境。BlueFlame 将 harness 定义为“连接 AI agent 到工作流、工具、数据、记忆和治理控制的编排层”[5]，没有 harness 的 agent 只能生成回答，无法真正执行任务。&lt;/p&gt;
-
-  &lt;h2 id=&quot;section-1&quot;&gt;为什么现在重要&lt;/h2&gt;
-
-  &lt;p&gt;2025 年“vibe coding”和“agent coding”的流行让大量团队能快速构建原型，但生产部署时遇到相同瓶颈：AI 生成的代码不可控、无限循环浪费 Token、工具调用失败、缺少审计日志。YouTube 上一个具体的演示展示了用 Claude Code 和 Codex 构建的实际系统：管理 loop 从 backlog 中分类任务，工作 loop 根据风险级别执行代码、生成子 agent 审查 diff、运行检查并自动开 PR，而人只需要在最后审查结果[3]。这种系统可以无人值守运行，前提是必须有 guardrails（护栏）和 evaluations（评估）。&lt;/p&gt;
-
-  &lt;p&gt;更系统的数据来自 Atlan 对企业查询的调研：在 522 条真实查询中，使用治理元数据层的 harness 将 AI SQL 准确性提升了 38%，中等复杂度的查询提升达 2.15 倍[4]。这说明 harness 不是可选项，而是质量保障的前提。&lt;/p&gt;
-
-  &lt;p&gt;此外，MindStudio 为 agent 开发的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@mindstudio-ai/agent&lt;/code&gt; npm SDK 提供了一个现成的 harness 实现：agent 可以通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;agent.runWorkflow()&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;agent.searchGoogle()&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;agent.sendEmail()&lt;/code&gt; 等 120+ 类型化方法调用基础设施，而不用自己处理 API 认证、重试和日志[2]。Harness 的标准化正在加速。&lt;/p&gt;
-
-  &lt;h2 id=&quot;section-2&quot;&gt;它和旧做法的区别&lt;/h2&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;维度&lt;/th&gt;
-        &lt;th&gt;旧方式&lt;/th&gt;
-        &lt;th&gt;Agent Loop + Harness&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;工作流&lt;/td&gt;
-        &lt;td&gt;单个 LLM 调用或简单 chain&lt;/td&gt;
-        &lt;td&gt;迭代循环，直到终止条件&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;工具调用&lt;/td&gt;
-        &lt;td&gt;手动写 API 请求，自己处理错误、超时、重试&lt;/td&gt;
-        &lt;td&gt;通过统一 harness 注册和调用（如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;agent.runWorkflow()&lt;/code&gt;）&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;状态&lt;/td&gt;
-        &lt;td&gt;无状态或框架自带的有限内存&lt;/td&gt;
-        &lt;td&gt;persistent 状态（数据库、文件、缓存）&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;权限&lt;/td&gt;
-        &lt;td&gt;无或硬编码&lt;/td&gt;
-        &lt;td&gt;细粒度权限，每个工具调用可审计&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;评估&lt;/td&gt;
-        &lt;td&gt;靠主观判断&lt;/td&gt;
-        &lt;td&gt;自动评估基准（准确率、完成度、安全性）&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;部署&lt;/td&gt;
-        &lt;td&gt;直接暴露模型 endpoint&lt;/td&gt;
-        &lt;td&gt;先封装为 harness agent，再暴露 API&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;p&gt;旧做法适合演示和 RAG，但不适合需要自主执行、多步推理、与外部系统交互的生产任务。&lt;/p&gt;
-
-  &lt;h2 id=&quot;section-3&quot;&gt;可以怎么开始试&lt;/h2&gt;
-
-  &lt;p&gt;以下是参考 Atlan 的 10 步指南和行业实践总结的可执行步骤[4]：&lt;/p&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;选定一个 loop 框架&lt;/strong&gt;：LangGraph、CrewAI、Mastra、OpenAI Agents SDK。优先选择具备状态管理和子 agent 能力的框架。&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;定义任务的终止条件&lt;/strong&gt;：明确什么情况下 loop 应该停止（空动作、达到最大轮次、时间超时、用户中断）。&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;建立工具注册表&lt;/strong&gt;：不要在 agent 提示词里硬编码工具；定义清晰的“工具接口”（输入输出 schema、权限等级、幂等性标记）。&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;实现观察阶段的“自检”&lt;/strong&gt;：在 agent 执行动作后，评估结果是否合理（例如 SQL 查询返回空结果，应触发重试还是停止）。&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;加入子 agent 审查&lt;/strong&gt;：模仿 YouTube 中的做法——工作 agent 写代码，另一个 agent 审查 diff，只有通过检查才自动合并[3]。&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;添加持久化状态层&lt;/strong&gt;：将 loop 的上下文存入数据库，防止失忆和重启丢失。&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;添加权限与数据隔离&lt;/strong&gt;：每个工具调用记录 agent ID、用户 ID、访问时间，确保可审计。&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;建立离线评估管道&lt;/strong&gt;：用历史任务测试 agent 效果，监控准确率、完成率、循环轮数、异常次数。&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;限制运行范围&lt;/strong&gt;：为 agent 设置资源上限（Token 预算、调用次数、执行时长）。&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;部署前通过“done test”&lt;/strong&gt;：创建一个涵盖典型任务、边界情况和错误恢复的测试集，只有全部通过才能上线。&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h2 id=&quot;section-4&quot;&gt;风险和限制&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;无限循环 / 失控成本&lt;/strong&gt;：如果没有周密的终止条件，agent 可能无限调用工具或产生大量 Token。必须设置硬上限并监控。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;工具权限泄露&lt;/strong&gt;：harness 若未严格限制工具访问范围，agent 可能调用非授权接口。示例：搜索工具不应该写入数据库。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;评估误导&lt;/strong&gt;：离线评估无法覆盖所有生产场景，上线后仍可能失败。需要持续观察和人工抽检。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;构建成本&lt;/strong&gt;：一个生产级 harness 需要 4 到 12 周时间和 5000 到 20000 行基础设施代码[4]。小团队或简单任务可能不值得。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;不适合纯知识问答&lt;/strong&gt;：如果任务只需单轮回答，加 loop 和 harness 是过度设计。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-5&quot;&gt;适合人群&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;AI 工程师：正在把 agent 从概念验证推向生产。&lt;/li&gt;
-    &lt;li&gt;SaaS 团队：计划在产品中嵌入自主 agent 功能。&lt;/li&gt;
-    &lt;li&gt;数据团队：需要 agent 执行数据库查询、ETL 自动化。&lt;/li&gt;
-    &lt;li&gt;安全与合规团队：需要审计和控制 agent 行为的人。&lt;/li&gt;
-    &lt;li&gt;不适合：仅用 AI 写代码的个人开发者、简单问答机器人项目。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-6&quot;&gt;我的判断&lt;/h2&gt;
-
-  &lt;p&gt;Agent loop + harness 是当前 AI 工作流工程化中最有价值的模式之一。它把 LLM 从“聪明但不可靠的对话者”转变为“可管理的数字员工”。Oracle 的 loop 定义、MindStudio 的 SDK 抽象、Atlan 的 harness 指南和 BlueFlame 的金融场景案例，都朝同一个方向走：让 agent 的行为可预测、可审计、可重复。&lt;/p&gt;
-
-  &lt;p&gt;工具层面，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@mindstudio-ai/agent&lt;/code&gt; 这类 SDK 和 LangGraph 的进化会降低入门门槛。但在 2026 年中期，生产级 harness 仍然需要团队自己投入基础设施工作，尤其是数据治理和权限模型。对于中高复杂度的自动化任务，这是绕不过去的投入。&lt;/p&gt;
-
-  &lt;hr /&gt;
-
-  &lt;h2 id=&quot;english-brief&quot;&gt;English Brief&lt;/h2&gt;
-
-  &lt;p&gt;&lt;strong&gt;Trend&lt;/strong&gt;: Agent loops (perceive → reason → plan → act → observe) and AI harnesses (orchestration + state + permissions + evaluations) are becoming the standard architecture for production AI workflows.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Why now&lt;/strong&gt;: Vibe coding and agent demos hit reliability and control walls in production. Real examples (YouTube’s automated PR system, Atlan’s 38% SQL accuracy improvement with governed metadata) prove that harnesses are not optional.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Difference from old practice&lt;/strong&gt;: Old: single LLM call / chain, manual tool wiring, no state or audit. New: iterative loop, unified tool calls (e.g. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;agent.runWorkflow()&lt;/code&gt;), persistent state, fine-grained permissions, automated eval pipeline, sub-agent review.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;First steps&lt;/strong&gt;: Choose a loop framework (LangGraph, CrewAI, Mastra). Define stop conditions. Register tools with schema and permissions. Add observation-level self-check. Implement sub-agent review. Add persistent state. Build offline eval dataset. Limit runtime budget. Pass a “done test” before deployment.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Risks&lt;/strong&gt;: Infinite loops &amp;amp; token waste, tool permission leaks, eval false negatives, 4–12 weeks build cost. Not suited for simple Q&amp;amp;A.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Take&lt;/strong&gt;: Agent loop + harness is the missing layer between AI model capability and safe, auditable production deployment. The pattern is converging across Oracle, MindStudio, Atlan, and BlueFlame. Teams should invest now if they operate autonomous agents in business-critical contexts.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;!-- English Version --&gt;
-&lt;div class=&quot;lang-en&quot;&gt;
-
-  &lt;h2 id=&quot;agent-loops-and-harnesses-the-missing-layer-for-production-ai-workflows&quot;&gt;Agent Loops and Harnesses: The Missing Layer for Production AI Workflows&lt;/h2&gt;
-
-  &lt;h2 id=&quot;agent-loops-and-harnesses-the-missing-layer-for-production-ai-workflows-1&quot;&gt;Agent Loops and Harnesses: The Missing Layer for Production AI Workflows&lt;/h2&gt;
-
-  &lt;p&gt;AI agent loops and harnesses are becoming the critical infrastructure for moving autonomous agents from proof-of-concept to production. An agent loop is the iterative cycle—perceive, reason, plan, act, observe—that lets an agent tackle complex, multi-step tasks autonomously. A harness is everything around the model: the loop, tool definitions, state management, permissions, evaluation metrics, and a governed data layer. Frameworks like LangGraph, CrewAI, Mastra, and the OpenAI Agents SDK provide orchestration scaffolding, but they don’t deliver the certified data and governance that production demands.&lt;/p&gt;
-
-  &lt;h3 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h3&gt;
-
-  &lt;p&gt;We’re past the hype. Teams are running AI agents that write code, manage backlogs, query databases, and interact with APIs. Without a harness, these agents operate blind—no audit trail, no permission boundaries, no reliable data grounding. Vibe coding (letting an LLM generate code with minimal supervision) introduces security risks: insecure dependencies, logic flaws, and unvalidated diffs. Loop engineering is the discipline that adds guardrails, evaluations, and error recovery to make these autonomous cycles safe to run unattended.&lt;/p&gt;
-
-  &lt;h3 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h3&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;Design your loop&lt;/strong&gt; with clear stopping conditions. Use a manager-worker pattern: a manager classifies tasks by risk and delegability; workers execute and sub-agents review results.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Build a harness&lt;/strong&gt; with governed metadata. Research shows that governed data lifts AI SQL accuracy by 38% and 2.15x on medium-complexity queries. Allocate 4–12 weeks and 5k–20k lines of infrastructure code for a production harness.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Implement automated guardrails&lt;/strong&gt;: permission checks, output validation, dependency scanning, and human-in-the-loop approval for high-risk actions.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Use typed tool interfaces&lt;/strong&gt; like MindStudio’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@mindstudio-ai/agent&lt;/code&gt; SDK that expose capabilities as method calls—this keeps loop logic clean and reduces tool management overhead.&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h3 id=&quot;risks&quot;&gt;Risks&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;Insecure code generation&lt;/strong&gt;: LLMs can produce vulnerable code. Always run static analysis and manual review before merging.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Ungoverned data&lt;/strong&gt;: If agents query uncurated databases, results can be wrong or leak sensitive information.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Observability debt&lt;/strong&gt;: Without logging each perceive-reason-act step, debugging failures becomes impossible.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Compliance gaps&lt;/strong&gt;: In regulated industries (finance, healthcare, cross-border data), every agent action must be auditable and permissioned under frameworks like SOC 2, GDPR, or China’s PIPL.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;the-take&quot;&gt;The Take&lt;/h3&gt;
-
-  &lt;p&gt;Agent loops without a harness are toys. Loop engineering is the next devops for AI—treat it as infrastructure, not experimentation. Invest in governed data, build observability from day one, and enforce guardrails before letting agents run. The teams that get this right will deploy autonomous systems that are safe, compliant, and actually useful.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blogs.oracle.com/developers/what-is-the-ai-agent-loop-the-core-architecture-behind-autonomous-ai-systems&quot;&gt;What Is the AI Agent Loop? The Core Architecture Behind …&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.mindstudio.ai/blog/what-is-loop-engineering-ai-coding-agents&quot;&gt;What Is Loop Engineering? The New Meta for AI Coding Agents&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=RVEaDvh6f5A&quot;&gt;Loop Engineering: How To Build Autonomous AI Agents - YouTube&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://atlan.com/know/how-to-build-ai-agent-harness&quot;&gt;How to Build an AI Agent Harness: Step-by-Step Tutorial (2026)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blueflame.ai/blog/ai-harnesses-explained&quot;&gt;AI Harnesses Explained: The Missing Layer Between AI Models and Investment Workflows&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
     </item>
