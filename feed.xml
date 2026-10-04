@@ -10,10 +10,249 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 28 Sep 2026 03:42:18 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 05 Oct 2026 03:23:00 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>国际AI与网络韧性法规：工程合规行动指南 — EU AI Act, DORA, NIS2: Engineering Compliance for AI &amp; Cyber-Resilience</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/05/international-assurance-rules.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/05/international-assurance-rules.html</guid>
+      <pubDate>Mon, 05 Oct 2026 03:22:53 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">infosec</category>
+      <category domain="content_type">Regulation Watch</category>
+      <category domain="tag">EU AI Act</category><category domain="tag">DORA</category><category domain="tag">NIS2</category><category domain="tag">China data regulation</category><category domain="tag">engineering compliance</category>
+      <description>欧盟AI法案、DORA和NIS2设定了2025至2028年的强制合规时间表，工程团队需将AI清单、风险管理和事件报告嵌入产品交付流程。对于出海SaaS和AI产品，这些规则与中国PIPL和生成式AI法规交叉，形成跨境数据与算法治理的双重合规格局。&#10;&#10;The EU AI Act, DORA, and NIS2 impose binding compliance deadlines from 2025 to 2028, requiring engineering teams to build AI inventories, risk management, and incident reporting into product delivery. For outbound SaaS and AI products, these rules intersect with China&apos;s PIPL and generative AI regulations, creating a dual-compliance landscape for cross-border data and algorithm governance.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;ai&quot;&gt;国际AI与网络韧性法规：工程合规行动指南&lt;/h2&gt;
+
+  &lt;h1 id=&quot;ai-1&quot;&gt;国际AI与网络韧性法规：工程合规行动指南&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;发生了什么&lt;/h2&gt;
+
+  &lt;p&gt;2026年8月2日，欧盟《人工智能法案》（EU AI Act）的核心条款正式生效：透明度规则（第50条）开始执行，通用人工智能模型（GPAI）义务已自2025年8月2日起适用，而高风险AI系统的大部分要求则被推迟至2027年12月2日（独立系统）和2028年8月2日（嵌入式系统）。与此同时，欧盟《数字运营韧性法案》（DORA）自2025年1月全面实施，NIS2指令的成员国转化期限已于2024年10月截止，目前各成员国正在密集执法。这些法规共同构成了欧洲数字韧性（cyber resilience）与AI治理的“三驾马车”，直接影响所有面向欧盟市场的技术产品。&lt;/p&gt;
+
+  &lt;p&gt;在中国，2026年也是监管深化之年：《个人信息保护法》（PIPL）执法力度持续加强，《数据出境安全评估办法》修订版于2025年底发布，生成式人工智能服务备案要求进一步细化，算法推荐与深度合成管理规定进入常态化检查。跨境数据流动方面，中国与欧盟、东盟等地区的“数据安全出境”互认机制仍在谈判中，但企业自评估义务已不可回避。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;为什么现在重要&lt;/h2&gt;
+
+  &lt;p&gt;对于技术团队而言，合规不再是法务部门的“纸面作业”，而是必须嵌入CI/CD流水线、模型训练流程、数据治理框架和第三方供应商管理的工程实践。EU AI Act的“AI素养”义务（第4条）自2025年2月已生效，要求所有使用AI系统的员工具备基本理解能力；而2026年8月生效的透明度规则要求生成式AI系统必须提供机器可读的标记（如水印），且已上市系统有至2026年12月2日的宽限期。这意味着工程团队现在就必须修改模型输出接口、添加元数据字段，并建立可审计的日志。&lt;/p&gt;
+
+  &lt;p&gt;DORA要求金融机构在2025年1月前完成ICT风险管理框架、测试和报告能力建设，但2026年进入常态化监管——监管机构开始检查第三方ICT供应商的韧性。NIS2则要求“重要实体”和“基本实体”实施事件响应、供应链安全、加密和访问控制等具体措施，且管理层可被追究个人责任。&lt;/p&gt;
+
+  &lt;p&gt;中国方面，2026年《数据出境安全评估办法》修订版明确将“重要数据”目录扩展至汽车、医疗、金融、AI训练数据等领域，且要求企业每年进行自评估。生成式AI服务的“双备案”（算法备案+服务备案）已覆盖文本、图像、音视频生成，未备案产品面临下架风险。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;影响谁&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;AI产品团队&lt;/strong&gt;：直接受EU AI Act风险分类影响——高风险系统（如招聘、信贷、生物识别）需做符合性评估；GPAI模型需提供训练数据摘要、能源消耗报告；生成式AI需标记。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SaaS/云服务团队&lt;/strong&gt;：若服务欧洲金融机构，需满足DORA的ICT韧性测试和第三方风险管理；若服务欧盟公共部门或关键基础设施，需符合NIS2。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;出海企业（尤其是中国公司）&lt;/strong&gt;：面临EU AI Act + 中国数据出境法规的双重约束。模型训练数据若包含中国个人信息，出境需通过安全评估或标准合同；模型部署在欧盟需满足EU AI Act透明度与文档要求。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;安全/数据团队&lt;/strong&gt;：需建立AI系统清单、风险分类、数据治理日志、事件响应流程，并确保供应链合规。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;合规/法务团队&lt;/strong&gt;：需将法规要求转化为工程需求，并参与设计评审。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-3&quot;&gt;工程/安全/数据团队要做什么&lt;/h2&gt;
+
+  &lt;h3 id=&quot;ai-2&quot;&gt;1. 建立AI系统清单与风险分类&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;扫描所有生产环境中的AI/ML模型，记录用途、训练数据来源、部署地区、输出类型。&lt;/li&gt;
+    &lt;li&gt;对照EU AI Act附件III判断是否属于高风险（如用于就业、教育、执法、移民等）。若不确定，按高风险处理。&lt;/li&gt;
+    &lt;li&gt;对于GPAI模型（如基础模型），记录训练算力（FLOPs）、数据来源、是否开源，并准备技术文档。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;2. 实现透明度与可解释性&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;生成式AI输出必须包含机器可读标记：在API响应中添加&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;model_id&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;generation_timestamp&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;watermark&lt;/code&gt;字段。对于图像/视频，使用不可见水印或元数据。&lt;/li&gt;
+    &lt;li&gt;高风险系统需提供“解释性说明”：输出结果的关键因素、模型置信度、训练数据分布摘要。&lt;/li&gt;
+    &lt;li&gt;建立用户投诉与人工审核接口。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-5&quot;&gt;3. 数据治理与隐私&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;训练数据中若包含中国个人信息，需确认出境合规路径（安全评估、标准合同、认证）。2026年建议使用“数据本地化+匿名化”方案，避免直接出境。&lt;/li&gt;
+    &lt;li&gt;实施数据最小化：只收集模型训练和推理必需的数据，并设置自动删除策略。&lt;/li&gt;
+    &lt;li&gt;记录数据来源、清洗过程、偏差评估报告（EU AI Act要求）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;doranis2&quot;&gt;4. 韧性测试与事件响应（DORA/NIS2）&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;金融机构需每两年进行一次ICT韧性测试（包括渗透测试、压力测试）。&lt;/li&gt;
+    &lt;li&gt;所有受NIS2覆盖的实体需在24小时内报告重大安全事件，并保留事件日志至少2年。&lt;/li&gt;
+    &lt;li&gt;建立第三方供应商评估机制：要求供应商提供SOC 2、ISO 27001或同等认证，并定期审查其韧性能力。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;5. 自动化合规检查&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;在CI/CD流水线中加入合规检查步骤：例如，模型发布前自动检查是否包含水印、是否记录训练数据来源、是否触发高风险分类。&lt;/li&gt;
+    &lt;li&gt;使用工具（如OpenSCA、SBOM生成器）管理AI组件依赖，生成AI系统物料清单（AI-BOM）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-7&quot;&gt;中国数据监管重点&lt;/h2&gt;
+
+  &lt;p&gt;在中国，2026年以下法规直接关联AI产品与数据出境：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;《个人信息保护法》（PIPL）&lt;/strong&gt;：处理个人信息需告知同意，敏感个人信息需单独同意。AI训练数据若包含生物识别、医疗健康、行踪轨迹等，属于敏感信息，出境需通过安全评估。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;《数据安全法》（DSL）&lt;/strong&gt;：重要数据目录持续更新。AI训练语料若涉及“重要数据”（如大规模地理信息、经济统计、行业核心数据），出境前需进行数据出境安全评估。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;《数据出境安全评估办法》（2025修订版）&lt;/strong&gt;：明确了“重要数据”的定义范围，并引入“标准合同”与“认证”两种补充路径。但实际执行中，监管机构倾向于要求安全评估，尤其是涉及CIIO（关键信息基础设施运营者）或100万人以上个人信息时。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;生成式AI监管&lt;/strong&gt;：算法备案（《互联网信息服务算法推荐管理规定》）与深度合成备案（《深度合成管理规定》）已合并为“生成式AI服务备案”。2026年要求所有面向公众的生成式AI服务（包括API）在提供服务前完成备案，否则不得上线。备案材料需包括训练数据来源、模型安全评估报告、内容过滤机制说明。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;跨境数据流动新规&lt;/strong&gt;：中国与欧盟正在推进“数据安全出境互认”框架，但尚未落地。目前企业仍需按现行法规操作。建议：将中国用户数据存储在中国境内，仅将匿名化后的模型参数或聚合统计信息出境。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-8&quot;&gt;国际规则对照&lt;/h2&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;法规&lt;/th&gt;
+        &lt;th&gt;核心要求&lt;/th&gt;
+        &lt;th&gt;适用对象&lt;/th&gt;
+        &lt;th&gt;与中国法规的交叉点&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;EU AI Act&lt;/td&gt;
+        &lt;td&gt;风险分类、透明度、文档、人类监督&lt;/td&gt;
+        &lt;td&gt;AI系统提供者/部署者&lt;/td&gt;
+        &lt;td&gt;中国出海企业需同时满足；训练数据出境需符合PIPL&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;DORA&lt;/td&gt;
+        &lt;td&gt;ICT韧性测试、第三方风险管理、事件报告&lt;/td&gt;
+        &lt;td&gt;欧盟金融机构&lt;/td&gt;
+        &lt;td&gt;中国金融科技公司若服务欧盟客户，需遵守；数据本地化要求可能与PIPL冲突&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;NIS2&lt;/td&gt;
+        &lt;td&gt;安全措施、事件报告、供应链安全&lt;/td&gt;
+        &lt;td&gt;关键/重要实体（能源、交通、医疗等）&lt;/td&gt;
+        &lt;td&gt;中国云服务商若为欧盟关键基础设施提供ICT服务，需满足；供应链审计需覆盖中国供应商&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;GDPR&lt;/td&gt;
+        &lt;td&gt;数据保护、跨境传输、DPIA&lt;/td&gt;
+        &lt;td&gt;所有处理欧盟个人数据的企业&lt;/td&gt;
+        &lt;td&gt;与PIPL并行，需同时满足；数据出境需通过“充分性认定”或SCC&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;中国PIPL/DSL&lt;/td&gt;
+        &lt;td&gt;个人信息保护、重要数据出境评估&lt;/td&gt;
+        &lt;td&gt;中国境内数据处理者&lt;/td&gt;
+        &lt;td&gt;出海企业需在境内完成合规后再出境&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h2 id=&quot;section-9&quot;&gt;可以提前准备的检查清单&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;AI系统清单&lt;/strong&gt;：列出所有模型，标注风险等级、部署地区、训练数据来源、是否涉及个人信息/重要数据。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;透明度标记&lt;/strong&gt;：生成式AI输出添加&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;model_id&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;watermark&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;timestamp&lt;/code&gt;，并确保机器可读（如JSON-LD）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;数据治理文档&lt;/strong&gt;：训练数据来源、清洗日志、偏差分析、数据保留策略。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;合规自动化&lt;/strong&gt;：在CI/CD中加入模型发布合规检查（风险分类、标记、文档完整性）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;事件响应计划&lt;/strong&gt;：建立AI安全事件（如模型投毒、数据泄露）的响应流程，包括24小时报告机制（NIS2/DORA）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;第三方供应商评估&lt;/strong&gt;：要求AI组件供应商提供合规声明（EU AI Act符合性、SOC 2、ISO 27001）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;中国数据出境评估&lt;/strong&gt;：若涉及中国个人数据或重要数据出境，完成安全评估或签订标准合同。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;生成式AI备案&lt;/strong&gt;：检查是否完成算法备案与服务备案，确保内容过滤机制符合要求。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;section-10&quot;&gt;风险和不确定性&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;EU AI Act高风险分类的模糊性&lt;/strong&gt;：附件III中的“高风险”定义存在解释空间，监管机构可能通过后续指南扩大范围。建议对边缘案例按高风险处理。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;DORA与NIS2的执法力度&lt;/strong&gt;：不同成员国转化速度不一，2026年可能出现执法差异。企业应以最严格标准准备。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;中国数据出境互认进展缓慢&lt;/strong&gt;：与欧盟的互认框架尚未落地，企业需同时满足两套要求，增加合规成本。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;生成式AI备案的审核周期&lt;/strong&gt;：备案材料可能被要求补充，导致产品上线延迟。建议提前3个月提交。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;AI素养义务的落地&lt;/strong&gt;：EU AI Act要求员工培训，但具体内容无明确标准。建议参考ISO/IEC 42001（AI管理体系）设计培训方案。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-11&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;2026年是全球AI与网络韧性法规从“制定”转向“执行”的关键年份。EU AI Act、DORA、NIS2与中国数据出境、生成式AI监管形成了事实上的“双轨制”——任何面向欧盟或中国市场的技术产品都必须同时满足两套标准。对于工程团队而言，合规不再是法务的“翻译工作”，而是必须内化为代码逻辑、流水线检查和运维流程。建议企业立即启动以下三项行动：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;建立跨职能合规小组&lt;/strong&gt;：工程、安全、数据、法务每周同步，将法规要求拆解为具体的技术任务。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;投资合规自动化工具&lt;/strong&gt;：手动合规不可持续，应引入AI系统清单管理、水印生成、数据溯源等工具。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;优先处理中国数据出境&lt;/strong&gt;：由于中国监管执法力度强、周期长，建议先完成国内合规，再适配国际要求。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;适合人群&lt;/strong&gt;：AI产品经理、安全工程师、数据工程师、DevOps团队、合规经理、出海企业CTO。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;限制/风险&lt;/strong&gt;：本文基于公开法规文本和行业实践，不构成法律意见。各企业应结合自身业务咨询专业律师。法规仍在演进，2027-2028年还有更多条款生效，需持续跟踪。&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;eu-ai-act-dora-nis2-engineering-compliance-for-ai--cyber-resilience&quot;&gt;EU AI Act, DORA, NIS2: Engineering Compliance for AI &amp;amp; Cyber-Resilience&lt;/h2&gt;
+
+  &lt;h1 id=&quot;eu-ai-act-dora-nis2-engineering-compliance-for-ai--cyber-resilience-1&quot;&gt;EU AI Act, DORA, NIS2: Engineering Compliance for AI &amp;amp; Cyber-Resilience&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
+
+  &lt;p&gt;Three European regulatory frameworks are converging on technical teams: the &lt;strong&gt;EU AI Act&lt;/strong&gt; (risk-based AI regulation), &lt;strong&gt;DORA&lt;/strong&gt; (Digital Operational Resilience Act for financial sector), and &lt;strong&gt;NIS2&lt;/strong&gt; (network and information security directive for essential services). Each mandates specific engineering controls, documentation, and incident reporting—not just legal policies.&lt;/p&gt;
+
+  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
+
+  &lt;p&gt;The EU AI Act’s AI literacy duty has been enforceable since &lt;strong&gt;February 2025&lt;/strong&gt;, with supervision starting August 2026. The heavy high-risk regime now applies &lt;strong&gt;December 2027&lt;/strong&gt; (standalone systems) and &lt;strong&gt;August 2028&lt;/strong&gt; (embedded systems). DORA and NIS2 are already in force for many organizations. Regulators will evaluate &lt;strong&gt;technical artifacts and operational controls&lt;/strong&gt;, not intent.&lt;/p&gt;
+
+  &lt;h2 id=&quot;practical-next-steps-for-engineering-teams&quot;&gt;Practical Next Steps for Engineering Teams&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Create an AI system inventory&lt;/strong&gt; – Catalog every model, training dataset, and deployment. Classify risk per EU AI Act categories (prohibited, high-risk, GPAI, limited/minimal). This is the foundation for all compliance work.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Implement risk management and data governance&lt;/strong&gt; – For high-risk systems: maintain technical documentation (model cards, data sheets), ensure human oversight mechanisms, and conduct conformity assessments. For GPAI: document training data sources, compute, and energy consumption.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Map existing security controls to NIS2/DORA&lt;/strong&gt; – NIST and ISO 27001 controls can be mapped to NIS2 requirements. For DORA: focus on third-party ICT risk management, incident reporting (within defined timelines), and digital operational resilience testing.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Embed compliance into CI/CD&lt;/strong&gt; – Add automated checks for AI system documentation, model versioning, and transparency markings. The machine-readable marking requirement for generative systems already on the market before August 2026 has a grace window until &lt;strong&gt;2 December 2026&lt;/strong&gt;.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Establish incident response and reporting&lt;/strong&gt; – Both DORA and NIS2 require formalized incident reporting to authorities. Define technical triggers, escalation paths, and documentation templates.&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;risks-and-operational-notes&quot;&gt;Risks and Operational Notes&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Phased deadlines are confusing&lt;/strong&gt; – Many teams assume the 2026/2027 dates are far off, but AI literacy and transparency rules are already active. Start with inventory and risk classification now.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Third-party risk is under-scoped&lt;/strong&gt; – DORA explicitly covers ICT providers; NIS2 extends to supply chains. Audit your AI vendors and cloud providers.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Documentation is not optional&lt;/strong&gt; – Regulators will ask for technical documentation, not policy PDFs. Use structured formats (e.g., model cards, system cards) that can be versioned and audited.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Cross-sector overlap&lt;/strong&gt; – If your organization is both a financial institution and an AI provider, you must comply with DORA &lt;em&gt;and&lt;/em&gt; the EU AI Act. Map overlaps to avoid duplication.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
+
+  &lt;p&gt;These regulations are engineering problems, not legal abstractions. The teams that treat compliance as a product requirement—building AI inventories, automated documentation, and incident response playbooks into their workflows—will have a clear advantage. Start with the inventory and risk classification; everything else follows.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://aioutlooks.com/eu-ai-act-compliance-checklist&quot;&gt;EU AI Act Compliance Checklist: 11 Steps for Teams&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.codacy.com/the-engineering-managers-eu-ai-act-compliance-checklist-2026&quot;&gt;The Engineering Manager’s EU AI Act Compliance Checklist (2026)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.codebridge.tech/articles/the-eu-ai-act-compliance-checklist-ownership-evidence-and-release-control-for-businesses&quot;&gt;EU AI Act Compliance Checklist for Businesses in 2026&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.kiteworks.com/risk-compliance-glossary/dora&quot;&gt;What is DORA? Purpose, Benefits &amp;amp; Compliance&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.kelacyber.com/academy/cti/nis2-directive-and-dora-cyber-resilience-framework-benefits-and-alignment-explained&quot;&gt;NIS2 Directive &amp;amp; DORA Cyber Resilience Framework&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>服务账户与密钥防御实操指南 — Hardening Service Accounts and Secrets: A Defensive Playbook for Engineering Teams</title>
@@ -7694,311 +7933,6 @@ openrouter rate-limit &lt;span class=&quot;nt&quot;&gt;--model&lt;/span&gt; goog
       &lt;/tbody&gt;
     &lt;/table&gt;
   &lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-    </item>
-    
-    <item>
-      <title>DevSecOps防御实操：SBOM与CI/CD安全缺口排查 — DevSecOps Playbook: Detect and Fix SBOM &amp; CI/CD Security Gaps</title>
-      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/19/security-playbook.html</link>
-      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/19/security-playbook.html</guid>
-      <pubDate>Fri, 19 Jun 2026 11:29:32 +0800</pubDate>
-      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
-      <category domain="category">infosec</category>
-      <category domain="content_type">Defensive Playbook</category>
-      <category domain="tag">DevSecOps</category><category domain="tag">SBOM</category><category domain="tag">CI/CD</category><category domain="tag">GitHub Actions</category><category domain="tag">supply chain security</category><category domain="tag">vulnerability scanning</category><category domain="tag">defensive playbook</category>
-      <description>面向团队的CI/CD安全防御实操指南，聚焦SBOM生成、漏洞扫描与供应链风险，结合GitHub Actions与开源工具给出可落地的检测与修复步骤。&#10;&#10;A practical guide for teams to detect and fix common security gaps in CI/CD pipelines, focusing on SBOM generation, vulnerability scanning, and supply chain risks using GitHub Actions and open-source tools.</description>
-      <content:encoded>&lt;!-- Chinese Version --&gt;
-&lt;div class=&quot;lang-cn&quot;&gt;
-
-  &lt;h2 id=&quot;devsecopssbomcicd&quot;&gt;DevSecOps防御实操：SBOM与CI/CD安全缺口排查&lt;/h2&gt;
-
-  &lt;h1 id=&quot;devsecopssbomcicd-1&quot;&gt;DevSecOps防御实操：SBOM与CI/CD安全缺口排查&lt;/h1&gt;
-
-  &lt;h2 id=&quot;section&quot;&gt;风险是什么&lt;/h2&gt;
-
-  &lt;p&gt;2026年6月的今天，软件供应链攻击已经不是“会不会发生”的问题，而是“什么时候轮到你的CI/CD管道被投毒”。SBOM（软件物料清单）和CI/CD安全扫描是当前最被低估的两个防御环节。&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;核心风险&lt;/strong&gt;：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;你的CI/CD管道里跑着大量第三方依赖，但没人知道这些依赖里藏着什么。&lt;/li&gt;
-    &lt;li&gt;依赖的版本锁定、签名验证、来源追溯几乎为零。&lt;/li&gt;
-    &lt;li&gt;攻击者通过投毒上游包（如PyPI、npm、GitHub Actions的第三方action）就能直接进入你的生产环境。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;真实案例&lt;/strong&gt;：2024-2026年间，多个开源项目被通过依赖混淆和恶意commit投毒，受害者包括金融科技公司和SaaS平台。这些攻击的共性：CI/CD管道没有SBOM，没有依赖签名验证。&lt;/p&gt;
-
-  &lt;h2 id=&quot;section-1&quot;&gt;谁会受影响&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;任何使用第三方依赖的团队&lt;/strong&gt;：Python、JavaScript、Go、Java、Rust项目都中招。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;CI/CD管道中有GitHub Actions、自建Jenkins、GitLab CI的团队&lt;/strong&gt;：尤其是那些直接拉取第三方action或镜像的。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;SaaS和B2B团队&lt;/strong&gt;：客户要求你提供SBOM和供应链安全报告，你拿不出来。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;合规团队&lt;/strong&gt;：PIPL、EU AI Act、SOC 2、ISO 27001都开始要求软件供应链透明度。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-2&quot;&gt;怎么检查&lt;/h2&gt;
-
-  &lt;h3 id=&quot;section-3&quot;&gt;检查清单（可立即执行）&lt;/h3&gt;
-
-  &lt;p&gt;&lt;strong&gt;1. 你的CI/CD管道有SBOM吗？&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;检查方式：在CI/CD中加入SBOM生成步骤。&lt;/li&gt;
-    &lt;li&gt;工具：CycloneDX插件、SPDX工具、Trivy、Syft。&lt;/li&gt;
-    &lt;li&gt;命令示例（GitHub Actions）：&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Generate SBOM&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;anchore/sbom-action@v0&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cyclonedx-json&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-
-  &lt;p&gt;&lt;strong&gt;2. 你的依赖有签名验证吗？&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;检查方式：看你的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm install&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install&lt;/code&gt;是否用了&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--verify&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--require-hashes&lt;/code&gt;。&lt;/li&gt;
-    &lt;li&gt;大多数团队没有。这是缺口。&lt;/li&gt;
-    &lt;li&gt;修复：在CI中加入&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install --require-hashes&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm audit&lt;/code&gt;。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;3. 你的CI/CD安全扫描覆盖了哪些层？&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;SAST（静态分析）：CodeQL、Semgrep、SonarQube。&lt;/li&gt;
-    &lt;li&gt;SCA（软件组成分析）：Dependabot、Trivy、Snyk。&lt;/li&gt;
-    &lt;li&gt;DAST（动态分析）：OWASP ZAP。&lt;/li&gt;
-    &lt;li&gt;容器扫描：Docker Scout、Trivy镜像扫描。&lt;/li&gt;
-    &lt;li&gt;基础设施即代码扫描：Checkov、tfsec。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;4. 你的第三方Actions有审计吗？&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;检查：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;actions/checkout&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;actions/setup-python&lt;/code&gt;这些官方action没问题。&lt;/li&gt;
-    &lt;li&gt;风险：第三方action如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker/login-action&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;aws-actions/configure-aws-credentials&lt;/code&gt;。&lt;/li&gt;
-    &lt;li&gt;修复：只使用经过GitHub验证的action，或自建镜像。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-4&quot;&gt;怎么修 / 怎么接入流程&lt;/h2&gt;
-
-  &lt;h3 id=&quot;section-5&quot;&gt;立即行动：三步修复&lt;/h3&gt;
-
-  &lt;p&gt;&lt;strong&gt;第一步：在CI/CD中嵌入SBOM生成&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;每个构建都生成SBOM。&lt;/li&gt;
-    &lt;li&gt;存储SBOM到制品库（如GitHub Releases、Artifactory）。&lt;/li&gt;
-    &lt;li&gt;示例工作流：&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;CI with SBOM&lt;/span&gt;
-&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;pull_request&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v4&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Generate SBOM&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;anchore/sbom-action@v0&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cyclonedx-json&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Upload SBOM&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/upload-artifact@v4&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sbom&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sbom.json&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-
-  &lt;p&gt;&lt;strong&gt;第二步：加入依赖签名验证&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install --require-hashes&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm ci --only=production&lt;/code&gt;。&lt;/li&gt;
-    &lt;li&gt;对GitHub Actions的第三方action，使用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;actions/checkout&lt;/code&gt;的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ref&lt;/code&gt;参数锁定版本。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;第三步：加入安全扫描&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;加入CodeQL、Dependabot、Trivy。&lt;/li&gt;
-    &lt;li&gt;加入OWASP ZAP做DAST。&lt;/li&gt;
-    &lt;li&gt;加入Checkov扫描IaC。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-6&quot;&gt;适合人群&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;DevOps/DevSecOps工程师&lt;/strong&gt;：直接操作CI/CD。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;安全工程师&lt;/strong&gt;：需要审计和报告。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;SaaS团队&lt;/strong&gt;：需要向客户提供SBOM。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;合规团队&lt;/strong&gt;：需要满足PIPL、SOC 2、ISO 27001。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-7&quot;&gt;不适合人群&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;纯前端团队&lt;/strong&gt;：如果项目不涉及后端依赖，SBOM价值有限。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;没有CI/CD的团队&lt;/strong&gt;：先搭CI/CD再谈。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-8&quot;&gt;注意事项&lt;/h2&gt;
-
-  &lt;h3 id=&quot;section-9&quot;&gt;工具限制&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;Trivy&lt;/strong&gt;：基础扫描，但缺乏可达性分析（reachability analysis）。无法告诉你“这个漏洞是否真的被代码调用”。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Dependabot&lt;/strong&gt;：只做版本更新，不做漏洞优先级排序。容易产生大量噪音。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;CodeQL&lt;/strong&gt;：需要配置语言，对Python和JavaScript支持好，但对Rust和Go支持有限。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;OWASP ZAP&lt;/strong&gt;：DAST扫描只对API有效，对前端SPA效果差。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-10&quot;&gt;误报和漏报&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;误报&lt;/strong&gt;：SBOM中的依赖版本和实际运行版本可能不一致。依赖树解析错误会导致SBOM不准确。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;漏报&lt;/strong&gt;：SBOM只覆盖直接依赖，不覆盖间接依赖（transitive dependency）。这是最大的缺口。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;操作风险&lt;/strong&gt;：SBOM生成过程本身可能被篡改。需要签名SBOM。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-11&quot;&gt;我的判断&lt;/h3&gt;
-
-  &lt;p&gt;&lt;strong&gt;SBOM是2026年最被低估的防御工具&lt;/strong&gt;。不是因为SBOM能解决所有问题，而是因为：&lt;/p&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;合规要求&lt;/strong&gt;：PIPL、EU AI Act、SOC 2都开始要求SBOM。没有SBOM，审计过不去。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;攻击面&lt;/strong&gt;：2024-2026年供应链攻击集中在“依赖投毒”。没有SBOM，你根本不知道你用了什么。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;成本&lt;/strong&gt;：SBOM生成是免费的（CycloneDX、SPDX）。不做的成本是审计失败和客户流失。&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;&lt;strong&gt;但SBOM不是银弹&lt;/strong&gt;。它需要配合：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;依赖签名验证（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;require-hashes&lt;/code&gt;）&lt;/li&gt;
-    &lt;li&gt;可达性分析（Snyk、Endor Labs）&lt;/li&gt;
-    &lt;li&gt;运行时监控（Falco、Tetragon）&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;建议&lt;/strong&gt;：先做SBOM生成和上传，再做依赖签名验证，最后加入安全扫描。顺序不能错。&lt;/p&gt;
-
-  &lt;h2 id=&quot;english-brief&quot;&gt;English Brief&lt;/h2&gt;
-
-  &lt;p&gt;&lt;strong&gt;Risk&lt;/strong&gt;: CI/CD pipelines without SBOM and dependency verification are the primary attack surface for software supply chain attacks in 2026. Most teams have no visibility into their third-party dependencies.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Affected Teams&lt;/strong&gt;: DevOps, security, SaaS, compliance, and B2B teams using GitHub Actions, Jenkins, or GitLab CI.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Checks&lt;/strong&gt;:&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;Does your pipeline generate SBOM (CycloneDX/SPDX)?&lt;/li&gt;
-    &lt;li&gt;Are dependencies verified with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--require-hashes&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--verify&lt;/code&gt;?&lt;/li&gt;
-    &lt;li&gt;Are security scans (SAST, SCA, DAST, container) in place?&lt;/li&gt;
-    &lt;li&gt;Are third-party GitHub Actions audited?&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;&lt;strong&gt;Remediation Workflow&lt;/strong&gt;:&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;Add SBOM generation to every build.&lt;/li&gt;
-    &lt;li&gt;Add dependency signature verification.&lt;/li&gt;
-    &lt;li&gt;Add security scans (CodeQL, Trivy, OWASP ZAP).&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;&lt;strong&gt;Caveats&lt;/strong&gt;:&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;SBOM only covers direct dependencies, not transitive ones.&lt;/li&gt;
-    &lt;li&gt;Tools like Trivy lack reachability analysis.&lt;/li&gt;
-    &lt;li&gt;SBOM generation itself must be signed.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;Take&lt;/strong&gt;: SBOM is the most underrated defense in 2026. It’s free, required by regulations (PIPL, SOC 2, EU AI Act), and directly addresses the supply chain attack vector. Start with SBOM generation, then add verification and scanning.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;!-- English Version --&gt;
-&lt;div class=&quot;lang-en&quot;&gt;
-
-  &lt;h2 id=&quot;devsecops-playbook-detect-and-fix-sbom--cicd-security-gaps&quot;&gt;DevSecOps Playbook: Detect and Fix SBOM &amp;amp; CI/CD Security Gaps&lt;/h2&gt;
-
-  &lt;h1 id=&quot;devsecops-playbook-detect-and-fix-sbom--cicd-security-gaps-1&quot;&gt;DevSecOps Playbook: Detect and Fix SBOM &amp;amp; CI/CD Security Gaps&lt;/h1&gt;
-
-  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
-
-  &lt;p&gt;This playbook addresses two interconnected security gaps in modern software delivery: &lt;strong&gt;SBOM (Software Bill of Materials) management&lt;/strong&gt; and &lt;strong&gt;CI/CD pipeline security&lt;/strong&gt;. SBOMs provide a machine-readable inventory of all software components—names, versions, suppliers, licenses, and dependency relationships—typically in SPDX 2.3 or CycloneDX 1.5 formats. CI/CD security gaps arise when pipelines lack automated scanning for vulnerabilities, misconfigurations, or supply chain risks. Tools like GitHub Actions, CodeQL, Dependabot, OWASP ZAP, and Docker Scout can be integrated to detect these issues early.&lt;/p&gt;
-
-  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
-
-  &lt;p&gt;Software supply chain attacks are escalating. A single vulnerable dependency can compromise an entire organization. Regulatory pressure is mounting: U.S. Executive Order 14028 mandates SBOMs for federal software, and frameworks like SOC 2 and ISO 27001 increasingly expect supply chain visibility. Without automated detection in CI/CD, teams ship vulnerabilities unknowingly. The shift-left approach—catching issues during development rather than post-deployment—reduces remediation costs and breach risk.&lt;/p&gt;
-
-  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;Generate SBOMs automatically&lt;/strong&gt; in your CI pipeline. Use tools like &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;syft&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;trivy&lt;/code&gt; to produce CycloneDX or SPDX files on every build. Store them alongside artifacts.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;Integrate static analysis (SAST)&lt;/strong&gt; with GitHub CodeQL or ESLint security plugins. Add a workflow step that runs on every push and pull request.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;Add dependency scanning&lt;/strong&gt; via Dependabot or Trivy. Configure alerts for critical vulnerabilities and auto-create pull requests for fixes.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;Run dynamic analysis (DAST)&lt;/strong&gt; on staging environments using OWASP ZAP. Focus on API endpoints—use the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;zaproxy/action-api-scan&lt;/code&gt; GitHub Action for REST APIs.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;Enforce policy gates&lt;/strong&gt;: Fail builds if SBOM reveals components with known critical CVEs or license violations. Use tools like Docker Scout for containerized apps.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;Audit pipeline secrets&lt;/strong&gt;: Scan for hardcoded credentials using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;truffleHog&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;git-secrets&lt;/code&gt; in a pre-commit hook or CI step.&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h2 id=&quot;risks--limitations&quot;&gt;Risks &amp;amp; Limitations&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;False positives&lt;/strong&gt; from SAST/DAST tools can desensitize teams—tune rulesets and prioritize reachable vulnerabilities.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;SBOM completeness&lt;/strong&gt; depends on accurate dependency resolution; transitive dependencies may be missed.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Open-source scanners&lt;/strong&gt; (Trivy, Grype) lack reachability analysis and automated remediation guidance found in commercial platforms (Snyk, Checkmarx).&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Pipeline complexity&lt;/strong&gt; increases maintenance burden; start with critical paths (e.g., production builds) before expanding.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;No tool catches everything&lt;/strong&gt;—combine SAST, DAST, SCA, and manual review for defense in depth.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
-
-  &lt;p&gt;Start with SBOM generation and dependency scanning—they provide the highest visibility-to-effort ratio. Add SAST and DAST incrementally. For most teams, open-source tools cover 80% of needs; invest in commercial platforms only when policy management, SSO, or advanced remediation become bottlenecks. The goal is not zero vulnerabilities but a repeatable process that catches critical issues before production.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[DevSecOps Tutorial for Beginners&lt;/td&gt;
-          &lt;td&gt;CI Pipeline with GitHub Actions and Docker Scout](https://www.youtube.com/watch?v=gLJdrXPn0ns)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[DevSecOps with GitHub Action and SaaS Tools&lt;/td&gt;
-          &lt;td&gt;cicd-github-action-example](https://judebantony.github.io/cicd-github-action-example)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://devsecopsschool.com/blog/github-actions-in-devsecops-a-comprehensive-tutorial&quot;&gt;GitHub Actions in DevSecOps: A Comprehensive Tutorial - DevSecOps School&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://checkmarx.com/learn/supply-chain-security/software-supply-chain-security-guide&quot;&gt;Software Supply Chain Security Ultimate Guide&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.endorlabs.com/learn/best-software-supply-chain-security-tools-a816d&quot;&gt;Best Software Supply Chain Security Tools for AppSec Teams&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
     </item>
