@@ -25,7 +25,7 @@ from content_config import (
     CONTENT_TYPE_LABELS,
     CONTENT_TYPE_PROMPTS,
     SYSTEM_PROMPT,
-    select_daily_article,
+    select_weekly_article,
 )
 
 # Config
@@ -423,10 +423,10 @@ summary_cn: {yaml_scalar(article['summary_cn'])}
 
 
 def main() -> None:
-    print(f"AI Infosec Landing — Daily Publisher [{TODAY}]")
+    print(f"AI Infosec Landing — Weekly Publisher [{TODAY}]")
     print("=" * 50)
 
-    item = select_daily_article(datetime.now(BJT).toordinal())
+    item = select_weekly_article(datetime.now(BJT).toordinal())
     try:
         content_type = item["content_type"]
         print(f"🧭 Content type: {content_type}")
@@ -441,7 +441,7 @@ def main() -> None:
         print(f"❌ Error generating {item['category']} article: {exc}")
         raise
 
-    print("\n✨ Done! Daily article generated successfully.")
+    print("\n✨ Done! Weekly article generated successfully.")
 
 
 if __name__ == "__main__":

@@ -1,4 +1,4 @@
-name: Daily Article Publisher
+name: Weekly Article Publisher
 
 on:
   schedule:
