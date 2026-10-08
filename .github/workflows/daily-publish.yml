@@ -44,6 +44,31 @@ jobs:
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
         run: python scripts/generate.py
 
+      - name: Sync stats from Supabase
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -n "$SUPABASE_URL" ] && [ -n "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            python3 scripts/sync_stats.py || echo "stats sync failed; continuing with empty scaffold"
+          else
+            echo "Supabase secrets not set; writing empty stats scaffold."
+            python3 scripts/sync_stats.py
+          fi
+
+      - name: Inject Supabase anon key into build
+        env:
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        run: |
+          if [ -n "$SUPABASE_ANON_KEY" ] && [ -n "$SUPABASE_URL" ]; then
+            sed -i "s|SUPABASE_ANON_KEY_PLACEHOLDER|$SUPABASE_ANON_KEY|g" _config.yml
+            sed -i "s|https://placeholder.supabase.co|$SUPABASE_URL|g" _config.yml
+            echo "✅ Injected Supabase config into _config.yml"
+          else
+            echo "Supabase secrets not set; anon key remains placeholder (Supabase features disabled)."
+          fi
+
       - name: Update article archive index
         run: python3 scripts/update_archive.py
 
