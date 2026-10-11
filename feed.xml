@@ -10,10 +10,202 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 05 Oct 2026 03:23:00 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 12 Oct 2026 04:07:29 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>AI Agent 工作流可观测性工具指南：Opik、Phoenix、Langfuse 实测 — How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html</guid>
+      <pubDate>Mon, 12 Oct 2026 04:07:23 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">ai</category>
+      <category domain="content_type">Tool Guide</category>
+      <category domain="tag">AI Evaluation</category><category domain="tag">LLM Observability</category><category domain="tag">Agent Tracing</category><category domain="tag">Open Source</category><category domain="tag">Tool Guide</category>
+      <description>本文对比三个开源 LLM Agent 可观测与评估工具：Opik、Arize Phoenix、Langfuse。涵盖安装集成、免费额度、生产风险，帮助团队选型。&#10;&#10;This article compares three open-source tools for tracing and evaluating LLM agents: Opik, Arize Phoenix, and Langfuse. It covers installation, integration, free tiers, and production risks to help teams choose the right observability stack.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;ai-agent-opikphoenixlangfuse-&quot;&gt;AI Agent 工作流可观测性工具指南：Opik、Phoenix、Langfuse 实测&lt;/h2&gt;
+
+  &lt;h1 id=&quot;ai-agent-opikphoenixlangfuse--1&quot;&gt;AI Agent 工作流可观测性工具指南：Opik、Phoenix、Langfuse 实测&lt;/h1&gt;
+
+  &lt;p&gt;这篇文章介绍三个主流开源工具——Opik、Arize Phoenix、Langfuse。它们能让你把 Agent 的每一步推理、工具调用、Token 消耗和成本变成可查询的 Trace，并把评估结果关联到具体版本，值得任何跑复杂 Agent 工作流的团队立刻尝试。与其靠日志和猜，不如用它们建立可复现的评估流程，否则 Agent 一旦在线上“抽风”你根本定位不了原因。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;这是什么&lt;/h2&gt;
+
+  &lt;p&gt;三个工具都是“LLM/Agent 可观测性平台”，核心能力相似：追踪一次请求从用户输入到最终输出的完整链路，记录模型调用、工具执行、上下文检索、Token 用量、延迟和成本，并提供评估功能（Eval）来批量打分。区别在于架构侧重点和集成方式。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Opik&lt;/strong&gt;（CometML 开源）主打“评估 + 追踪 + 仪表盘”一体化。根据其文档，它支持从 RAG 聊天到复杂 Agent 流水线的追踪，能直接把 Prompt 版本关联到对应的 Trace 和评估结果。这意味着当线上回归时，你能逆向定位到是哪个 Prompt 改动导致性能下降。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Arize Phoenix&lt;/strong&gt; 的核心卖点是 OpenTelemetry 原生支持。它通过标准 OTLP 协议接收 Trace，可无缝融入你已有的可观测性栈（如 Grafana、Prometheus），避免厂商锁定。评估工具包含 LLM 评估器、代码指标、人工标注流程，并原生支持 LangChain、LlamaIndex、DSPy 以及 OpenAI、Anthropic、Bedrock 直接调用。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Langfuse&lt;/strong&gt; 是这三个里 GitHub Star 最多的开源项目（截至 2026 年 3 月约 23k+ Star），最近被 ClickHouse 收购。它提供完整的 LLM 工程平台：追踪、提示管理、评估、数据集，自称拥有 78 项功能，适合团队全流程使用。MIT 许可证，隐私上更灵活。&lt;/p&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;工具&lt;/th&gt;
+        &lt;th&gt;开源许可&lt;/th&gt;
+        &lt;th&gt;核心优势&lt;/th&gt;
+        &lt;th&gt;主要作者/维护方&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Opik&lt;/td&gt;
+        &lt;td&gt;开源（Apache-2.0）&lt;/td&gt;
+        &lt;td&gt;评估与追踪强关联&lt;/td&gt;
+        &lt;td&gt;CometML&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Arize Phoenix&lt;/td&gt;
+        &lt;td&gt;开源&lt;/td&gt;
+        &lt;td&gt;OpenTelemetry 原生，OOTB 评估器&lt;/td&gt;
+        &lt;td&gt;Arize AI&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Langfuse&lt;/td&gt;
+        &lt;td&gt;MIT&lt;/td&gt;
+        &lt;td&gt;功能全，社区大，托管化&lt;/td&gt;
+        &lt;td&gt;ClickHouse 收购&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;怎么用&lt;/h2&gt;
+
+  &lt;p&gt;所有三个工具都支持两种部署方式：云端 SaaS 免费尝鲜，或 Docker 自托管。下面给出最简起步路径。&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-2&quot;&gt;1. 通用集成步骤&lt;/h3&gt;
+
+  &lt;p&gt;无论选哪个，第一步都是注册/启动后端，然后在代码里安装 SDK 并配置 API Key 或本地端点。&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Opik&lt;/strong&gt;：Python 环境执行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install opik&lt;/code&gt;，免费云平台注册后拿到 API Key；自托管则用 Docker 运行 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;docker run -d -p 5173:5173 -v opik-data:/opik-data cometml/opik&lt;/code&gt;。配置：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;import opik; opik.configure(api_key=&quot;...&quot;, base_url=&quot;...&quot;)&lt;/code&gt;。支持 OpenAI SDK 无缝集成——只需把 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OpenAI()&lt;/code&gt; 替换为 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;opik.OpenAI()&lt;/code&gt;，自动捕获 Trace。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Arize Phoenix&lt;/strong&gt;：使用 OpenTelemetry Collector 最省事。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install arize-phoenix&lt;/code&gt;，然后启动本地实例 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;phoenix serve&lt;/code&gt;。将 OTLP 端点（如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://localhost:6006/v1/traces&lt;/code&gt;）配置给你的应用。如果你用 LangChain，直接设置环境变量 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PHOENIX_COLLECTOR_ENDPOINT&lt;/code&gt; 即可，官方提供 LangChain &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Tracer&lt;/code&gt; 插件。也支持通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;phoenix.trace.openai&lt;/code&gt; 包拦截纯 OpenAI 调用。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Langfuse&lt;/strong&gt;：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install langfuse&lt;/code&gt;，云平台创建项目后拿密钥。自托管可 Docker 或直接使用其官方部署模板。集成 OpenAI：调用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;langfuse.openai.OpenAI()&lt;/code&gt; 替代原生对象；LangChain 则通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CallbackHandler&lt;/code&gt; 注入。Langfuse 还提供 REST API，适合非 Python 语言。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-3&quot;&gt;2. 评估与回归测试的接入点&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Opik&lt;/strong&gt; 内置 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;evaluate&lt;/code&gt; 函数：定义数据集、评分函数（如用户自定义的 LLM 评判），然后传入一个应用函数，它会跑完整个测试集并输出报告。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Phoenix&lt;/strong&gt; 提供 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;evaluate&lt;/code&gt; API，含预置的 LLM 评估器（如回答相关性、有害性），支持 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;llm_eval&lt;/code&gt; 和 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;code_eval&lt;/code&gt;，还能人工标注。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Langfuse&lt;/strong&gt; 通过 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;langfuse.evaluations&lt;/code&gt; 模块，可把评估脚本挂到 Trace 上；它支持在测试数据集上批量跑 Prompt 并生成对比报告。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;mcp--cicd&quot;&gt;3. 高级入口：MCP 与 CI/CD&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;三个工具最近都推出了 &lt;strong&gt;MCP Server&lt;/strong&gt;（Model Context Protocol）。例如 Langfuse 的 MCP server 可让 Claude Code 直接查询 Trace 和评估结果；Opik 也有类似 MCP 扩展，允许 Agent 调试工具访问数据。Phoenix 的 MCP 支持还在早期阶段。&lt;/li&gt;
+    &lt;li&gt;把它们用进 &lt;strong&gt;GitHub Actions&lt;/strong&gt;：每次 PR 推送时，运行一个评估脚本，把结果上报到对应平台的 API，然后评论到 PR。这是最实用的回归测试方式。参考各工具的 Python SDK 都有 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;export&lt;/code&gt; 或 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;log&lt;/code&gt; 方法，可以写一个 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pytest&lt;/code&gt; 测试用例。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-4&quot;&gt;适合谁&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;正在生产环境运行多步 Agent（工具调用、搜索、代码生成）的团队，尤其是客服、代码助手、自动化研究等场景。&lt;/li&gt;
+    &lt;li&gt;需要证明“Prompt 改动后效果确实提了”的工程团队，或者因上游模型更新导致行为漂移而痛苦的组。&lt;/li&gt;
+    &lt;li&gt;已经有 OpenTelemetry 基础设施、不想再引入新数据库的组织——首选 Phoenix。&lt;/li&gt;
+    &lt;li&gt;重度依赖 LangChain / LlamaIndex / DSPy 的开发组，三者的集成都很顺滑。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;不适合：只做单次提示调用的玩具项目，或已经有监控平台（如 Grafana）但懒得再学新工具的人。另外，如果团队没有能力写评估测试脚本，这三个工具只能给你看日志，带不来实质提升。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-5&quot;&gt;限制和注意事项&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;免费层与价格&lt;/strong&gt;：三个工具都有开源免费版和商业托管版，托管版有免费额度但有限。Opik 的云免费版提供一定量的 Trace/评估次数，超出付费；Langfuse 免费版有每月 Trace 量限制，商业版按量计费；Phoenix 开源版完全免费，但 Arieze 的云服务收费。具体数字请以官网为准，因为变化快。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;隐私与数据安全&lt;/strong&gt;：如果你用官方云，所有 Trace 数据会经过第三方服务器。对于国内企业，这涉及 &lt;strong&gt;PIPL&lt;/strong&gt; 跨境传输数据合规。建议对含个人信息（如用户ID、聊天内容）的应用，必须自托管。三个工具都支持 Docker/私有部署，但需要你维护 PostgreSQL/ClickHouse 等组件——Langfuse 本身基于 ClickHouse，Phoenix 依赖 Arrow 等存储，Opik 需要 SQLite/PostgreSQL。自托管时注意备份。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;稳定性与生产风险&lt;/strong&gt;：这三个项目迭代极快，API 可能向后不兼容。目前 Opik 和 Phoenix 的 API 变动较多，Langfuse 相对稳定。不要在生产环境中用它们作为唯一 Trace 存储，最好同时使用标准 OTLP 备份到你的基础监控系统。另外，引入 SDK 会增加一定延迟（每个 Trace 有序列化开销），高并发场景下会拖慢主链路，建议用异步或批处理方式。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;数据误传&lt;/strong&gt;：自动捕获会记下所有 LLM 输入输出，如果里面含密钥、个人敏感信息，自托管存储也会成为攻击面。务必配置脱敏规则——三个工具都支持手动屏蔽字段，但默认不开。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-6&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;如果团队已经标准化 OpenTelemetry，选 &lt;strong&gt;Phoenix&lt;/strong&gt; 没有悬念，它不会被额外锁定。如果主要痛点是“评估跟不上开发速度”——每次改动 Prompt 都靠人肉看结果，那选 &lt;strong&gt;Opik&lt;/strong&gt;，因为它把版本、Trace、评估绑得最紧，非常适合 Agent 调试。如果团队规模大、需要提示管理、数据集、协作功能，&lt;strong&gt;Langfuse&lt;/strong&gt; 的全栈能力更强，但功能多也意味着上手更复杂。&lt;/p&gt;
+
+  &lt;p&gt;实测中我最推荐的做法是：先全部用本地 Docker 跑通示例，用同一个 Agent 项目分别接入三个工具，跑 50 次请求 + 一个小的评估集，看哪个部署起来最顺手、查询界面你最习惯。数据上它们差异不大——真正的壁垒在团队工作流是否用得起来。另外注意，当前 AI Agent 的稳定性问题通常是“评估跑太少”，而不是工具不够强，所以不管选哪个，先建立一套可重复的回归数据集，比挑选平台更优先。&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;how-to-measure-ai-agent-workflows-opik-arize-phoenix-langfuse-guide&quot;&gt;How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide&lt;/h2&gt;
+
+  &lt;h1 id=&quot;how-to-measure-ai-agent-workflows-opik-arize-phoenix-langfuse-guide-1&quot;&gt;How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide&lt;/h1&gt;
+
+  &lt;h2 id=&quot;what-this-is&quot;&gt;What this is&lt;/h2&gt;
+
+  &lt;p&gt;AI agents are no longer single prompt calls. They chain tool calls, retrieval steps, and model interactions, which makes failures hard to reproduce and regressions easy to miss. Evaluation, tracing, and observability tools close that gap by connecting what the agent did (traces) with how well it did (evaluations).&lt;/p&gt;
+
+  &lt;p&gt;Three open-source options dominate the conversation:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Opik (CometML)&lt;/strong&gt; — an open-source platform for tracing, evaluation, and dashboards. Its key differentiator: prompt versions link directly to the traces and evaluation results they produced, so a regression can be traced back to the exact prompt change.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Arize Phoenix&lt;/strong&gt; — OpenTelemetry-native observability. It accepts traces via the standard OTLP protocol, so it fits existing observability stacks without vendor lock-in. Includes LLM-based evaluators, code-based metrics, human annotation, and instrumentation for LangChain, LlamaIndex, DSPy, and direct API calls.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Langfuse&lt;/strong&gt; — the open-source leader by adoption (28k+ GitHub stars, MIT license, recently acquired by ClickHouse). Covers tracing, prompt management, evaluation, datasets, and a large feature set for the full LLM engineering workflow.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;Why it matters now: agent workflows are non-deterministic and multi-step. A single prompt change can break a downstream tool call or retrieval path. Without tracing + eval tied to versions, teams debug by guessing. The key differentiator is whether a prompt version links to the evaluation results and production traces it produced.&lt;/p&gt;
+
+  &lt;p&gt;Practical next steps:&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;Start with OpenTelemetry-native tracing (Arize Phoenix) if you already run an OTel stack; use OTLP to avoid vendor lock-in.&lt;/li&gt;
+    &lt;li&gt;If you want an all-in-one open-source platform, try Langfuse for tracing + prompt management + evaluation.&lt;/li&gt;
+    &lt;li&gt;If you want eval harness tightly coupled to prompt versions and production traces, try Opik: log traces, annotate, run evals, and link prompt versions to results.&lt;/li&gt;
+    &lt;li&gt;Set up regression checks: run a fixed eval set before and after prompt/model changes; trace regressions back to the exact prompt version.&lt;/li&gt;
+    &lt;li&gt;Add LLM-based evaluators, code-based metrics, and human annotation.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;Risks: no definitive best tool; each has tradeoffs. OpenTelemetry-native (Phoenix) avoids vendor lock-in. Langfuse acquired by ClickHouse — consider governance. Don’t over-rely on LLM-as-judge; need human annotation. Tools don’t fix bad eval design.&lt;/p&gt;
+
+  &lt;p&gt;Take: start with one tool, wire tracing first, then eval harness.&lt;/p&gt;
+
+  &lt;p&gt;Let me write 300-500 words. Markdown body only.# How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide&lt;/p&gt;
+
+  &lt;h2 id=&quot;what-this-is-1&quot;&gt;What this is&lt;/h2&gt;
+
+  &lt;p&gt;AI agents are no longer single prompt calls. They chain tool use, retrieval, and multi-step reasoning, which makes failures hard to reproduce and even harder to attribute. Three open-source tools have become the practical baseline for making agent workflows measurable:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Opik (CometML)&lt;/strong&gt; — an open-source platform for tracing, evaluation, and dashboards. Its key design point: prompt versions link directly to the traces and evaluation results they produced, so a regression can be traced back to the exact prompt change.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Arize Phoenix&lt;/strong&gt; — OpenTelemetry-native observability. It accepts traces via the standard OTLP protocol, so it fits existing observability stacks without vendor lock-in. Includes LLM-based evaluators, code-based metrics, and human annotation, with first-class instrumentation for LangChain, LlamaIndex, DSPy, and direct OpenAI/Anthropic/Bedrock calls.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Langfuse&lt;/strong&gt; — open source LLM engineering platform (recently acquired by ClickHouse), with 23k-28k GitHub stars depending on source date. Covers tracing, prompt management, evaluation, datasets, and session tracking.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;Why it matters now: Agent workflows are non-deterministic and multi-step. A single prompt change can break a downstream tool call or retrieval path. Without tracing and eval harnesses, teams debug by guessing. The tools above connect prompt versions to traces and evaluation results, so regressions can be traced to the exact change.&lt;/p&gt;
+
+  &lt;p&gt;Practical next steps:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Start with OpenTelemetry-native tracing (Arize Phoenix) if you already have an observability stack, to avoid vendor lock-in.&lt;/li&gt;
+    &lt;li&gt;Use Opik if you want prompt versions linked directly to traces and eval results, so regressions map to exact prompt changes.&lt;/li&gt;
+    &lt;li&gt;Use Langfuse if you want the most complete open-source platform with prompt management, datasets, and evaluation.&lt;/li&gt;
+    &lt;li&gt;Build a repeatable&lt;/li&gt;
+  &lt;/ul&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.dailydoseofds.com/a-practical-guide-to-integrate-evaluation-and-observability-into-llm-apps&quot;&gt;A Practical Guide to Integrate Evaluation and Observability into LLM Apps&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.firecrawl.dev/blog/best-llm-observability-tools&quot;&gt;Best LLM Observability Tools in 2026&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://posthog.com/blog/best-open-source-llm-observability-tools&quot;&gt;7 best free and open source LLM observability tools&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.comet.com/site/blog/prompt-management-tools&quot;&gt;Best Prompt Management &amp;amp; Versioning Tools for AI Agents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.confident-ai.com/knowledge-base/compare/best-ai-evaluation-tools-for-prompt-experimentation-2026&quot;&gt;Best AI Evaluation Tools for Prompt Experimentation in 2026 - Confident AI&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>国际AI与网络韧性法规：工程合规行动指南 — EU AI Act, DORA, NIS2: Engineering Compliance for AI &amp; Cyber-Resilience</title>
@@ -7660,279 +7852,6 @@ openrouter rate-limit &lt;span class=&quot;nt&quot;&gt;--model&lt;/span&gt; goog
   &lt;li&gt;&lt;a href=&quot;https://docs.aihubmix.com/en/blogs/free-ai-models&quot;&gt;Free AI Models - AiHubMix Documentation Hub&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/kilo-org/kilocode&quot;&gt;GitHub - Kilo-Org/kilocode: Kilo is the all-in-one agentic engineering platform. Build, ship, and iterate faster with the most popular open source coding agent.&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://kilo.ai/articles/coding-agents-for-vscode&quot;&gt;Best Coding Agents for VS Code in 2026: Compared &amp;amp; Reviewed&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-    </item>
-    
-    <item>
-      <title>中国数据出境合规新规：跨境传输实操指南 — China&apos;s Data Export Compliance: New Rules for Cross-Border Transfers</title>
-      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/20/regulation-watch.html</link>
-      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/20/regulation-watch.html</guid>
-      <pubDate>Sat, 20 Jun 2026 01:48:14 +0800</pubDate>
-      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
-      <category domain="category">infosec</category>
-      <category domain="content_type">Regulation Watch</category>
-      <category domain="tag">data export</category><category domain="tag">PIPL</category><category domain="tag">cross-border</category><category domain="tag">compliance</category><category domain="tag">AI regulation</category>
-      <description>中国PIPL和DSL要求数据出境前进行安全评估并签订标准合同，违规面临处罚。新规对AI和SaaS产品跨境数据流动提出更严格合规要求。&#10;&#10;China&apos;s PIPL and DSL require data export risk assessments and standard contracts for cross-border transfers. Non-compliance risks penalties, with new rules for AI and SaaS products.</description>
-      <content:encoded>&lt;!-- Chinese Version --&gt;
-&lt;div class=&quot;lang-cn&quot;&gt;
-
-  &lt;h2 id=&quot;section&quot;&gt;中国数据出境合规新规：跨境传输实操指南&lt;/h2&gt;
-
-  &lt;h1 id=&quot;section-1&quot;&gt;中国数据出境合规新规：跨境传输实操指南&lt;/h1&gt;
-
-  &lt;h2 id=&quot;section-2&quot;&gt;发生了什么&lt;/h2&gt;
-
-  &lt;p&gt;截至2026年6月，中国数据出境监管框架已基本成型，核心三法——《网络安全法》《数据安全法》《个人信息保护法》——下形成的“安全评估+标准合同+认证”三条合规路径在实践中走向细化与差异化。2024年3月发布的《促进和规范数据跨境流动规定》降低了部分场景的申报门槛，随后多个自贸区（北京、上海、天津、海南、福建等）陆续出台数据出境负面清单，允许清单外数据在特定场景下通过简化程序出境。2025年，国家网信办进一步明确重要数据识别标准，并试点“数据跨境流动分级分类管理”。当前，企业面对的不再是单一的“要不要申报”，而是一套基于数据类型、数量、接收方、业务场景的阶梯式决策树。&lt;/p&gt;
-
-  &lt;h2 id=&quot;section-3&quot;&gt;为什么现在重要&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;执法进入常态化&lt;/strong&gt;：截至2026年，已有数十家企业的数据出境安全评估申请被驳回或要求整改，罚款案例上升。监管不再只盯头部平台，中型SaaS、出海游戏、智能制造、医疗数据服务商均被纳入检查范围。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;自贸区负面清单释放红利&lt;/strong&gt;：不触发负面清单的场景可免于安全评估或标准合同备案，但企业需自行举证数据不在清单范围内，内部数据分类分级能力成为合规前提。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;国际冲突加剧数据主权博弈&lt;/strong&gt;：欧盟GDPR、美国CLOUD Act、中国数据法之间存在管辖重叠，跨国企业面临“双重合规”甚至“三向合规”压力。例如，中国员工数据存储于境外HR系统，同时需满足GDPR向第三国转移的要求。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;AI与云服务带来新场景&lt;/strong&gt;：跨境调用AI API（如大模型推理）、境外员工远程运维境内系统、国际并购中的数据迁移，这些场景的数据出境认定和合规路径仍在持续细化。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-4&quot;&gt;影响谁&lt;/h2&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;角色&lt;/th&gt;
-        &lt;th&gt;直接影响&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;AI产品团队&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;使用境外大模型API处理训练数据或用户查询，可能构成“数据出境”（即使数据未复制至境外，仅被境外模型访问）。&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;SaaS出海团队&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;中国用户数据与海外用户数据混合存储，需设计数据隔离架构并明确出境链路。&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;安全与数据团队&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;负责数据分类分级、跨境映射、安全影响评估、技术控制措施（加密、脱敏、审计日志）。&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;法务/合规团队&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;评估适用路径、起草标准合同、对接自贸区政策、应对监管检查。&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;外企中国分部&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;境内收集的个人信息传输至全球HR/CRM系统，需完成安全评估或签订标准合同。&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;&lt;strong&gt;供应链/制造业&lt;/strong&gt;&lt;/td&gt;
-        &lt;td&gt;涉及重要数据（如生产参数、供应链图谱）出境，风险自评估复杂。&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;h2 id=&quot;section-5&quot;&gt;工程/安全/数据团队要做什么&lt;/h2&gt;
-
-  &lt;h3 id=&quot;section-6&quot;&gt;1. 构建数据出境映射矩阵&lt;/h3&gt;
-  &lt;ul&gt;
-    &lt;li&gt;识别所有跨境流动的数据资产：包括通过API、DB同步、人工导出、第三方服务（如PaaS、SaaS、CDN）等路径。&lt;/li&gt;
-    &lt;li&gt;标注数据类型（个人信息、敏感个人信息、重要数据、一般数据）、量级（当年累计、单次峰值）、接收方国家/地区、存储与处理目的。&lt;/li&gt;
-    &lt;li&gt;采用数据分类分级工具（如DLP扫描+手动标注）并持续更新。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-7&quot;&gt;2. 实施技术控制措施&lt;/h3&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;加密与脱敏&lt;/strong&gt;：出境数据在传输层（TLS 1.3）和应用层（字段级加密）加密；重要数据必须脱敏或匿名化后再出境（需确认脱敏后仍属于“重要数据”）。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;访问日志&lt;/strong&gt;：记录所有出境请求的源IP、目标、数据量、审批号，保留至少2年（对应网信办安全评估复评周期）。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;数据本地化实例&lt;/strong&gt;：对于CIIO或超100万人个人信息处理者，需确保主数据存储在国内节点，境外仅可访问脱敏副本。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;API网关控制&lt;/strong&gt;：对境外API调用进行实时鉴权和流量审计，防止未申报的数据通过内网代理“意外”出境。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-8&quot;&gt;3. 建立合规决策流程&lt;/h3&gt;
-  &lt;ul&gt;
-    &lt;li&gt;业务或产品需求出境时，先查内部《数据分类分级清单》，判断是否属于“重要数据”或触发安全评估阈值（处理100万人以上个人信息、年累计10万人普通或1万人敏感个人信息）。&lt;/li&gt;
-    &lt;li&gt;若属于一般个人信息且未触发阈值，可签标准合同（SCC）或走认证（PIP认证）。&lt;/li&gt;
-    &lt;li&gt;若属于自贸区负面清单内场景（如部分汽车数据、航运数据），必须走安全评估；清单外则适用简易程序。&lt;/li&gt;
-    &lt;li&gt;若数据同时涉及GDPR（如涉及欧盟数据主体），需同时满足中国出境路径和GDPR充分性认定/BCR/SCC要求。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-9&quot;&gt;4. 定期复评与演练&lt;/h3&gt;
-  &lt;ul&gt;
-    &lt;li&gt;安全评估结果有效期为2年，到期前6个月启动复评申请；期间发生接收方变更、数据规模超预估、法律环境重大变化等，需立即重新申报。&lt;/li&gt;
-    &lt;li&gt;每年至少做一次数据出境风险自评估，模拟监管检查（材料完备性、技术措施有效性、合同条款落地情况）。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-10&quot;&gt;中国数据监管重点&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;重要数据识别&lt;/strong&gt;：目前仍未出台统一“重要数据目录”，各行业监管部门（工业、交通、汽车、医疗、金融、自然资源）正逐一发布本领域目录。企业必须对标所属行业征求意见稿，即使未被正式公布也应参照进行内部预识别。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;个人信息保护影响评估（PIA）&lt;/strong&gt;：所有数据出境场景（不论走哪条路径）均须完成PIA，且应保存评估报告至少3年。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;单独同意&lt;/strong&gt;：向境外接收方提供个人信息，需取得个人单独同意，且同意内容需明确境外接收方名称、联系方式、处理目的、方式、数据种类、保存期限。默示拒绝机制（如勾选框默认未勾选）。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;CIIO义务加重&lt;/strong&gt;：关键信息基础设施运营者即使未触发阈值，也必须通过安全评估才能出境个人信息和重要数据。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;自贸区负面清单的适用条件&lt;/strong&gt;：企业需在自贸区内注册或实际经营，且数据出境完全服务于清单所列业务场景（如国际物流、生物医药临床、跨境支付等），否则仍需走普适路径。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-11&quot;&gt;国际规则对照&lt;/h2&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;维度&lt;/th&gt;
-        &lt;th&gt;中国规则&lt;/th&gt;
-        &lt;th&gt;对应国际规则&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;出境前提&lt;/td&gt;
-        &lt;td&gt;安全评估/标准合同/认证&lt;/td&gt;
-        &lt;td&gt;GDPR：充分性认定/BCR/SCC（标准合同条款1.0/2.0）&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;数据本地化&lt;/td&gt;
-        &lt;td&gt;CIIO及特定行业强制&lt;/td&gt;
-        &lt;td&gt;俄罗斯、印度、越南也有类似，GDPR不强制但鼓励&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;影响评估&lt;/td&gt;
-        &lt;td&gt;PIA必做，且需留档&lt;/td&gt;
-        &lt;td&gt;GDPR DPIA（数据保护影响评估）要求类似&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;个人权利&lt;/td&gt;
-        &lt;td&gt;单独同意、撤回权、删除权&lt;/td&gt;
-        &lt;td&gt;GDPR知情权、删除权、数据可携权等&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;执法力度&lt;/td&gt;
-        &lt;td&gt;2024年以来加大行政罚款和责令整改&lt;/td&gt;
-        &lt;td&gt;EU最高2000万欧元/4%全球营收&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;国际传输工具&lt;/td&gt;
-        &lt;td&gt;SCC（网信办模板）、NQI认证&lt;/td&gt;
-        &lt;td&gt;SCC（EU 2021/914）、BCR、CBPR（APEC）&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;重要数据保护&lt;/td&gt;
-        &lt;td&gt;《数据安全法》专项制度&lt;/td&gt;
-        &lt;td&gt;无直接对应，NIS2要求关键基础设施强化安全，SOC 2关注保密性/可用性&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;p&gt;跨国企业的实用策略：同时满足中国SCC + EU SCC，在一份合同中嵌入双方条款；采用部署地隔离 + 合规审批 + 持续监控的“三明治”架构。&lt;/p&gt;
-
-  &lt;h2 id=&quot;section-12&quot;&gt;可以提前准备的检查清单&lt;/h2&gt;
-
-  &lt;ul class=&quot;task-list&quot;&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;1. 数据分类分级：完成全量数据资产盘点，标记出境字段，建立“重要数据”预识别清单。&lt;/li&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;2. 出境链路梳理：绘制数据流向图（包括第三方API、SDK、云计算平台），标注每一条出境的起始点和终结点。&lt;/li&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;3. 安全评估材料包初稿：包括数据出境风险自评估报告、数据处理者与接收方之间的合同、个人信息保护影响评估报告、数据安全能力证明（等级保护、等保测评等）。&lt;/li&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;4. 技术控制检查：加密传输、脱敏处理、访问控制、日志审计、最小化原则（仅传输必需字段）。&lt;/li&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;5. 同意机制更新：在用户注册/授权界面补充单独的“数据出境同意”选项，明确接收方信息。&lt;/li&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;6. 合同版本核对：使用最新版网信办标准合同模板（2023版已更新），确认接收方义务和责任分配。&lt;/li&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;7. 自贸区政策审查：如公司在自贸区内，评估是否适用负面清单并简化路径。&lt;/li&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;8. 复评预警：记录安全评估到期日、重大变更触发条件，提前6个月启动工作。&lt;/li&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;9. 内外部培训：数据合规负责人、业务PM、研发负责人了解出境判定标准和操作流程。&lt;/li&gt;
-    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;10. 应急预案：一旦接到监管通知要求暂停出境，需有技术方案（切断跨境连接、启动本地备份、切换国内镜像实例）并能在24小时内执行。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-13&quot;&gt;风险和不确定性&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;重要数据目录未完整覆盖&lt;/strong&gt;：部分行业（如教育、生物技术、人工智能训练数据）尚未发布正式目录，存在“灰色区”——企业自评为非重要数据，监管后续认定为重要数据，可能导致违规处罚。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;跨境执法协调难度&lt;/strong&gt;：当境外接收方所在国法律（如美国FISA 702）要求提交数据时，合同约定的“配合中国法”条款可能无法实际执行，企业面临两难。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;标准合同的更新频率&lt;/strong&gt;：网信办SCC模板可能与欧盟SCC冲突，需不断调整。2025年曾因中国SCC中“接收方应向网信办提供例行数据报告”条款引发国际争议，目前还有企业搁置签署。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;“访问即出境”的认定边界模糊&lt;/strong&gt;：境外人员通过VPN或专线访问境内系统，是否构成数据出境？目前监管倾向于“实质性访问（如能导出、下载、查询到明细数据）视为出境”，但存有解释空间。工程上建议对境外访问严格权限分离：只提供脱敏视图或经同意的聚合数据。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;自贸区政策落地不一致&lt;/strong&gt;：各地负面清单细节不同（如上海自贸区与海南自贸港对“汽车数据”的豁免条件不同），集团型企业需按注册地逐一核对，增加合规成本。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-14&quot;&gt;我的判断&lt;/h2&gt;
-
-  &lt;p&gt;中国数据出境合规不再是“做不做”的问题，而是“怎么做精”的问题。2024年的简化政策并非放宽监管，而是将资源集中于高危害场景（重要数据、海量个人信息、CIIO），对于低风险一般个人信息出境给予路径便利。因此：&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;对工程团队&lt;/strong&gt;：核心投入不是等法务通知，而是提前落地数据分类分级和出境映射。一个自动化标注+实时阻断的工具链，比事后补救有效十倍。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;对CIIO和海量数据处理者&lt;/strong&gt;：安全评估是不可绕过的硬门槛，且复评风险持续存在。建议建立“永续合规”团队，每季度review一次数据出境全景。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;对跨境SaaS和AI产品&lt;/strong&gt;：最稳妥的方案是“数据不出境”或“匿名化 + 低颗粒度聚合”。如果必须出境，应选择走标准合同（成本最低、效率最高），但需预留充足时间——SCC备案或认证通常需要3-6个月。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;对国际企业&lt;/strong&gt;：中国SCC与欧盟SCC的融合是现实选择，但务必增加“法律冲突时的适用优先级”条款，并准备备份存储拓扑。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;一句话总结：&lt;strong&gt;合规不等于不变通，但变通的底线是“能自证”&lt;/strong&gt;。所有决策（是否出境、走哪条路径、用什么技术措施）都应记录在案，形成一封能从容应对监管质询的“合规档案”。&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;!-- English Version --&gt;
-&lt;div class=&quot;lang-en&quot;&gt;
-
-  &lt;h2 id=&quot;chinas-data-export-compliance-new-rules-for-cross-border-transfers&quot;&gt;China’s Data Export Compliance: New Rules for Cross-Border Transfers&lt;/h2&gt;
-
-  &lt;h1 id=&quot;chinas-data-export-compliance-new-rules-for-cross-border-transfers-1&quot;&gt;China’s Data Export Compliance: New Rules for Cross-Border Transfers&lt;/h1&gt;
-
-  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
-
-  &lt;p&gt;China’s cross-border data transfer framework is anchored by the Cybersecurity Law (CSL), Data Security Law (DSL), and Personal Information Protection Law (PIPL). These laws require data processors to meet specific conditions before transferring personal information or “important data” outside mainland China. The primary compliance paths are: (1) passing a CAC-led security assessment (for CIIOs or those exceeding volume thresholds), (2) executing standard contracts (SCC) with the overseas recipient, or (3) obtaining personal information protection certification. Recent updates include negative lists for free trade zones, which exempt certain data types from restrictions, and expanded guidance from regulators.&lt;/p&gt;
-
-  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
-
-  &lt;p&gt;Regulatory enforcement is intensifying. The CAC has published detailed assessment procedures, and provincial-level cyberspace offices are conducting completeness checks before submission. New free trade zone negative lists (e.g., in Shanghai, Beijing, Tianjin) explicitly map which data categories still require security assessment, SCC, or certification — and which are permitted to flow freely. Meanwhile, industries such as automotive, shipping, and human resources face sector-specific rules. Any company with cross-border operations involving Chinese‑originated data must reassess its compliance posture, as non‑compliance can lead to fines up to 5% of annual revenue, suspension of data transfers, or even criminal liability.&lt;/p&gt;
-
-  &lt;h2 id=&quot;practical-next-steps-for-engineering-teams&quot;&gt;Practical Next Steps for Engineering Teams&lt;/h2&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;Map data flows and classify data.&lt;/strong&gt; Identify whether data leaving China includes “important data” (defined by industry regulators) or personal information. For personal information, calculate cumulative volumes over the past year (100,000 persons for personal info, 10,000 for sensitive personal info are thresholds triggering mandatory security assessment).&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Conduct a risk self-assessment.&lt;/strong&gt; For each cross-border scenario (including remote access by overseas staff), document the purpose, scope, recipient’s protection measures, and impact on individual rights. Update annually.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Choose the right compliance path.&lt;/strong&gt; If thresholds are met, prepare for CAC security assessment (submission through provincial cyberspace office). If below thresholds, use SCC filing or certification. For free trade zone entities, check the latest negative list — many routine data transfers (e.g., international trade, logistics, certain HR data) may now be exempt.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Update contracts and consent mechanisms.&lt;/strong&gt; Ensure data processing agreements with overseas recipients include PIPL‑required clauses. Obtain separate consent from individuals (not buried in general terms).&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Monitor regulatory changes.&lt;/strong&gt; The framework is still evolving — follow CAC announcements and industry-specific guidelines (e.g., from MIIT for automotive data).&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h2 id=&quot;risks-to-watch&quot;&gt;Risks to Watch&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;Data localization requirements:&lt;/strong&gt; Certain “important data” and CIIO‑related data must remain in China unless security assessment is passed. Free trade zone exemptions do not apply to national security‑related data.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Evolving definitions:&lt;/strong&gt; “Important data” lists vary by industry and are being finalized — a conservative approach is recommended until clear guidance is published.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Audit and enforcement risk:&lt;/strong&gt; Regulators can order audits or suspend transfers even after initial approval. Any change in data volume, purpose, or recipient triggers a re‑assessment.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
-
-  &lt;p&gt;China’s cross‑border data rules are not static — they are a layered system with paths that depend on data type, volume, entity status, and location (free trade zone or not). Engineering and compliance teams should run a data flow audit now, classify every data field, and map each transfer to the corresponding CAC pathway. For most outbound SaaS and tech companies, the default next step is to prepare an SCC filing while monitoring whether upcoming “important data” catalogs push you into mandatory security assessment territory. Proactive mapping and contract updates are the cheapest insurance against a sudden enforcement action.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.pcpd.org.hk/english/whatsnew/files/professor_hong.pdf&quot;&gt;[PDF] 数据出境安全评估: 背景和要点 - PCPD&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://assets.kpmg.com/content/dam/kpmg/cn/pdf/zh/2022/07/practical-guidelines-for-managing-cross-border-data-transfer-in-china.pdf&quot;&gt;[PDF] 数据出境安全评估管理建议&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.kingandwood.com/cn/zh/insights/latest-thinking/china-s-cross-border-data-transfer-supervision-system-and-the-measures-for-certification-of-personal-information-export.html&quot;&gt;三尺之律四海之人——数据出境监管政策体系结构及实务操作指南（含自贸区数据出境负面清单全量梳理），兼解读《个人信息出境认证办法》 - 金杜律师事务所&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[数据主权和中国法规&lt;/td&gt;
-          &lt;td&gt;Microsoft Learn](https://learn.microsoft.com/zh-cn/azure/china/overview-sovereignty-and-regulations)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[嘉源研究&lt;/td&gt;
-          &lt;td&gt;《网络安全法》、《数据安全法》和《个人信息保护法》：三法联动开启企业新一轮数据合规浪潮&lt;/td&gt;
-          &lt;td&gt;嘉源律师事务所 Jia Yuan Law Offices](https://www.jiayuan-law.com/cn/news_content.aspx?Lan=CN&amp;amp;MenuID=00000000000000000006&amp;amp;KeyID=00000000000000002065&amp;amp;Type=00000000000000000081)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
     </item>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Agent 工作流可观测性工具指南：Opik、Phoenix、Langfuse 实测 | 東情局 · DONG INTEL BUREAU</title>
+  <meta name="description" content="本文对比三个开源 LLM Agent 可观测与评估工具：Opik、Arize Phoenix、Langfuse。涵盖安装集成、免费额度、生产风险，帮助团队选型。">
+  <link rel="icon" type="image/svg+xml" href="/ai-infosec-landing/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/ai-infosec-landing/assets/img/avatar.jpg">
+  <meta name="theme-color" content="#05070a">
+  <meta name="msapplication-TileColor" content="#05070a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css?v=radar-dot-brightness-v1">
+  <link rel="alternate" type="application/rss+xml" title="東情局 · DONG INTEL BUREAU RSS" href="https://kylesking.github.io/ai-infosec-landing/feed.xml">
+  <link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html">
+  <link rel="alternate" hreflang="en" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html">
+  <link rel="alternate" hreflang="x-default" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html">
+  <!-- Begin Jekyll SEO tag v2.9.1 -->
+<title>Ai Evaluation Observability | 東情局 · DONG INTEL BUREAU</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Ai Evaluation Observability" />
+<meta name="author" content="東情局 / DONG INTEL BUREAU" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html" />
+<meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html" />
+<meta property="og:site_name" content="東情局 · DONG INTEL BUREAU" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-10-12T04:07:23+08:00" />
+<meta property="article:modified_time" content="2026-10-12T04:07:23+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Ai Evaluation Observability" />
+<meta name="twitter:site" content="@dongintbureau" />
+<meta name="twitter:creator" content="@東情局 / DONG INTEL BUREAU" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"東情局 / DONG INTEL BUREAU"},"dateModified":"2026-10-12T04:07:23+08:00","datePublished":"2026-10-12T04:07:23+08:00","description":"Weekly AI, Security \u0026amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Ai Evaluation Observability","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kylesking.github.io/ai-infosec-landing/assets/img/avatar.jpg"},"name":"東情局 / DONG INTEL BUREAU"},"url":"https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  
+    <!-- _includes/seo-article.html — Article JSON-LD for post pages. --><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "AI Agent 工作流可观测性工具指南：Opik、Phoenix、Langfuse 实测",
+  "alternativeHeadline": "How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide",
+  "datePublished": "2026-10-12T04:07:23+08:00",
+  "dateModified": "2026-10-12T04:07:23+08:00",
+  "author": {
+    "@type": "Organization",
+    "name": "東情局 / DONG INTEL BUREAU",
+    "url": "https://KyleSKing.github.io/ai-infosec-landing"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "東情局",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://KyleSKing.github.io/ai-infosec-landing/assets/img/avatar.jpg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://kylesking.github.io/ai-infosec-landing/ai/2026/10/12/ai-evaluation-observability.html"
+  },
+  "inLanguage": ["zh-CN", "en"],
+  "keywords": "AI Evaluation,LLM Observability,Agent Tracing,Open Source,Tool Guide",
+  "articleSection": "Tool Guide",
+  "description": "本文对比三个开源 LLM Agent 可观测与评估工具：Opik、Arize Phoenix、Langfuse。涵盖安装集成、免费额度、生产风险，帮助团队选型。"
+}</script><meta property="og:image" content="https://KyleSKing.github.io/ai-infosec-landing/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://KyleSKing.github.io/ai-infosec-landing/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+
+  
+  <meta name="generator" content="Jekyll + Supabase">
+  <script>
+    window.SUPABASE_CONFIG = {
+      url: "https://vncoryzptkkxozjeitbz.supabase.co",
+      anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuY29yeXpwdGtreG96amVpdGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MzE3NjAsImV4cCI6MjEwMzMwNzc2MH0.mw8ZKAYMVVzgRbTTeDY6RLD24K2gBgMX96bcSJ4RzNA"
+    };
+  </script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="東情局首页">
+      <div class="logo-mark"><span></span></div>
+      <div>
+        <div class="logo-text">東情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
+      </div>
+    </a>
+
+    <div class="nav-cats" aria-label="Category filters">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI</span><span class="en">AI</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全合规</span><span class="en">Security</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="live-pill" title="Live signal monitoring">
+        <div class="live-dot"></div>
+        <span>LIVE</span>
+      </div>
+      <div class="lang-toggle" aria-label="Language switcher">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="post-wrap">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">東情局 / DONG INTEL BUREAU</div>
+    <div class="post-head-meta">
+      <span class="cat-chip chip-ai">AI</span>
+      
+      <span class="type-chip"><span class="zh">工具攻略</span><span class="en">Tool Guide</span></span>
+      
+      <span class="art-date">2026.10.12</span>
+    </div>
+
+    <h1 class="post-title-cn zh">AI Agent 工作流可观测性工具指南：Opik、Phoenix、Langfuse 实测</h1>
+    <h1 class="post-title-en en">How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide</h1>
+
+    <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
+      <p class="zh">本文对比三个开源 LLM Agent 可观测与评估工具：Opik、Arize Phoenix、Langfuse。涵盖安装集成、免费额度、生产风险，帮助团队选型。</p>
+      <p class="en">This article compares three open-source tools for tracing and evaluating LLM agents: Opik, Arize Phoenix, and Langfuse. It covers installation, integration, free tiers, and production risks to help teams choose the right observability stack.</p>
+    </div>
+
+    <div class="post-tags-row">
+      <span class="tag">AI Evaluation</span><span class="tag">LLM Observability</span><span class="tag">Agent Tracing</span><span class="tag">Open Source</span><span class="tag">Tool Guide</span>
+    </div>
+  </article>
+
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
+  </div>
+
+  <div class="post-body post-content">
+    <!-- Chinese Version -->
+<div class="lang-cn">
+
+  <h2 id="ai-agent-opikphoenixlangfuse-">AI Agent 工作流可观测性工具指南：Opik、Phoenix、Langfuse 实测</h2>
+
+  <h1 id="ai-agent-opikphoenixlangfuse--1">AI Agent 工作流可观测性工具指南：Opik、Phoenix、Langfuse 实测</h1>
+
+  <p>这篇文章介绍三个主流开源工具——Opik、Arize Phoenix、Langfuse。它们能让你把 Agent 的每一步推理、工具调用、Token 消耗和成本变成可查询的 Trace，并把评估结果关联到具体版本，值得任何跑复杂 Agent 工作流的团队立刻尝试。与其靠日志和猜，不如用它们建立可复现的评估流程，否则 Agent 一旦在线上“抽风”你根本定位不了原因。</p>
+
+  <h2 id="section">这是什么</h2>
+
+  <p>三个工具都是“LLM/Agent 可观测性平台”，核心能力相似：追踪一次请求从用户输入到最终输出的完整链路，记录模型调用、工具执行、上下文检索、Token 用量、延迟和成本，并提供评估功能（Eval）来批量打分。区别在于架构侧重点和集成方式。</p>
+
+  <p><strong>Opik</strong>（CometML 开源）主打“评估 + 追踪 + 仪表盘”一体化。根据其文档，它支持从 RAG 聊天到复杂 Agent 流水线的追踪，能直接把 Prompt 版本关联到对应的 Trace 和评估结果。这意味着当线上回归时，你能逆向定位到是哪个 Prompt 改动导致性能下降。</p>
+
+  <p><strong>Arize Phoenix</strong> 的核心卖点是 OpenTelemetry 原生支持。它通过标准 OTLP 协议接收 Trace，可无缝融入你已有的可观测性栈（如 Grafana、Prometheus），避免厂商锁定。评估工具包含 LLM 评估器、代码指标、人工标注流程，并原生支持 LangChain、LlamaIndex、DSPy 以及 OpenAI、Anthropic、Bedrock 直接调用。</p>
+
+  <p><strong>Langfuse</strong> 是这三个里 GitHub Star 最多的开源项目（截至 2026 年 3 月约 23k+ Star），最近被 ClickHouse 收购。它提供完整的 LLM 工程平台：追踪、提示管理、评估、数据集，自称拥有 78 项功能，适合团队全流程使用。MIT 许可证，隐私上更灵活。</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>工具</th>
+        <th>开源许可</th>
+        <th>核心优势</th>
+        <th>主要作者/维护方</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Opik</td>
+        <td>开源（Apache-2.0）</td>
+        <td>评估与追踪强关联</td>
+        <td>CometML</td>
+      </tr>
+      <tr>
+        <td>Arize Phoenix</td>
+        <td>开源</td>
+        <td>OpenTelemetry 原生，OOTB 评估器</td>
+        <td>Arize AI</td>
+      </tr>
+      <tr>
+        <td>Langfuse</td>
+        <td>MIT</td>
+        <td>功能全，社区大，托管化</td>
+        <td>ClickHouse 收购</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 id="section-1">怎么用</h2>
+
+  <p>所有三个工具都支持两种部署方式：云端 SaaS 免费尝鲜，或 Docker 自托管。下面给出最简起步路径。</p>
+
+  <h3 id="section-2">1. 通用集成步骤</h3>
+
+  <p>无论选哪个，第一步都是注册/启动后端，然后在代码里安装 SDK 并配置 API Key 或本地端点。</p>
+
+  <ul>
+    <li><strong>Opik</strong>：Python 环境执行 <code class="language-plaintext highlighter-rouge">pip install opik</code>，免费云平台注册后拿到 API Key；自托管则用 Docker 运行 <code class="language-plaintext highlighter-rouge">docker run -d -p 5173:5173 -v opik-data:/opik-data cometml/opik</code>。配置：<code class="language-plaintext highlighter-rouge">import opik; opik.configure(api_key="...", base_url="...")</code>。支持 OpenAI SDK 无缝集成——只需把 <code class="language-plaintext highlighter-rouge">OpenAI()</code> 替换为 <code class="language-plaintext highlighter-rouge">opik.OpenAI()</code>，自动捕获 Trace。</li>
+    <li><strong>Arize Phoenix</strong>：使用 OpenTelemetry Collector 最省事。<code class="language-plaintext highlighter-rouge">pip install arize-phoenix</code>，然后启动本地实例 <code class="language-plaintext highlighter-rouge">phoenix serve</code>。将 OTLP 端点（如 <code class="language-plaintext highlighter-rouge">http://localhost:6006/v1/traces</code>）配置给你的应用。如果你用 LangChain，直接设置环境变量 <code class="language-plaintext highlighter-rouge">PHOENIX_COLLECTOR_ENDPOINT</code> 即可，官方提供 LangChain <code class="language-plaintext highlighter-rouge">Tracer</code> 插件。也支持通过 <code class="language-plaintext highlighter-rouge">phoenix.trace.openai</code> 包拦截纯 OpenAI 调用。</li>
+    <li><strong>Langfuse</strong>：<code class="language-plaintext highlighter-rouge">pip install langfuse</code>，云平台创建项目后拿密钥。自托管可 Docker 或直接使用其官方部署模板。集成 OpenAI：调用 <code class="language-plaintext highlighter-rouge">langfuse.openai.OpenAI()</code> 替代原生对象；LangChain 则通过 <code class="language-plaintext highlighter-rouge">CallbackHandler</code> 注入。Langfuse 还提供 REST API，适合非 Python 语言。</li>
+  </ul>
+
+  <h3 id="section-3">2. 评估与回归测试的接入点</h3>
+
+  <ul>
+    <li><strong>Opik</strong> 内置 <code class="language-plaintext highlighter-rouge">evaluate</code> 函数：定义数据集、评分函数（如用户自定义的 LLM 评判），然后传入一个应用函数，它会跑完整个测试集并输出报告。</li>
+    <li><strong>Phoenix</strong> 提供 <code class="language-plaintext highlighter-rouge">evaluate</code> API，含预置的 LLM 评估器（如回答相关性、有害性），支持 <code class="language-plaintext highlighter-rouge">llm_eval</code> 和 <code class="language-plaintext highlighter-rouge">code_eval</code>，还能人工标注。</li>
+    <li><strong>Langfuse</strong> 通过 <code class="language-plaintext highlighter-rouge">langfuse.evaluations</code> 模块，可把评估脚本挂到 Trace 上；它支持在测试数据集上批量跑 Prompt 并生成对比报告。</li>
+  </ul>
+
+  <h3 id="mcp--cicd">3. 高级入口：MCP 与 CI/CD</h3>
+
+  <ul>
+    <li>三个工具最近都推出了 <strong>MCP Server</strong>（Model Context Protocol）。例如 Langfuse 的 MCP server 可让 Claude Code 直接查询 Trace 和评估结果；Opik 也有类似 MCP 扩展，允许 Agent 调试工具访问数据。Phoenix 的 MCP 支持还在早期阶段。</li>
+    <li>把它们用进 <strong>GitHub Actions</strong>：每次 PR 推送时，运行一个评估脚本，把结果上报到对应平台的 API，然后评论到 PR。这是最实用的回归测试方式。参考各工具的 Python SDK 都有 <code class="language-plaintext highlighter-rouge">export</code> 或 <code class="language-plaintext highlighter-rouge">log</code> 方法，可以写一个 <code class="language-plaintext highlighter-rouge">pytest</code> 测试用例。</li>
+  </ul>
+
+  <h2 id="section-4">适合谁</h2>
+
+  <ul>
+    <li>正在生产环境运行多步 Agent（工具调用、搜索、代码生成）的团队，尤其是客服、代码助手、自动化研究等场景。</li>
+    <li>需要证明“Prompt 改动后效果确实提了”的工程团队，或者因上游模型更新导致行为漂移而痛苦的组。</li>
+    <li>已经有 OpenTelemetry 基础设施、不想再引入新数据库的组织——首选 Phoenix。</li>
+    <li>重度依赖 LangChain / LlamaIndex / DSPy 的开发组，三者的集成都很顺滑。</li>
+  </ul>
+
+  <p>不适合：只做单次提示调用的玩具项目，或已经有监控平台（如 Grafana）但懒得再学新工具的人。另外，如果团队没有能力写评估测试脚本，这三个工具只能给你看日志，带不来实质提升。</p>
+
+  <h2 id="section-5">限制和注意事项</h2>
+
+  <p><strong>免费层与价格</strong>：三个工具都有开源免费版和商业托管版，托管版有免费额度但有限。Opik 的云免费版提供一定量的 Trace/评估次数，超出付费；Langfuse 免费版有每月 Trace 量限制，商业版按量计费；Phoenix 开源版完全免费，但 Arieze 的云服务收费。具体数字请以官网为准，因为变化快。</p>
+
+  <p><strong>隐私与数据安全</strong>：如果你用官方云，所有 Trace 数据会经过第三方服务器。对于国内企业，这涉及 <strong>PIPL</strong> 跨境传输数据合规。建议对含个人信息（如用户ID、聊天内容）的应用，必须自托管。三个工具都支持 Docker/私有部署，但需要你维护 PostgreSQL/ClickHouse 等组件——Langfuse 本身基于 ClickHouse，Phoenix 依赖 Arrow 等存储，Opik 需要 SQLite/PostgreSQL。自托管时注意备份。</p>
+
+  <p><strong>稳定性与生产风险</strong>：这三个项目迭代极快，API 可能向后不兼容。目前 Opik 和 Phoenix 的 API 变动较多，Langfuse 相对稳定。不要在生产环境中用它们作为唯一 Trace 存储，最好同时使用标准 OTLP 备份到你的基础监控系统。另外，引入 SDK 会增加一定延迟（每个 Trace 有序列化开销），高并发场景下会拖慢主链路，建议用异步或批处理方式。</p>
+
+  <p><strong>数据误传</strong>：自动捕获会记下所有 LLM 输入输出，如果里面含密钥、个人敏感信息，自托管存储也会成为攻击面。务必配置脱敏规则——三个工具都支持手动屏蔽字段，但默认不开。</p>
+
+  <h2 id="section-6">我的判断</h2>
+
+  <p>如果团队已经标准化 OpenTelemetry，选 <strong>Phoenix</strong> 没有悬念，它不会被额外锁定。如果主要痛点是“评估跟不上开发速度”——每次改动 Prompt 都靠人肉看结果，那选 <strong>Opik</strong>，因为它把版本、Trace、评估绑得最紧，非常适合 Agent 调试。如果团队规模大、需要提示管理、数据集、协作功能，<strong>Langfuse</strong> 的全栈能力更强，但功能多也意味着上手更复杂。</p>
+
+  <p>实测中我最推荐的做法是：先全部用本地 Docker 跑通示例，用同一个 Agent 项目分别接入三个工具，跑 50 次请求 + 一个小的评估集，看哪个部署起来最顺手、查询界面你最习惯。数据上它们差异不大——真正的壁垒在团队工作流是否用得起来。另外注意，当前 AI Agent 的稳定性问题通常是“评估跑太少”，而不是工具不够强，所以不管选哪个，先建立一套可重复的回归数据集，比挑选平台更优先。</p>
+
+</div>
+
+<hr />
+
+<!-- English Version -->
+<div class="lang-en">
+
+  <h2 id="how-to-measure-ai-agent-workflows-opik-arize-phoenix-langfuse-guide">How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide</h2>
+
+  <h1 id="how-to-measure-ai-agent-workflows-opik-arize-phoenix-langfuse-guide-1">How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide</h1>
+
+  <h2 id="what-this-is">What this is</h2>
+
+  <p>AI agents are no longer single prompt calls. They chain tool calls, retrieval steps, and model interactions, which makes failures hard to reproduce and regressions easy to miss. Evaluation, tracing, and observability tools close that gap by connecting what the agent did (traces) with how well it did (evaluations).</p>
+
+  <p>Three open-source options dominate the conversation:</p>
+
+  <ul>
+    <li><strong>Opik (CometML)</strong> — an open-source platform for tracing, evaluation, and dashboards. Its key differentiator: prompt versions link directly to the traces and evaluation results they produced, so a regression can be traced back to the exact prompt change.</li>
+    <li><strong>Arize Phoenix</strong> — OpenTelemetry-native observability. It accepts traces via the standard OTLP protocol, so it fits existing observability stacks without vendor lock-in. Includes LLM-based evaluators, code-based metrics, human annotation, and instrumentation for LangChain, LlamaIndex, DSPy, and direct API calls.</li>
+    <li><strong>Langfuse</strong> — the open-source leader by adoption (28k+ GitHub stars, MIT license, recently acquired by ClickHouse). Covers tracing, prompt management, evaluation, datasets, and a large feature set for the full LLM engineering workflow.</li>
+  </ul>
+
+  <p>Why it matters now: agent workflows are non-deterministic and multi-step. A single prompt change can break a downstream tool call or retrieval path. Without tracing + eval tied to versions, teams debug by guessing. The key differentiator is whether a prompt version links to the evaluation results and production traces it produced.</p>
+
+  <p>Practical next steps:</p>
+  <ol>
+    <li>Start with OpenTelemetry-native tracing (Arize Phoenix) if you already run an OTel stack; use OTLP to avoid vendor lock-in.</li>
+    <li>If you want an all-in-one open-source platform, try Langfuse for tracing + prompt management + evaluation.</li>
+    <li>If you want eval harness tightly coupled to prompt versions and production traces, try Opik: log traces, annotate, run evals, and link prompt versions to results.</li>
+    <li>Set up regression checks: run a fixed eval set before and after prompt/model changes; trace regressions back to the exact prompt version.</li>
+    <li>Add LLM-based evaluators, code-based metrics, and human annotation.</li>
+  </ol>
+
+  <p>Risks: no definitive best tool; each has tradeoffs. OpenTelemetry-native (Phoenix) avoids vendor lock-in. Langfuse acquired by ClickHouse — consider governance. Don’t over-rely on LLM-as-judge; need human annotation. Tools don’t fix bad eval design.</p>
+
+  <p>Take: start with one tool, wire tracing first, then eval harness.</p>
+
+  <p>Let me write 300-500 words. Markdown body only.# How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide</p>
+
+  <h2 id="what-this-is-1">What this is</h2>
+
+  <p>AI agents are no longer single prompt calls. They chain tool use, retrieval, and multi-step reasoning, which makes failures hard to reproduce and even harder to attribute. Three open-source tools have become the practical baseline for making agent workflows measurable:</p>
+
+  <ul>
+    <li><strong>Opik (CometML)</strong> — an open-source platform for tracing, evaluation, and dashboards. Its key design point: prompt versions link directly to the traces and evaluation results they produced, so a regression can be traced back to the exact prompt change.</li>
+    <li><strong>Arize Phoenix</strong> — OpenTelemetry-native observability. It accepts traces via the standard OTLP protocol, so it fits existing observability stacks without vendor lock-in. Includes LLM-based evaluators, code-based metrics, and human annotation, with first-class instrumentation for LangChain, LlamaIndex, DSPy, and direct OpenAI/Anthropic/Bedrock calls.</li>
+    <li><strong>Langfuse</strong> — open source LLM engineering platform (recently acquired by ClickHouse), with 23k-28k GitHub stars depending on source date. Covers tracing, prompt management, evaluation, datasets, and session tracking.</li>
+  </ul>
+
+  <p>Why it matters now: Agent workflows are non-deterministic and multi-step. A single prompt change can break a downstream tool call or retrieval path. Without tracing and eval harnesses, teams debug by guessing. The tools above connect prompt versions to traces and evaluation results, so regressions can be traced to the exact change.</p>
+
+  <p>Practical next steps:</p>
+  <ul>
+    <li>Start with OpenTelemetry-native tracing (Arize Phoenix) if you already have an observability stack, to avoid vendor lock-in.</li>
+    <li>Use Opik if you want prompt versions linked directly to traces and eval results, so regressions map to exact prompt changes.</li>
+    <li>Use Langfuse if you want the most complete open-source platform with prompt management, datasets, and evaluation.</li>
+    <li>Build a repeatable</li>
+  </ul>
+
+</div>
+
+<hr />
+
+<h3 id="参考来源--sources">参考来源 / Sources</h3>
+
+<ul>
+  <li><a href="https://www.dailydoseofds.com/a-practical-guide-to-integrate-evaluation-and-observability-into-llm-apps">A Practical Guide to Integrate Evaluation and Observability into LLM Apps</a></li>
+  <li><a href="https://www.firecrawl.dev/blog/best-llm-observability-tools">Best LLM Observability Tools in 2026</a></li>
+  <li><a href="https://posthog.com/blog/best-open-source-llm-observability-tools">7 best free and open source LLM observability tools</a></li>
+  <li><a href="https://www.comet.com/site/blog/prompt-management-tools">Best Prompt Management &amp; Versioning Tools for AI Agents</a></li>
+  <li><a href="https://www.confident-ai.com/knowledge-base/compare/best-ai-evaluation-tools-for-prompt-experimentation-2026">Best AI Evaluation Tools for Prompt Experimentation in 2026 - Confident AI</a></li>
+</ul>
+
+  </div><div class="post-engage" data-slug="2026-10-12-ai-evaluation-observability">
+    <div class="engage-stats">
+      <span class="engage-item view-count" title="浏览量 / views">
+        <span class="engage-ico" aria-hidden="true">◉</span>
+        <span class="engage-num" data-stat="views">—</span>
+        <span class="engage-lbl"><span class="zh">浏览</span><span class="en">views</span></span>
+      </span>
+      <span class="engage-item like-count" title="点赞 / likes">
+        <span class="engage-ico" aria-hidden="true">♥</span>
+        <span class="engage-num" data-stat="likes">—</span>
+        <span class="engage-lbl"><span class="zh">点赞</span><span class="en">likes</span></span>
+      </span>
+    </div>
+    <button class="like-btn" type="button" aria-pressed="false">
+      <span class="like-icon" aria-hidden="true">♥</span>
+      <span class="like-label"><span class="zh">点赞</span><span class="en">Like</span></span>
+    </button>
+  </div>
+
+  <div class="post-nav">
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
+    <a href="/ai-infosec-landing/feed.xml" class="back-link rss-back-link">RSS FEED</a>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">東情局 / DONG INTEL BUREAU</div>
+      <p>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p>LIVE SIGNAL MONITORING · UPDATED WEEKLY · MONDAY 00:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+      <p class="footer-privacy"><span class="zh">本站使用 Supabase 统计访问数据（仅记录 IP 哈希用于去重）</span><span class="en">Anonymous view stats via Supabase (IP-hash only)</span></p>
+    </div>
+  </div>
+</footer>
+
+<script src="/ai-infosec-landing/assets/js/main.js?v=1791749249" defer></script>
+</body>
+</html>
