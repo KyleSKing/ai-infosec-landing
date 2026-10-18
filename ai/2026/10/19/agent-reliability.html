@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI代理可靠运维：护栏、评估与人工介入恢复 | 東情局 · DONG INTEL BUREAU</title>
+  <meta name="description" content="AI代理的可靠性需要同时具备护栏（强制执行边界）和评估（衡量结果），并在自主操作不安全时将结构化的人工介入作为精心设计的恢复路径。这一趋势从将代理视为自主黑盒转向构建可观测、可控且具有明确故障恢复模式的工程系统。">
+  <link rel="icon" type="image/svg+xml" href="/ai-infosec-landing/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/ai-infosec-landing/assets/img/avatar.jpg">
+  <meta name="theme-color" content="#05070a">
+  <meta name="msapplication-TileColor" content="#05070a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css?v=radar-dot-brightness-v1">
+  <link rel="alternate" type="application/rss+xml" title="東情局 · DONG INTEL BUREAU RSS" href="https://kylesking.github.io/ai-infosec-landing/feed.xml">
+  <link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html">
+  <link rel="alternate" hreflang="en" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html">
+  <link rel="alternate" hreflang="x-default" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html">
+  <!-- Begin Jekyll SEO tag v2.9.1 -->
+<title>Agent Reliability | 東情局 · DONG INTEL BUREAU</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Agent Reliability" />
+<meta name="author" content="東情局 / DONG INTEL BUREAU" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html" />
+<meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html" />
+<meta property="og:site_name" content="東情局 · DONG INTEL BUREAU" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-10-19T02:33:47+08:00" />
+<meta property="article:modified_time" content="2026-10-19T02:33:47+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Agent Reliability" />
+<meta name="twitter:site" content="@dongintbureau" />
+<meta name="twitter:creator" content="@東情局 / DONG INTEL BUREAU" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"東情局 / DONG INTEL BUREAU"},"dateModified":"2026-10-19T02:33:47+08:00","datePublished":"2026-10-19T02:33:47+08:00","description":"Weekly AI, Security \u0026amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Agent Reliability","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kylesking.github.io/ai-infosec-landing/assets/img/avatar.jpg"},"name":"東情局 / DONG INTEL BUREAU"},"url":"https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  
+    <!-- _includes/seo-article.html — Article JSON-LD for post pages. --><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "AI代理可靠运维：护栏、评估与人工介入恢复",
+  "alternativeHeadline": "Reliable AI Agent Operations: Guardrails, Evals, and Human-in-the-Loop Recovery",
+  "datePublished": "2026-10-19T02:33:47+08:00",
+  "dateModified": "2026-10-19T02:33:47+08:00",
+  "author": {
+    "@type": "Organization",
+    "name": "東情局 / DONG INTEL BUREAU",
+    "url": "https://KyleSKing.github.io/ai-infosec-landing"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "東情局",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://KyleSKing.github.io/ai-infosec-landing/assets/img/avatar.jpg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html"
+  },
+  "inLanguage": ["zh-CN", "en"],
+  "keywords": "guardrails,evals,human-in-the-loop,failure recovery,agent reliability",
+  "articleSection": "Trend Analysis",
+  "description": "AI代理的可靠性需要同时具备护栏（强制执行边界）和评估（衡量结果），并在自主操作不安全时将结构化的人工介入作为精心设计的恢复路径。这一趋势从将代理视为自主黑盒转向构建可观测、可控且具有明确故障恢复模式的工程系统。"
+}</script><meta property="og:image" content="https://KyleSKing.github.io/ai-infosec-landing/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://KyleSKing.github.io/ai-infosec-landing/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+
+  
+  <meta name="generator" content="Jekyll + Supabase">
+  <script>
+    window.SUPABASE_CONFIG = {
+      url: "https://vncoryzptkkxozjeitbz.supabase.co",
+      anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuY29yeXpwdGtreG96amVpdGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MzE3NjAsImV4cCI6MjEwMzMwNzc2MH0.mw8ZKAYMVVzgRbTTeDY6RLD24K2gBgMX96bcSJ4RzNA"
+    };
+  </script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="東情局首页">
+      <div class="logo-mark"><span></span></div>
+      <div>
+        <div class="logo-text">東情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
+      </div>
+    </a>
+
+    <div class="nav-cats" aria-label="Category filters">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI</span><span class="en">AI</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全合规</span><span class="en">Security</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="live-pill" title="Live signal monitoring">
+        <div class="live-dot"></div>
+        <span>LIVE</span>
+      </div>
+      <div class="lang-toggle" aria-label="Language switcher">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="post-wrap">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">東情局 / DONG INTEL BUREAU</div>
+    <div class="post-head-meta">
+      <span class="cat-chip chip-ai">AI</span>
+      
+      <span class="type-chip"><span class="zh">趋势分析</span><span class="en">Trend Analysis</span></span>
+      
+      <span class="art-date">2026.10.19</span>
+    </div>
+
+    <h1 class="post-title-cn zh">AI代理可靠运维：护栏、评估与人工介入恢复</h1>
+    <h1 class="post-title-en en">Reliable AI Agent Operations: Guardrails, Evals, and Human-in-the-Loop Recovery</h1>
+
+    <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
+      <p class="zh">AI代理的可靠性需要同时具备护栏（强制执行边界）和评估（衡量结果），并在自主操作不安全时将结构化的人工介入作为精心设计的恢复路径。这一趋势从将代理视为自主黑盒转向构建可观测、可控且具有明确故障恢复模式的工程系统。</p>
+      <p class="en">AI agent reliability requires both guardrails (enforcing boundaries) and evaluations (measuring outcomes), with structured human-in-the-loop as a deliberate recovery path when autonomous action is unsafe. This trend shifts from treating agents as autonomous black boxes to engineering observable, controllable systems with explicit failure recovery patterns.</p>
+    </div>
+
+    <div class="post-tags-row">
+      <span class="tag">guardrails</span><span class="tag">evals</span><span class="tag">human-in-the-loop</span><span class="tag">failure recovery</span><span class="tag">agent reliability</span>
+    </div>
+  </article>
+
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
+  </div>
+
+  <div class="post-body post-content">
+    <!-- Chinese Version -->
+<div class="lang-cn">
+
+  <h2 id="ai">AI代理可靠运维：护栏、评估与人工介入恢复</h2>
+
+  <h1 id="ai-1">AI代理可靠运维：护栏、评估与人工介入恢复</h1>
+
+  <h2 id="section">这个趋势是什么</h2>
+
+  <p>AI代理（agent）正从“对话玩具”走向“生产执行者”——订机票、转账、修改数据库、部署代码。一旦代理可以自主调用工具、执行多步操作，一个隐藏的逻辑错误就能在几秒内造成破坏。传统的提示工程（prompt engineering）无法保证边界安全，因为模型可能忽略指令、产生幻觉或被注入攻击。</p>
+
+  <p>当前工程界的共识是：可靠代理需要<strong>三层防护</strong>——护栏（guardrails）定义“绝对不能做的事”，评估（evals）验证“是否做对了事”，人工介入恢复（human-in-the-loop recovery）处理“当自主失败时如何安全兜底”。这三者不再是可选的锦上添花，而是生产级代理的必备组件。</p>
+
+  <h2 id="section-1">为什么现在重要</h2>
+
+  <p>2025-2026年，代理框架（LangGraph、CrewAI、AutoGen、Azure AI Agent Service）大量涌现，企业开始将代理嵌入核心业务流程。但早期部署暴露了一个关键问题：<strong>失败往往来自编排和控制设计，而非模型本身</strong>（来源[1]）。当代理可以调用20个工具、执行10步循环时，任何一步的边界缺失都会导致级联错误。</p>
+
+  <p>同时，监管压力在增加。中国《生成式人工智能服务管理暂行办法》要求对生成内容进行安全评估；欧盟AI Act对高风险系统要求人工监督。代理如果缺乏可审计的护栏和人工回退路径，合规风险极高。</p>
+
+  <h2 id="section-2">它和旧做法的区别</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>维度</th>
+        <th>旧做法（仅依赖提示）</th>
+        <th>新做法（护栏+评估+人工恢复）</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>边界控制</td>
+        <td>在system prompt里写“不要调用危险工具”</td>
+        <td>代码级控制：工具白名单、凭证隔离、并发上限、超时、重试次数、审批点</td>
+      </tr>
+      <tr>
+        <td>质量验证</td>
+        <td>人工抽查几个对话</td>
+        <td>系统化评估：机器评估（正确性、安全性、效率）+ 人工评估（细微判断）</td>
+      </tr>
+      <tr>
+        <td>失败处理</td>
+        <td>代理返回错误信息，或无限重试</td>
+        <td>结构化恢复：记录完整trace，暂停并转交人工，提供决策上下文</td>
+      </tr>
+      <tr>
+        <td>人工角色</td>
+        <td>事后救火</td>
+        <td>架构决策点：在需要权威、上下文或问责的地方嵌入人工审批</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>核心区别在于：<strong>旧做法把信任放在模型“听话”上，新做法把信任放在可验证的控制和可回退的流程上</strong>。正如来源[3]指出：“高质量最终答案并不能证明代理走了可接受的路径。团队需要评估结果，同时通过护栏强制执行过程边界。”</p>
+
+  <h2 id="section-3">可以怎么开始试</h2>
+
+  <p>以下步骤基于现有工程实践（来源[2][3][4][5]），可直接纳入当前项目：</p>
+
+  <h3 id="section-4">1. 定义边界清单</h3>
+  <p>为每个代理角色列出：</p>
+  <ul>
+    <li>允许调用的工具列表（白名单）</li>
+    <li>每个工具使用的凭证（最小权限）</li>
+    <li>最大并发步骤数（建议1-3）</li>
+    <li>单次工作流最长执行时间（例如5分钟）</li>
+    <li>失败步骤最大重试次数（建议2次，且重试需降级）</li>
+    <li>需要人工审批的操作（如：转账&gt;阈值、删除数据、修改生产配置）</li>
+  </ul>
+
+  <h3 id="section-5">2. 部署护栏（代码级，非提示级）</h3>
+  <p>使用框架内置护栏或自定义中间件：</p>
+  <ul>
+    <li>在工具调用前检查参数合法性（例如金额不能为负）</li>
+    <li>在调用外部API前验证返回格式</li>
+    <li>在循环中插入“停止条件”检查（例如超过5步未完成则终止）</li>
+    <li>记录每一步的输入输出到审计日志</li>
+  </ul>
+
+  <h3 id="section-6">3. 建立评估体系</h3>
+  <ul>
+    <li><strong>机器评估</strong>：使用现成评估器（如Maxim的evaluator store）或自建，覆盖正确性、安全性、效率、指令遵循度。每次变更后运行回归评估。</li>
+    <li><strong>人工评估</strong>：对高风险场景或机器评估低置信度的样本，使用结构化模板（来源[5]：点赞/踩、滑块、多选、自由文本），让评审员基于完整trace给出判断。</li>
+  </ul>
+
+  <h3 id="section-7">4. 设计人工介入恢复路径</h3>
+  <p>不要只在代理失败时弹出一个“代理失败”消息。参考来源[4]和[5]：</p>
+  <ul>
+    <li>当代理触发审批点或失败时，暂停并生成一个<strong>决策包</strong>，包含：
+      <ul>
+        <li>当前目标</li>
+        <li>已执行步骤的trace（工具调用、输入输出、耗时）</li>
+        <li>失败原因或需要人工判断的问题</li>
+        <li>建议的下一步选项（继续、回退、修改参数）</li>
+      </ul>
+    </li>
+    <li>人工评审员在界面中做出选择，系统继续执行或回滚。</li>
+  </ul>
+
+  <h3 id="section-8">5. 迭代闭环</h3>
+  <p>将每次人工介入的决策结果反馈回评估集，用于改进护栏规则或模型行为。</p>
+
+  <h2 id="section-9">风险和限制</h2>
+
+  <ul>
+    <li><strong>护栏过度约束</strong>：过于严格的护栏可能阻止合法操作，降低代理灵活性。需要持续调优，平衡安全与效用。</li>
+    <li><strong>评估覆盖不全</strong>：机器评估可能漏掉语义细微的错误，人工评估成本高且主观。建议混合使用，并对关键路径做100%人工抽检。</li>
+    <li><strong>人工介入成为瓶颈</strong>：如果每个操作都需审批，代理失去自动化意义。应只对高风险操作设置审批点，并设定超时自动降级（如拒绝执行）。</li>
+    <li><strong>trace数据隐私</strong>：完整trace包含用户输入和业务数据，需确保存储和传输加密，并符合数据保护法规（如PIPL、GDPR）。</li>
+    <li><strong>恢复路径本身可能引入新风险</strong>：人工决策错误、权限滥用等。需对人工操作也做审计和权限控制。</li>
+  </ul>
+
+  <h2 id="section-10">我的判断</h2>
+
+  <p><strong>这个趋势不是可选项，而是生产级代理的入场券。</strong> 2026年，任何计划将代理部署到真实业务中的团队，都应该在第一个原型阶段就嵌入护栏和评估，而不是等出了问题再补。人工介入恢复不是“安全网”，而是架构设计的一部分——它定义了自动化与人类判断的边界。</p>
+
+  <p>对于中国团队，尤其要注意：护栏设计需同时满足《生成式人工智能服务管理暂行办法》对内容安全、算法透明度的要求；trace数据存储需符合PIPL的跨境传输限制（如果使用海外评估平台）。建议优先使用国内云厂商的代理服务（如阿里云百炼、百度智能云千帆），它们正在集成类似的护栏和评估能力。</p>
+
+  <p><strong>适合人群</strong>：AI agent开发者、DevOps/SRE工程师、安全合规团队、产品经理（负责定义审批点）。
+<strong>不适合人群</strong>：仅做原型验证的团队（可先跳过人工恢复）、完全依赖第三方托管代理且无自定义控制需求的小团队（但仍需了解供应商的护栏能力）。</p>
+
+  <p>最后，记住来源[2]的提醒：“当代理可以订票、转账或推代码而不暂停等待人工批准时，每个隐藏缺陷都会瞬间放大。” 护栏和评估就是那个放大器的保险丝。</p>
+
+</div>
+
+<hr />
+
+<!-- English Version -->
+<div class="lang-en">
+
+  <h2 id="reliable-ai-agent-operations-guardrails-evals-and-human-in-the-loop-recovery">Reliable AI Agent Operations: Guardrails, Evals, and Human-in-the-Loop Recovery</h2>
+
+  <h2 id="reliable-ai-agent-operations-guardrails-evals-and-human-in-the-loop-recovery-1">Reliable AI Agent Operations: Guardrails, Evals, and Human-in-the-Loop Recovery</h2>
+
+  <p>AI agents are moving from demos to production—booking flights, moving money, pushing code. Each hidden flaw scales instantly. The emerging consensus is that reliability depends on three interconnected layers: <strong>guardrails</strong> (preventive controls), <strong>evals</strong> (outcome and process verification), and <strong>human-in-the-loop recovery</strong> (structured intervention when autonomous action is unsafe).</p>
+
+  <h3 id="what-it-is">What It Is</h3>
+
+  <ul>
+    <li>
+      <p><strong>Guardrails</strong> translate corporate policies into verifiable code-level controls. They define which tools the agent may invoke, which credentials each tool receives, how many actions run concurrently, how long a workflow may continue, how many times a failed step retries, which actions require human approval, and when the agent should stop, escalate, or ask for clarification. Prompt instructions alone are insufficient—code-level boundaries are needed for actions with cost, risk, or irreversible consequences.</p>
+    </li>
+    <li>
+      <p><strong>Evals</strong> assess whether the intended experience occurred, while guardrails enforce boundaries around the process. A high-quality final answer does not prove the agent followed an acceptable path. Teams need to evaluate outcomes <em>and</em> verify that the process stayed within guardrails. Platforms like Maxim offer off-the-shelf evaluators, custom evaluators, and human evaluation runs for nuanced last-mile checks.</p>
+    </li>
+    <li>
+      <p><strong>Human-in-the-loop recovery</strong> is not a safety net for when the agent fails—it is a deliberate architectural decision about where human judgment adds the most value. The agent loop handles what can be reasoned about autonomously; the human loop handles what requires authority, context, or accountability. Microsoft Foundry’s preview human evaluation capability allows agent builders to define evaluation templates and collect human feedback (thumbs up/down, sliders, multiple choice, free-form text). The broader pattern is to use human intervention as a structured recovery path, providing enough context (trace, state, failure reason) so the human can make an informed decision, not just a vague “the agent failed” message.</p>
+    </li>
+  </ul>
+
+  <h3 id="why-it-matters-now">Why It Matters Now</h3>
+
+  <p>Agents are being deployed with real-world consequences. Failures often come from orchestration and control design, not just model quality. Without guardrails, a single misstep can cascade. Without evals, you cannot measure improvement or regression. Without a human recovery path, autonomous systems either halt on every ambiguity or proceed unsafely. The three layers together form a production-grade reliability stack.</p>
+
+  <h3 id="practical-next-steps">Practical Next Steps</h3>
+
+  <ol>
+    <li><strong>Audit your agent’s action space.</strong> List every tool, credential, and side effect. Define guardrails for each: max retries, concurrency limits, approval gates for irreversible actions.</li>
+    <li><strong>Instrument evals for both process and outcome.</strong> Use automated evaluators (e.g., correctness, safety, adherence to guardrails) and schedule periodic human evaluations for nuanced cases.</li>
+    <li><strong>Design the human recovery loop.</strong> Identify decision points where authority, context, or accountability are required. Provide a structured trace with enough context (state, failure reason, suggested options) so the human can decide quickly. Avoid vague failure messages.</li>
+    <li><strong>Test the orchestration, not just the model.</strong> Run failure injection scenarios: what happens when a tool times out, returns bad data, or the agent loops? Verify guardrails and recovery paths handle these.</li>
+  </ol>
+
+  <h3 id="risks">Risks</h3>
+
+  <ul>
+    <li>Over-reliance on guardrails without evals can miss process violations that still produce acceptable outcomes.</li>
+    <li>Over-reliance on evals without guardrails can allow harmful actions that happen to produce a good final answer.</li>
+    <li>Poorly designed human-in-the-loop can become a bottleneck or a rubber-stamp if the human lacks context or time.</li>
+    <li>Guardrails that are too restrictive may block legitimate agent behavior; too loose may allow failures.</li>
+  </ul>
+
+  <h3 id="take">Take</h3>
+
+  <p>Reliable AI agents require both guardrails and evals, with human-in-the-loop as a structured architectural decision, not an afterthought. Start by mapping your agent’s action space, then layer controls, verification, and recovery paths. The three loops—agent, training, feedback—are currently operated separately, but converging them will be the next frontier for production AI.</p>
+
+</div>
+
+<hr />
+
+<h3 id="参考来源--sources">参考来源 / Sources</h3>
+
+<ul>
+  <li><a href="https://nhimg.org/articles/guardrails-and-evals-are-both-required-for-reliable-ai-agents">Guardrails and evals are both required for reliable AI agents</a></li>
+  <li><a href="https://www.getmaxim.ai/articles/10-key-strategies-for-ensuring-ai-agent-reliability-in-production">10 Key Strategies for Ensuring AI Agent Reliability in Production</a></li>
+  <li><a href="https://arize.com/blog/ai-agent-guardrails-vs-evals">AI Agent Guardrails vs Evals: Building Reliable Agents</a></li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[The Agent Loop Decoded</td>
+          <td>developers](https://blogs.oracle.com/developers/the-agent-loop-decoded-three-levels-every-agent-engineer-must-know)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[When AI Agents Fail: Engineering Reliable Recovery with Microsoft Foundry</td>
+          <td>Microsoft Community Hub](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/when-ai-agents-fail-engineering-reliable-recovery-with-microsoft-foundry/4546388)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+  </div><div class="post-engage" data-slug="2026-10-19-agent-reliability">
+    <div class="engage-stats">
+      <span class="engage-item view-count" title="浏览量 / views">
+        <span class="engage-ico" aria-hidden="true">◉</span>
+        <span class="engage-num" data-stat="views">—</span>
+        <span class="engage-lbl"><span class="zh">浏览</span><span class="en">views</span></span>
+      </span>
+      <span class="engage-item like-count" title="点赞 / likes">
+        <span class="engage-ico" aria-hidden="true">♥</span>
+        <span class="engage-num" data-stat="likes">—</span>
+        <span class="engage-lbl"><span class="zh">点赞</span><span class="en">likes</span></span>
+      </span>
+    </div>
+    <button class="like-btn" type="button" aria-pressed="false">
+      <span class="like-icon" aria-hidden="true">♥</span>
+      <span class="like-label"><span class="zh">点赞</span><span class="en">Like</span></span>
+    </button>
+  </div>
+
+  <div class="post-nav">
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
+    <a href="/ai-infosec-landing/feed.xml" class="back-link rss-back-link">RSS FEED</a>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">東情局 / DONG INTEL BUREAU</div>
+      <p>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p>LIVE SIGNAL MONITORING · UPDATED WEEKLY · MONDAY 00:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+      <p class="footer-privacy"><span class="zh">本站使用 Supabase 统计访问数据（仅记录 IP 哈希用于去重）</span><span class="en">Anonymous view stats via Supabase (IP-hash only)</span></p>
+    </div>
+  </div>
+</footer>
+
+<script src="/ai-infosec-landing/assets/js/main.js?v=1792348433" defer></script>
+</body>
+</html>

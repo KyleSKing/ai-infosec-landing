@@ -10,10 +10,230 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 12 Oct 2026 04:07:29 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 19 Oct 2026 02:33:53 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>AI代理可靠运维：护栏、评估与人工介入恢复 — Reliable AI Agent Operations: Guardrails, Evals, and Human-in-the-Loop Recovery</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/10/19/agent-reliability.html</guid>
+      <pubDate>Mon, 19 Oct 2026 02:33:47 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">ai</category>
+      <category domain="content_type">Trend Analysis</category>
+      <category domain="tag">guardrails</category><category domain="tag">evals</category><category domain="tag">human-in-the-loop</category><category domain="tag">failure recovery</category><category domain="tag">agent reliability</category>
+      <description>AI代理的可靠性需要同时具备护栏（强制执行边界）和评估（衡量结果），并在自主操作不安全时将结构化的人工介入作为精心设计的恢复路径。这一趋势从将代理视为自主黑盒转向构建可观测、可控且具有明确故障恢复模式的工程系统。&#10;&#10;AI agent reliability requires both guardrails (enforcing boundaries) and evaluations (measuring outcomes), with structured human-in-the-loop as a deliberate recovery path when autonomous action is unsafe. This trend shifts from treating agents as autonomous black boxes to engineering observable, controllable systems with explicit failure recovery patterns.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;ai&quot;&gt;AI代理可靠运维：护栏、评估与人工介入恢复&lt;/h2&gt;
+
+  &lt;h1 id=&quot;ai-1&quot;&gt;AI代理可靠运维：护栏、评估与人工介入恢复&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;这个趋势是什么&lt;/h2&gt;
+
+  &lt;p&gt;AI代理（agent）正从“对话玩具”走向“生产执行者”——订机票、转账、修改数据库、部署代码。一旦代理可以自主调用工具、执行多步操作，一个隐藏的逻辑错误就能在几秒内造成破坏。传统的提示工程（prompt engineering）无法保证边界安全，因为模型可能忽略指令、产生幻觉或被注入攻击。&lt;/p&gt;
+
+  &lt;p&gt;当前工程界的共识是：可靠代理需要&lt;strong&gt;三层防护&lt;/strong&gt;——护栏（guardrails）定义“绝对不能做的事”，评估（evals）验证“是否做对了事”，人工介入恢复（human-in-the-loop recovery）处理“当自主失败时如何安全兜底”。这三者不再是可选的锦上添花，而是生产级代理的必备组件。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;为什么现在重要&lt;/h2&gt;
+
+  &lt;p&gt;2025-2026年，代理框架（LangGraph、CrewAI、AutoGen、Azure AI Agent Service）大量涌现，企业开始将代理嵌入核心业务流程。但早期部署暴露了一个关键问题：&lt;strong&gt;失败往往来自编排和控制设计，而非模型本身&lt;/strong&gt;（来源[1]）。当代理可以调用20个工具、执行10步循环时，任何一步的边界缺失都会导致级联错误。&lt;/p&gt;
+
+  &lt;p&gt;同时，监管压力在增加。中国《生成式人工智能服务管理暂行办法》要求对生成内容进行安全评估；欧盟AI Act对高风险系统要求人工监督。代理如果缺乏可审计的护栏和人工回退路径，合规风险极高。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;它和旧做法的区别&lt;/h2&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;维度&lt;/th&gt;
+        &lt;th&gt;旧做法（仅依赖提示）&lt;/th&gt;
+        &lt;th&gt;新做法（护栏+评估+人工恢复）&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;边界控制&lt;/td&gt;
+        &lt;td&gt;在system prompt里写“不要调用危险工具”&lt;/td&gt;
+        &lt;td&gt;代码级控制：工具白名单、凭证隔离、并发上限、超时、重试次数、审批点&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;质量验证&lt;/td&gt;
+        &lt;td&gt;人工抽查几个对话&lt;/td&gt;
+        &lt;td&gt;系统化评估：机器评估（正确性、安全性、效率）+ 人工评估（细微判断）&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;失败处理&lt;/td&gt;
+        &lt;td&gt;代理返回错误信息，或无限重试&lt;/td&gt;
+        &lt;td&gt;结构化恢复：记录完整trace，暂停并转交人工，提供决策上下文&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;人工角色&lt;/td&gt;
+        &lt;td&gt;事后救火&lt;/td&gt;
+        &lt;td&gt;架构决策点：在需要权威、上下文或问责的地方嵌入人工审批&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p&gt;核心区别在于：&lt;strong&gt;旧做法把信任放在模型“听话”上，新做法把信任放在可验证的控制和可回退的流程上&lt;/strong&gt;。正如来源[3]指出：“高质量最终答案并不能证明代理走了可接受的路径。团队需要评估结果，同时通过护栏强制执行过程边界。”&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-3&quot;&gt;可以怎么开始试&lt;/h2&gt;
+
+  &lt;p&gt;以下步骤基于现有工程实践（来源[2][3][4][5]），可直接纳入当前项目：&lt;/p&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;1. 定义边界清单&lt;/h3&gt;
+  &lt;p&gt;为每个代理角色列出：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;允许调用的工具列表（白名单）&lt;/li&gt;
+    &lt;li&gt;每个工具使用的凭证（最小权限）&lt;/li&gt;
+    &lt;li&gt;最大并发步骤数（建议1-3）&lt;/li&gt;
+    &lt;li&gt;单次工作流最长执行时间（例如5分钟）&lt;/li&gt;
+    &lt;li&gt;失败步骤最大重试次数（建议2次，且重试需降级）&lt;/li&gt;
+    &lt;li&gt;需要人工审批的操作（如：转账&amp;gt;阈值、删除数据、修改生产配置）&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-5&quot;&gt;2. 部署护栏（代码级，非提示级）&lt;/h3&gt;
+  &lt;p&gt;使用框架内置护栏或自定义中间件：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;在工具调用前检查参数合法性（例如金额不能为负）&lt;/li&gt;
+    &lt;li&gt;在调用外部API前验证返回格式&lt;/li&gt;
+    &lt;li&gt;在循环中插入“停止条件”检查（例如超过5步未完成则终止）&lt;/li&gt;
+    &lt;li&gt;记录每一步的输入输出到审计日志&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;3. 建立评估体系&lt;/h3&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;机器评估&lt;/strong&gt;：使用现成评估器（如Maxim的evaluator store）或自建，覆盖正确性、安全性、效率、指令遵循度。每次变更后运行回归评估。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;人工评估&lt;/strong&gt;：对高风险场景或机器评估低置信度的样本，使用结构化模板（来源[5]：点赞/踩、滑块、多选、自由文本），让评审员基于完整trace给出判断。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-7&quot;&gt;4. 设计人工介入恢复路径&lt;/h3&gt;
+  &lt;p&gt;不要只在代理失败时弹出一个“代理失败”消息。参考来源[4]和[5]：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;当代理触发审批点或失败时，暂停并生成一个&lt;strong&gt;决策包&lt;/strong&gt;，包含：
+      &lt;ul&gt;
+        &lt;li&gt;当前目标&lt;/li&gt;
+        &lt;li&gt;已执行步骤的trace（工具调用、输入输出、耗时）&lt;/li&gt;
+        &lt;li&gt;失败原因或需要人工判断的问题&lt;/li&gt;
+        &lt;li&gt;建议的下一步选项（继续、回退、修改参数）&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;人工评审员在界面中做出选择，系统继续执行或回滚。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-8&quot;&gt;5. 迭代闭环&lt;/h3&gt;
+  &lt;p&gt;将每次人工介入的决策结果反馈回评估集，用于改进护栏规则或模型行为。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-9&quot;&gt;风险和限制&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;护栏过度约束&lt;/strong&gt;：过于严格的护栏可能阻止合法操作，降低代理灵活性。需要持续调优，平衡安全与效用。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;评估覆盖不全&lt;/strong&gt;：机器评估可能漏掉语义细微的错误，人工评估成本高且主观。建议混合使用，并对关键路径做100%人工抽检。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;人工介入成为瓶颈&lt;/strong&gt;：如果每个操作都需审批，代理失去自动化意义。应只对高风险操作设置审批点，并设定超时自动降级（如拒绝执行）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;trace数据隐私&lt;/strong&gt;：完整trace包含用户输入和业务数据，需确保存储和传输加密，并符合数据保护法规（如PIPL、GDPR）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;恢复路径本身可能引入新风险&lt;/strong&gt;：人工决策错误、权限滥用等。需对人工操作也做审计和权限控制。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-10&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;这个趋势不是可选项，而是生产级代理的入场券。&lt;/strong&gt; 2026年，任何计划将代理部署到真实业务中的团队，都应该在第一个原型阶段就嵌入护栏和评估，而不是等出了问题再补。人工介入恢复不是“安全网”，而是架构设计的一部分——它定义了自动化与人类判断的边界。&lt;/p&gt;
+
+  &lt;p&gt;对于中国团队，尤其要注意：护栏设计需同时满足《生成式人工智能服务管理暂行办法》对内容安全、算法透明度的要求；trace数据存储需符合PIPL的跨境传输限制（如果使用海外评估平台）。建议优先使用国内云厂商的代理服务（如阿里云百炼、百度智能云千帆），它们正在集成类似的护栏和评估能力。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;适合人群&lt;/strong&gt;：AI agent开发者、DevOps/SRE工程师、安全合规团队、产品经理（负责定义审批点）。
+&lt;strong&gt;不适合人群&lt;/strong&gt;：仅做原型验证的团队（可先跳过人工恢复）、完全依赖第三方托管代理且无自定义控制需求的小团队（但仍需了解供应商的护栏能力）。&lt;/p&gt;
+
+  &lt;p&gt;最后，记住来源[2]的提醒：“当代理可以订票、转账或推代码而不暂停等待人工批准时，每个隐藏缺陷都会瞬间放大。” 护栏和评估就是那个放大器的保险丝。&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;reliable-ai-agent-operations-guardrails-evals-and-human-in-the-loop-recovery&quot;&gt;Reliable AI Agent Operations: Guardrails, Evals, and Human-in-the-Loop Recovery&lt;/h2&gt;
+
+  &lt;h2 id=&quot;reliable-ai-agent-operations-guardrails-evals-and-human-in-the-loop-recovery-1&quot;&gt;Reliable AI Agent Operations: Guardrails, Evals, and Human-in-the-Loop Recovery&lt;/h2&gt;
+
+  &lt;p&gt;AI agents are moving from demos to production—booking flights, moving money, pushing code. Each hidden flaw scales instantly. The emerging consensus is that reliability depends on three interconnected layers: &lt;strong&gt;guardrails&lt;/strong&gt; (preventive controls), &lt;strong&gt;evals&lt;/strong&gt; (outcome and process verification), and &lt;strong&gt;human-in-the-loop recovery&lt;/strong&gt; (structured intervention when autonomous action is unsafe).&lt;/p&gt;
+
+  &lt;h3 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Guardrails&lt;/strong&gt; translate corporate policies into verifiable code-level controls. They define which tools the agent may invoke, which credentials each tool receives, how many actions run concurrently, how long a workflow may continue, how many times a failed step retries, which actions require human approval, and when the agent should stop, escalate, or ask for clarification. Prompt instructions alone are insufficient—code-level boundaries are needed for actions with cost, risk, or irreversible consequences.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Evals&lt;/strong&gt; assess whether the intended experience occurred, while guardrails enforce boundaries around the process. A high-quality final answer does not prove the agent followed an acceptable path. Teams need to evaluate outcomes &lt;em&gt;and&lt;/em&gt; verify that the process stayed within guardrails. Platforms like Maxim offer off-the-shelf evaluators, custom evaluators, and human evaluation runs for nuanced last-mile checks.&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;&lt;strong&gt;Human-in-the-loop recovery&lt;/strong&gt; is not a safety net for when the agent fails—it is a deliberate architectural decision about where human judgment adds the most value. The agent loop handles what can be reasoned about autonomously; the human loop handles what requires authority, context, or accountability. Microsoft Foundry’s preview human evaluation capability allows agent builders to define evaluation templates and collect human feedback (thumbs up/down, sliders, multiple choice, free-form text). The broader pattern is to use human intervention as a structured recovery path, providing enough context (trace, state, failure reason) so the human can make an informed decision, not just a vague “the agent failed” message.&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h3&gt;
+
+  &lt;p&gt;Agents are being deployed with real-world consequences. Failures often come from orchestration and control design, not just model quality. Without guardrails, a single misstep can cascade. Without evals, you cannot measure improvement or regression. Without a human recovery path, autonomous systems either halt on every ambiguity or proceed unsafely. The three layers together form a production-grade reliability stack.&lt;/p&gt;
+
+  &lt;h3 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h3&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;Audit your agent’s action space.&lt;/strong&gt; List every tool, credential, and side effect. Define guardrails for each: max retries, concurrency limits, approval gates for irreversible actions.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Instrument evals for both process and outcome.&lt;/strong&gt; Use automated evaluators (e.g., correctness, safety, adherence to guardrails) and schedule periodic human evaluations for nuanced cases.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Design the human recovery loop.&lt;/strong&gt; Identify decision points where authority, context, or accountability are required. Provide a structured trace with enough context (state, failure reason, suggested options) so the human can decide quickly. Avoid vague failure messages.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Test the orchestration, not just the model.&lt;/strong&gt; Run failure injection scenarios: what happens when a tool times out, returns bad data, or the agent loops? Verify guardrails and recovery paths handle these.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h3 id=&quot;risks&quot;&gt;Risks&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;Over-reliance on guardrails without evals can miss process violations that still produce acceptable outcomes.&lt;/li&gt;
+    &lt;li&gt;Over-reliance on evals without guardrails can allow harmful actions that happen to produce a good final answer.&lt;/li&gt;
+    &lt;li&gt;Poorly designed human-in-the-loop can become a bottleneck or a rubber-stamp if the human lacks context or time.&lt;/li&gt;
+    &lt;li&gt;Guardrails that are too restrictive may block legitimate agent behavior; too loose may allow failures.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;take&quot;&gt;Take&lt;/h3&gt;
+
+  &lt;p&gt;Reliable AI agents require both guardrails and evals, with human-in-the-loop as a structured architectural decision, not an afterthought. Start by mapping your agent’s action space, then layer controls, verification, and recovery paths. The three loops—agent, training, feedback—are currently operated separately, but converging them will be the next frontier for production AI.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://nhimg.org/articles/guardrails-and-evals-are-both-required-for-reliable-ai-agents&quot;&gt;Guardrails and evals are both required for reliable AI agents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.getmaxim.ai/articles/10-key-strategies-for-ensuring-ai-agent-reliability-in-production&quot;&gt;10 Key Strategies for Ensuring AI Agent Reliability in Production&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://arize.com/blog/ai-agent-guardrails-vs-evals&quot;&gt;AI Agent Guardrails vs Evals: Building Reliable Agents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[The Agent Loop Decoded&lt;/td&gt;
+          &lt;td&gt;developers](https://blogs.oracle.com/developers/the-agent-loop-decoded-three-levels-every-agent-engineer-must-know)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[When AI Agents Fail: Engineering Reliable Recovery with Microsoft Foundry&lt;/td&gt;
+          &lt;td&gt;Microsoft Community Hub](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/when-ai-agents-fail-engineering-reliable-recovery-with-microsoft-foundry/4546388)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>AI Agent 工作流可观测性工具指南：Opik、Phoenix、Langfuse 实测 — How to Measure AI Agent Workflows: Opik, Arize Phoenix, Langfuse Guide</title>
@@ -7528,330 +7748,6 @@ with:
   &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=RVEaDvh6f5A&quot;&gt;Agent Loops: Complete Guide (Claude Code + Codex) - YouTube&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://atlan.com/know/how-to-build-ai-agent-harness&quot;&gt;How to Build an AI Agent Harness: Step-by-Step Tutorial (2026) - Atlan&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/najeed/ai-agent-eval-harness&quot;&gt;GitHub - najeed/ai-agent-eval-harness: The open-source MultiAgentOps evaluation and verification harness for any industry business workflow. · GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-    </item>
-    
-    <item>
-      <title>2026年免费LLM API与AI编程工具实测指南 — Top Free LLM APIs &amp; AI Coding Agents to Try Now (2026 Guide)</title>
-      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/06/21/ai-tool-guide.html</link>
-      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/06/21/ai-tool-guide.html</guid>
-      <pubDate>Sun, 21 Jun 2026 01:16:47 +0800</pubDate>
-      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
-      <category domain="category">ai</category>
-      <category domain="content_type">Tool Guide</category>
-      <category domain="tag">Free LLM API</category><category domain="tag">AI Coding Agent</category><category domain="tag">OpenRouter</category><category domain="tag">AIHubMix</category><category domain="tag">Kilo Code</category>
-      <description>对比OpenRouter、AIHubMix、Google AI Studio等免费LLM API，以及Kilo Code、GitHub Copilot Agent HQ等开源编程工具。涵盖注册、集成步骤、速率限制与生产风险，帮你避免意外费用。&#10;&#10;This guide compares truly free LLM APIs (OpenRouter, AIHubMix, Google AI Studio, Groq) and open-source coding agents (Kilo Code, GitHub Copilot Agent HQ), covering setup, limits, and production risks. It helps developers pick the right tools without unexpected costs.</description>
-      <content:encoded>&lt;!-- Chinese Version --&gt;
-&lt;div class=&quot;lang-cn&quot;&gt;
-
-  &lt;h2 id=&quot;llm-apiai&quot;&gt;2026年免费LLM API与AI编程工具实测指南&lt;/h2&gt;
-
-  &lt;h1 id=&quot;llm-apiai-1&quot;&gt;2026年免费LLM API与AI编程工具实测指南&lt;/h1&gt;
-
-  &lt;h2 id=&quot;section&quot;&gt;这是什么&lt;/h2&gt;
-
-  &lt;p&gt;2026年，AI开发者的免费工具生态已经成熟到可以&lt;strong&gt;真正投入生产&lt;/strong&gt;。本文实测了三个核心方向：&lt;strong&gt;免费LLM API&lt;/strong&gt;（OpenRouter、Google AI Studio、Groq等）、&lt;strong&gt;统一API网关&lt;/strong&gt;（AIHubMix），以及&lt;strong&gt;开源AI编程代理&lt;/strong&gt;（Kilo Code）。这些工具的共同特点是：不需要绑定信用卡、有永久免费层、且支持OpenAI兼容接口。如果你正在搭建AI原型、做自动化脚本、或给团队选型，这些是2026年最值得先试的免费基础设施。&lt;/p&gt;
-
-  &lt;h2 id=&quot;section-1&quot;&gt;怎么用&lt;/h2&gt;
-
-  &lt;h3 id=&quot;llm-api&quot;&gt;一、免费LLM API：三分钟跑通第一个请求&lt;/h3&gt;
-
-  &lt;p&gt;&lt;strong&gt;推荐入口：OpenRouter（首选）&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;p&gt;OpenRouter是目前最成熟的免费LLM聚合平台。它不训练模型，而是把各家免费模型（包括Google Gemini、Mistral、Cohere、Groq等）统一成OpenAI兼容接口。你只需要一个API Key，就能在同一个代码里切换模型。&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;注册与配置：&lt;/strong&gt;&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;访问 &lt;a href=&quot;https://openrouter.ai&quot;&gt;openrouter.ai&lt;/a&gt; → 用GitHub或Google账号登录&lt;/li&gt;
-    &lt;li&gt;进入Keys页面 → 生成一个API Key（免费，无需信用卡）&lt;/li&gt;
-    &lt;li&gt;设置环境变量：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;export OPENROUTER_API_KEY=&quot;sk-or-v1-xxxx&quot;&lt;/code&gt;&lt;/li&gt;
-    &lt;li&gt;用OpenAI SDK直接调用：&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;openai&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;OpenAI&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;client&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;OpenAI&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;base_url&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://openrouter.ai/api/v1&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;api_key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;lt;你的API Key&amp;gt;&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-
-&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;client&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;chat&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;completions&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
-    &lt;span class=&quot;n&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;google/gemini-2.0-flash-001&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;  &lt;span class=&quot;c1&quot;&gt;# 免费模型
-&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;messages&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[{&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;role&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;Hello&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}]&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nf&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;response&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;choices&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;].&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-
-  &lt;p&gt;&lt;strong&gt;关键点：&lt;/strong&gt; 模型名用 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;provider/model_name&lt;/code&gt; 格式（如 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;google/gemini-2.0-flash-001&lt;/code&gt;），OpenRouter会自动路由到最便宜的免费端点。&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;其他值得试的免费API：&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;平台&lt;/th&gt;
-        &lt;th&gt;免费模型&lt;/th&gt;
-        &lt;th&gt;特点&lt;/th&gt;
-        &lt;th&gt;入口&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Google AI Studio&lt;/td&gt;
-        &lt;td&gt;Gemini 2.0 Flash&lt;/td&gt;
-        &lt;td&gt;100万token上下文、多模态&lt;/td&gt;
-        &lt;td&gt;需Google账号，API Key免费&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Groq&lt;/td&gt;
-        &lt;td&gt;Llama 3 70B&lt;/td&gt;
-        &lt;td&gt;极快推理速度（LPU硬件）&lt;/td&gt;
-        &lt;td&gt;注册即用，无信用卡&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Cohere&lt;/td&gt;
-        &lt;td&gt;Command R+&lt;/td&gt;
-        &lt;td&gt;企业级RAG能力&lt;/td&gt;
-        &lt;td&gt;免费层20K tokens/天&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;AIHubMix&lt;/td&gt;
-        &lt;td&gt;GPT-5.5、Gemini 3等&lt;/td&gt;
-        &lt;td&gt;统一网关，27+免费模型&lt;/td&gt;
-        &lt;td&gt;无需信用卡，无过期&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;p&gt;&lt;strong&gt;AIHubMix特别说明：&lt;/strong&gt; 这是一个第三方网关，把各家免费模型聚合到一个API。优点是&lt;strong&gt;一个Key用所有模型&lt;/strong&gt;，缺点是&lt;strong&gt;非官方渠道&lt;/strong&gt;，稳定性取决于网关本身。适合快速原型，不适合生产。&lt;/p&gt;
-
-  &lt;h3 id=&quot;aikilo-code&quot;&gt;二、AI编程代理：Kilo Code（开源首选）&lt;/h3&gt;
-
-  &lt;p&gt;Kilo Code是2026年最活跃的开源AI编程代理。它支持VS Code、JetBrains、CLI三种入口，核心是&lt;strong&gt;你自带模型、零加价&lt;/strong&gt;。&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;安装与使用（VS Code）：&lt;/strong&gt;&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;在VS Code扩展市场搜索 “Kilo Code” → 安装&lt;/li&gt;
-    &lt;li&gt;打开命令面板（Cmd+Shift+P）→ 输入 “Kilo Code: Start New Session”&lt;/li&gt;
-    &lt;li&gt;选择模型：默认用OpenRouter免费模型，也可绑定自己的API Key（OpenAI、Anthropic、Groq等）&lt;/li&gt;
-    &lt;li&gt;开始对话：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/edit&lt;/code&gt; 命令直接修改文件，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/terminal&lt;/code&gt; 执行命令&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;&lt;strong&gt;CLI模式：&lt;/strong&gt;&lt;/p&gt;
-  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;npm &lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-g&lt;/span&gt; @kilo-org/kilocode
-kilocode &lt;span class=&quot;nt&quot;&gt;--model&lt;/span&gt; openrouter/google/gemini-2.0-flash-001
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-
-  &lt;p&gt;&lt;strong&gt;关键特性：&lt;/strong&gt;&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;500+模型，可随时切换（成本控制）&lt;/li&gt;
-    &lt;li&gt;支持MCP（Model Context Protocol）服务器&lt;/li&gt;
-    &lt;li&gt;多文件编辑、终端访问、Git操作&lt;/li&gt;
-    &lt;li&gt;开源，无隐藏收费&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;替代方案：GitHub Copilot Agent HQ&lt;/strong&gt;（适合深度绑定GitHub工作流的团队）&lt;/p&gt;
-
-  &lt;h3 id=&quot;mcpai&quot;&gt;三、MCP服务器：免费扩展AI工具链&lt;/h3&gt;
-
-  &lt;p&gt;MCP（Model Context Protocol）是2026年AI工具链的标准化协议。以下免费MCP服务器值得一试：&lt;/p&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;服务器&lt;/th&gt;
-        &lt;th&gt;功能&lt;/th&gt;
-        &lt;th&gt;安装方式&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;Kilo Code MCP&lt;/td&gt;
-        &lt;td&gt;文件系统、终端、Git&lt;/td&gt;
-        &lt;td&gt;VS Code内置&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;OpenRouter MCP&lt;/td&gt;
-        &lt;td&gt;模型路由、成本控制&lt;/td&gt;
-        &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npx @openrouter/mcp-server&lt;/code&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;AIHubMix MCP&lt;/td&gt;
-        &lt;td&gt;统一模型网关&lt;/td&gt;
-        &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install aihubmix-mcp&lt;/code&gt;&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;h2 id=&quot;section-2&quot;&gt;适合谁&lt;/h2&gt;
-
-  &lt;p&gt;&lt;strong&gt;强烈推荐：&lt;/strong&gt;&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;AI原型开发者&lt;/strong&gt;：用OpenRouter + Kilo Code组合，零成本跑通MVP&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;独立开发者/Indie Hacker&lt;/strong&gt;：免费API + 开源代理，省掉每月$20-50的模型费用&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;数据团队&lt;/strong&gt;：用Google AI Studio的100万token上下文做长文档分析&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;安全/合规工程师&lt;/strong&gt;：用免费API做PoC，再迁移到合规付费方案&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;谨慎考虑：&lt;/strong&gt;&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;生产环境&lt;/strong&gt;：免费API有速率限制（通常15-60 RPM），且无SLA保障&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;企业级应用&lt;/strong&gt;：建议用OpenRouter的付费层（$0.01/百万token）或直接签约模型厂商&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;需要隐私/合规&lt;/strong&gt;：免费API默认不承诺数据隔离，敏感数据请用本地模型或自部署&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-3&quot;&gt;限制和注意事项&lt;/h2&gt;
-
-  &lt;h3 id=&quot;api&quot;&gt;免费API的硬限制&lt;/h3&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;限制项&lt;/th&gt;
-        &lt;th&gt;具体数值&lt;/th&gt;
-        &lt;th&gt;影响&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;速率限制&lt;/td&gt;
-        &lt;td&gt;15-60 RPM（多数免费层）&lt;/td&gt;
-        &lt;td&gt;不能做高并发&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;上下文窗口&lt;/td&gt;
-        &lt;td&gt;128K-1M（取决于模型）&lt;/td&gt;
-        &lt;td&gt;长文档需分片&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;数据隐私&lt;/td&gt;
-        &lt;td&gt;无明确承诺&lt;/td&gt;
-        &lt;td&gt;不用于敏感数据&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;模型可用性&lt;/td&gt;
-        &lt;td&gt;可能随时下架&lt;/td&gt;
-        &lt;td&gt;需监控状态页&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;多模态支持&lt;/td&gt;
-        &lt;td&gt;仅部分模型支持&lt;/td&gt;
-        &lt;td&gt;图片/音频需单独处理&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;h3 id=&quot;section-4&quot;&gt;风险清单&lt;/h3&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;API Key泄露&lt;/strong&gt;：免费Key通常无权限控制，泄露后可能被滥用&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;模型幻觉&lt;/strong&gt;：免费模型通常是小参数版本（8B-70B），准确率低于付费版&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;服务中断&lt;/strong&gt;：免费层无SLA，Groq曾因LPU硬件故障中断数小时&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;数据残留&lt;/strong&gt;：部分平台（如AIHubMix）可能缓存请求数据&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h3 id=&quot;section-5&quot;&gt;操作建议&lt;/h3&gt;
-
-  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安全实践：用环境变量管理Key&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;OPENROUTER_API_KEY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;sk-or-v1-xxxx&quot;&lt;/span&gt;
-&lt;span class=&quot;c&quot;&gt;# 不要硬编码在代码里&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# 生产前：用OpenRouter的付费层做压力测试&lt;/span&gt;
-openrouter rate-limit &lt;span class=&quot;nt&quot;&gt;--model&lt;/span&gt; google/gemini-2.0-flash-001 &lt;span class=&quot;nt&quot;&gt;--requests&lt;/span&gt; 100
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-
-  &lt;h2 id=&quot;section-6&quot;&gt;我的判断&lt;/h2&gt;
-
-  &lt;p&gt;&lt;strong&gt;2026年的免费AI工具已经足够好用，但需要正确使用。&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;p&gt;我的结论：&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;OpenRouter + Kilo Code&lt;/strong&gt; 是2026年最推荐的免费AI开发组合。一个管理模型路由，一个管理编码代理，零成本跑通全流程。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Google AI Studio&lt;/strong&gt; 是长文本场景的唯一选择。100万token上下文在2026年仍无对手。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;AIHubMix&lt;/strong&gt; 是“懒人包”，但风险在于第三方网关可能随时更改策略。适合快速原型，不适合长期依赖。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;免费API永远不是生产方案&lt;/strong&gt;。但它是验证想法、学习模型、测试兼容性的最佳起点。&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;&lt;strong&gt;一句话总结：&lt;/strong&gt; 2026年，免费AI工具已经可以支撑个人项目、原型验证和团队选型。但如果你要做商业产品，请准备好每月$20-50的模型预算。&lt;/p&gt;
-
-  &lt;hr /&gt;
-
-  &lt;h2 id=&quot;english-brief-free-llm-apis--ai-coding-tools-in-2026&quot;&gt;English Brief: Free LLM APIs &amp;amp; AI Coding Tools in 2026&lt;/h2&gt;
-
-  &lt;p&gt;&lt;strong&gt;What it is:&lt;/strong&gt; A practical guide to three free AI infrastructure stacks in 2026: OpenRouter (unified free LLM API gateway), Kilo Code (open-source AI coding agent), and AIHubMix (third-party model aggregator). All are OpenAI-compatible, no credit card required.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Why it matters:&lt;/strong&gt; Free AI tools have matured. You can now build a full MVP with zero model cost. This guide covers registration, API setup, model selection, and production risks.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;How to try:&lt;/strong&gt;&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;OpenRouter: &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip install openai&lt;/code&gt; → set &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;OPENROUTER_API_KEY&lt;/code&gt; → call &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;google/gemini-2.0-flash-001&lt;/code&gt; for free&lt;/li&gt;
-    &lt;li&gt;Kilo Code: Install VS Code extension → start session with OpenRouter models → use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/edit&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/terminal&lt;/code&gt;&lt;/li&gt;
-    &lt;li&gt;AIHubMix: One API key for 27+ free models including GPT-5.5&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;&lt;strong&gt;Risks:&lt;/strong&gt; Rate limits (15-60 RPM), no SLA, no data privacy guarantee, model availability fluctuates. Not for production.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Take:&lt;/strong&gt; Free AI is now viable for prototypes, learning, and team evaluation. For production, budget $20-50/month.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;!-- English Version --&gt;
-&lt;div class=&quot;lang-en&quot;&gt;
-
-  &lt;h2 id=&quot;top-free-llm-apis--ai-coding-agents-to-try-now-2026-guide&quot;&gt;Top Free LLM APIs &amp;amp; AI Coding Agents to Try Now (2026 Guide)&lt;/h2&gt;
-
-  &lt;h1 id=&quot;top-free-llm-apis--ai-coding-agents-to-try-now-2026-guide-1&quot;&gt;Top Free LLM APIs &amp;amp; AI Coding Agents to Try Now (2026 Guide)&lt;/h1&gt;
-
-  &lt;h2 id=&quot;what-this-is&quot;&gt;What This Is&lt;/h2&gt;
-
-  &lt;p&gt;This guide covers two categories of free-tier AI infrastructure that developers can use today: &lt;strong&gt;LLM APIs with permanent free tiers&lt;/strong&gt; (no credit card required) and &lt;strong&gt;open-source AI coding agents&lt;/strong&gt; that run in VS Code, JetBrains, or the CLI. The key players are OpenRouter, AIHubMix, Google AI Studio, Groq, and Kilo Code.&lt;/p&gt;
-
-  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
-
-  &lt;p&gt;In 2026, the barrier to shipping AI features has dropped to near zero. Multiple providers now offer genuinely free, permanent tiers for text inference—no trial expiry, no surprise billing. Meanwhile, coding agents like Kilo Code give developers access to 500+ models with zero markup and no API key required to start. This means individual developers and small teams can prototype, build, and ship AI-powered products without upfront infrastructure costs.&lt;/p&gt;
-
-  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;For LLM APIs&lt;/strong&gt;: Start with OpenRouter or AIHubMix for a unified, OpenAI-compatible gateway. Both offer free tiers with no credit card. Google AI Studio is best for long-context tasks (up to 1M tokens on Gemini Flash). Groq is ideal for speed-critical applications using Llama 3.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;For coding agents&lt;/strong&gt;: Install Kilo Code from the VS Code Marketplace or npm. It supports 500+ models, five agent modes, terminal access, multi-file editing, and MCP support. No API key is required to begin—just pick a model and start coding.&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;&lt;strong&gt;Test your setup&lt;/strong&gt;: Use the OpenAI SDK pattern—swap the base URL and API key, and your existing code works across all providers.&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h2 id=&quot;risks--limitations&quot;&gt;Risks &amp;amp; Limitations&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;Rate limits&lt;/strong&gt;: Free tiers are capped (e.g., 15 RPM, 20K tokens/day for Aion Labs). Production workloads will require paid plans.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Model availability&lt;/strong&gt;: Free models may change or be deprecated without notice. Always have a fallback provider.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Data privacy&lt;/strong&gt;: Free tiers often process data on shared infrastructure. Do not send sensitive or proprietary data without reviewing the provider’s privacy policy.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Vendor lock-in&lt;/strong&gt;: While most APIs are OpenAI-compatible, advanced features (e.g., Google’s file-based RAG) may require native SDKs.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
-
-  &lt;p&gt;The free-tier LLM API landscape is mature enough for prototyping, learning, and low-traffic production use. For coding agents, Kilo Code is the strongest open-source option in 2026—it’s free, model-agnostic, and works across editors. GitHub Copilot Agent HQ is better for teams already deep in GitHub’s ecosystem. Start with the free tiers, but plan for paid scaling if your usage grows.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://openrouter.ai/blog/tutorials/free-llm-apis-compared&quot;&gt;Free LLM APIs Compared: Rate Limits, Models, and Real Costs (2026)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/mnfst/awesome-free-llm-apis&quot;&gt;mnfst/awesome-free-llm-apis - GitHub&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://docs.aihubmix.com/en/blogs/free-ai-models&quot;&gt;Free AI Models - AiHubMix Documentation Hub&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/kilo-org/kilocode&quot;&gt;GitHub - Kilo-Org/kilocode: Kilo is the all-in-one agentic engineering platform. Build, ship, and iterate faster with the most popular open source coding agent.&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://kilo.ai/articles/coding-agents-for-vscode&quot;&gt;Best Coding Agents for VS Code in 2026: Compared &amp;amp; Reviewed&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
     </item>
