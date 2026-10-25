@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K8s运行时防御实战：检测与修复容器威胁 | 東情局 · DONG INTEL BUREAU</title>
+  <meta name="description" content="面向DevOps和安全团队的K8s运行时威胁监控实战指南，涵盖检测方法、自动修复流程及与现有工具的集成。重点介绍容器逃逸、横向移动等风险及操作注意事项。">
+  <link rel="icon" type="image/svg+xml" href="/ai-infosec-landing/assets/img/favicon.svg">
+  <link rel="apple-touch-icon" href="/ai-infosec-landing/assets/img/avatar.jpg">
+  <meta name="theme-color" content="#05070a">
+  <meta name="msapplication-TileColor" content="#05070a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/ai-infosec-landing/assets/css/main.css?v=radar-dot-brightness-v1">
+  <link rel="alternate" type="application/rss+xml" title="東情局 · DONG INTEL BUREAU RSS" href="https://kylesking.github.io/ai-infosec-landing/feed.xml">
+  <link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html">
+  <link rel="alternate" hreflang="zh-CN" href="https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html">
+  <link rel="alternate" hreflang="en" href="https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html">
+  <link rel="alternate" hreflang="x-default" href="https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html">
+  <!-- Begin Jekyll SEO tag v2.9.1 -->
+<title>Cloud Runtime Defense | 東情局 · DONG INTEL BUREAU</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Cloud Runtime Defense" />
+<meta name="author" content="東情局 / DONG INTEL BUREAU" />
+<meta property="og:locale" content="zh_CN" />
+<meta name="description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<meta name="twitter:description" property="og:description" content="Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报" />
+<link rel="canonical" href="https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html" />
+<meta property="og:url" content="https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html" />
+<meta property="og:site_name" content="東情局 · DONG INTEL BUREAU" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-10-26T02:49:57+08:00" />
+<meta property="article:modified_time" content="2026-10-26T02:49:57+08:00" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Cloud Runtime Defense" />
+<meta name="twitter:site" content="@dongintbureau" />
+<meta name="twitter:creator" content="@東情局 / DONG INTEL BUREAU" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"東情局 / DONG INTEL BUREAU"},"dateModified":"2026-10-26T02:49:57+08:00","datePublished":"2026-10-26T02:49:57+08:00","description":"Weekly AI, Security \u0026amp; Compliance Practical Intelligence — 中英双语实用技术情报","headline":"Cloud Runtime Defense","mainEntityOfPage":{"@type":"WebPage","@id":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html"},"publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"https://kylesking.github.io/ai-infosec-landing/assets/img/avatar.jpg"},"name":"東情局 / DONG INTEL BUREAU"},"url":"https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+  
+    <!-- _includes/seo-article.html — Article JSON-LD for post pages. --><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "K8s运行时防御实战：检测与修复容器威胁",
+  "alternativeHeadline": "K8s Runtime Defense Playbook: Detect & Remediate Container Threats",
+  "datePublished": "2026-10-26T02:49:57+08:00",
+  "dateModified": "2026-10-26T02:49:57+08:00",
+  "author": {
+    "@type": "Organization",
+    "name": "東情局 / DONG INTEL BUREAU",
+    "url": "https://KyleSKing.github.io/ai-infosec-landing"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "東情局",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://KyleSKing.github.io/ai-infosec-landing/assets/img/avatar.jpg"
+    }
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html"
+  },
+  "inLanguage": ["zh-CN", "en"],
+  "keywords": "kubernetes,runtime-security,containers,devsecops,threat-detection",
+  "articleSection": "Defensive Playbook",
+  "description": "面向DevOps和安全团队的K8s运行时威胁监控实战指南，涵盖检测方法、自动修复流程及与现有工具的集成。重点介绍容器逃逸、横向移动等风险及操作注意事项。"
+}</script><meta property="og:image" content="https://KyleSKing.github.io/ai-infosec-landing/assets/img/og-default.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://KyleSKing.github.io/ai-infosec-landing/assets/img/og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+
+  
+  <meta name="generator" content="Jekyll + Supabase">
+  <script>
+    window.SUPABASE_CONFIG = {
+      url: "https://vncoryzptkkxozjeitbz.supabase.co",
+      anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZuY29yeXpwdGtreG96amVpdGJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc3MzE3NjAsImV4cCI6MjEwMzMwNzc2MH0.mw8ZKAYMVVzgRbTTeDY6RLD24K2gBgMX96bcSJ4RzNA"
+    };
+  </script>
+</head>
+<body>
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="site-bg" aria-hidden="true">
+  <div class="grid-layer"></div>
+  <div class="scan-layer"></div>
+  <div class="orb orb-cyan"></div>
+  <div class="orb orb-violet"></div>
+</div>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Primary navigation">
+    <a href="/ai-infosec-landing/" class="logo" aria-label="東情局首页">
+      <div class="logo-mark"><span></span></div>
+      <div>
+        <div class="logo-text">東情局</div>
+        <div class="logo-sub">DONG INTEL BUREAU</div>
+      </div>
+    </a>
+
+    <div class="nav-cats" aria-label="Category filters">
+      <button class="cat-btn active" data-cat="all">
+        <span class="zh">全部情报</span><span class="en">All Intel</span>
+      </button>
+      <button class="cat-btn" data-cat="ai">
+        <span class="zh">AI</span><span class="en">AI</span>
+      </button>
+      <button class="cat-btn" data-cat="infosec">
+        <span class="zh">安全合规</span><span class="en">Security</span>
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="live-pill" title="Live signal monitoring">
+        <div class="live-dot"></div>
+        <span>LIVE</span>
+      </div>
+      <div class="lang-toggle" aria-label="Language switcher">
+        <button class="lang-opt active" data-lang="zh">中文</button>
+        <button class="lang-opt" data-lang="en">EN</button>
+        <button class="lang-opt" data-lang="bi">双语</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main id="main-content">
+  <div class="post-wrap">
+  <div class="brief-label">INTELLIGENCE BRIEF</div>
+
+  <article class="post-head">
+    <div class="post-agency">東情局 / DONG INTEL BUREAU</div>
+    <div class="post-head-meta">
+      <span class="cat-chip chip-sec">INFOSEC</span>
+      
+      <span class="type-chip"><span class="zh">防御实操</span><span class="en">Defensive Playbook</span></span>
+      
+      <span class="art-date">2026.10.26</span>
+    </div>
+
+    <h1 class="post-title-cn zh">K8s运行时防御实战：检测与修复容器威胁</h1>
+    <h1 class="post-title-en en">K8s Runtime Defense Playbook: Detect & Remediate Container Threats</h1>
+
+    <div class="post-summary">
+      <div class="summary-label">EXECUTIVE SUMMARY</div>
+      <p class="zh">面向DevOps和安全团队的K8s运行时威胁监控实战指南，涵盖检测方法、自动修复流程及与现有工具的集成。重点介绍容器逃逸、横向移动等风险及操作注意事项。</p>
+      <p class="en">A practical guide for DevOps and security teams to monitor Kubernetes runtime threats, including detection methods, automated remediation workflows, and integration with existing tools. Covers key risks like container escapes and lateral movement, plus operational caveats.</p>
+    </div>
+
+    <div class="post-tags-row">
+      <span class="tag">kubernetes</span><span class="tag">runtime-security</span><span class="tag">containers</span><span class="tag">devsecops</span><span class="tag">threat-detection</span>
+    </div>
+  </article>
+
+  <div class="lang-switcher">
+    <button class="lsw-btn active" data-target="cn"><span class="zh">中文简报</span><span class="en">Chinese</span></button>
+    <button class="lsw-btn" data-target="en"><span class="zh">英文简报</span><span class="en">English</span></button>
+    <button class="lsw-btn" data-target="both"><span class="zh">双语</span><span class="en">Bilingual</span></button>
+  </div>
+
+  <div class="post-body post-content">
+    <!-- Chinese Version -->
+<div class="lang-cn">
+
+  <h2 id="k8s">K8s运行时防御实战：检测与修复容器威胁</h2>
+
+  <h1 id="k8s-1">K8s运行时防御实战：检测与修复容器威胁</h1>
+
+  <h2 id="section">风险是什么</h2>
+
+  <p>Kubernetes运行时攻击与镜像扫描阶段完全不同。镜像扫描只能发现静态漏洞（如CVE），但运行时攻击利用的是<strong>正在运行的进程、网络连接、文件系统行为</strong>。攻击者一旦突破容器边界，会进行横向移动、权限提升、数据窃取或加密勒索。</p>
+
+  <p>典型运行时威胁包括：</p>
+  <ul>
+    <li><strong>容器逃逸</strong>：利用内核漏洞或misconfiguration跳出容器，控制宿主机。</li>
+    <li><strong>横向移动</strong>：从已攻陷的Pod向同一集群内的其他服务发起扫描或连接。</li>
+    <li><strong>资源滥用</strong>：容器内被植入挖矿程序，消耗GPU/CPU。</li>
+    <li><strong>数据外泄</strong>：通过反向shell或DNS隧道将敏感数据传出集群。</li>
+    <li><strong>凭证窃取</strong>：从环境变量或挂载的secret中读取API Key、数据库密码。</li>
+  </ul>
+
+  <p>运行时检测的核心价值在于：<strong>在攻击完成之前，通过行为异常识别并阻断</strong>。</p>
+
+  <h2 id="section-1">谁会受影响</h2>
+
+  <ul>
+    <li><strong>DevOps / SRE团队</strong>：负责集群稳定，需要快速识别并隔离恶意Pod。</li>
+    <li><strong>安全工程师</strong>：需要将运行时检测嵌入到现有SOC/SIEM流程中。</li>
+    <li><strong>平台工程团队</strong>：维护内部K8s平台，需要为租户提供运行时安全基线。</li>
+    <li><strong>合规团队</strong>：面对等保、MLPS、SOC 2等要求运行时日志审计和威胁响应。</li>
+  </ul>
+
+  <p><strong>不适用场景</strong>：单节点Minikube、纯离线开发环境、无网络访问的K8s集群（运行时检测依赖网络行为分析）。</p>
+
+  <h2 id="section-2">怎么检查</h2>
+
+  <h3 id="section-3">1. 部署运行时检测工具</h3>
+
+  <p>推荐工具（按成熟度排序）：</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>工具</th>
+        <th>类型</th>
+        <th>检测能力</th>
+        <th>开源/商业</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Falco</td>
+        <td>主机级</td>
+        <td>系统调用监控、文件/网络行为</td>
+        <td>开源</td>
+      </tr>
+      <tr>
+        <td>KubeSec</td>
+        <td>集群级</td>
+        <td>配置异常、网络异常</td>
+        <td>开源</td>
+      </tr>
+      <tr>
+        <td>Wiz</td>
+        <td>全栈</td>
+        <td>运行时风险关联、攻击路径分析</td>
+        <td>商业</td>
+      </tr>
+      <tr>
+        <td>Upwind</td>
+        <td>运行时</td>
+        <td>进程行为、横向移动检测</td>
+        <td>商业</td>
+      </tr>
+      <tr>
+        <td>Sysdig</td>
+        <td>容器级</td>
+        <td>运行时威胁检测、FIM</td>
+        <td>开源+商业</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>最小可行方案</strong>：Falco + 自定义规则。</p>
+
+  <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 安装Falco</span>
+helm repo add falcosecurity https://falcosecurity.github.io/charts
+helm <span class="nb">install </span>falco falcosecurity/falco
+</code></pre></div>  </div>
+
+  <h3 id="section-4">2. 需要监控的关键告警类型</h3>
+
+  <ul>
+    <li><strong>容器内执行敏感命令</strong>：<code class="language-plaintext highlighter-rouge">kubectl exec</code>、<code class="language-plaintext highlighter-rouge">curl</code>到未知IP、<code class="language-plaintext highlighter-rouge">chmod +s /bin/sh</code></li>
+    <li><strong>异常网络连接</strong>：容器主动连接外部IP（非已知CDN/API）</li>
+    <li><strong>文件系统写入异常</strong>：<code class="language-plaintext highlighter-rouge">/etc/cron*</code>、<code class="language-plaintext highlighter-rouge">/root/.ssh</code>、<code class="language-plaintext highlighter-rouge">/tmp/</code>下出现二进制文件</li>
+    <li><strong>进程树异常</strong>：父进程为<code class="language-plaintext highlighter-rouge">sh</code>或<code class="language-plaintext highlighter-rouge">bash</code>，子进程为<code class="language-plaintext highlighter-rouge">python</code>、<code class="language-plaintext highlighter-rouge">perl</code>、<code class="language-plaintext highlighter-rouge">minerd</code>（挖矿）</li>
+    <li><strong>凭证读取</strong>：读取<code class="language-plaintext highlighter-rouge">/run/secrets/</code>、环境变量中的<code class="language-plaintext highlighter-rouge">TOKEN</code>、<code class="language-plaintext highlighter-rouge">PASSWORD</code></li>
+  </ul>
+
+  <h3 id="section-5">3. 检查清单（可每日/每次部署后执行）</h3>
+
+  <ul class="task-list">
+    <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />集群中所有Pod是否安装了运行时agent（Falco或等效）？</li>
+    <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />是否配置了告警通道（Slack、PagerDuty、SIEM）？</li>
+    <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />是否对<code class="language-plaintext highlighter-rouge">kubectl exec</code>和<code class="language-plaintext highlighter-rouge">kubectl run</code>进行了审计日志记录？</li>
+    <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />是否限制了容器内的<code class="language-plaintext highlighter-rouge">CAP_SYS_ADMIN</code>、<code class="language-plaintext highlighter-rouge">CAP_NET_ADMIN</code>等特权能力？</li>
+    <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />是否对Pod的网络出流量设置了默认拒绝策略（默认deny）？</li>
+    <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />是否对<code class="language-plaintext highlighter-rouge">hostNetwork</code>、<code class="language-plaintext highlighter-rouge">privileged</code>等危险Pod配置进行了策略限制？</li>
+  </ul>
+
+  <h2 id="section-6">怎么修 / 怎么接入流程</h2>
+
+  <h3 id="section-7">1. 自动化响应（推荐优先级）</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>响应动作</th>
+        <th>触发条件</th>
+        <th>风险等级</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>隔离Pod（网络断开）</td>
+        <td>检测到外联C2</td>
+        <td>高</td>
+      </tr>
+      <tr>
+        <td>杀死进程</td>
+        <td>检测到挖矿进程</td>
+        <td>中</td>
+      </tr>
+      <tr>
+        <td>快照容器并销毁</td>
+        <td>检测到文件篡改或逃逸尝试</td>
+        <td>高</td>
+      </tr>
+      <tr>
+        <td>通知+记录</td>
+        <td>低风险异常行为</td>
+        <td>低</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>示例：Falco规则触发后自动隔离Pod</strong></p>
+
+  <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># falco-rules.yaml</span>
+<span class="pi">-</span> <span class="na">rule</span><span class="pi">:</span> <span class="s">Malicious Outbound Connection</span>
+  <span class="na">condition</span><span class="pi">:</span> <span class="pi">&gt;</span>
+    <span class="s">(fd.sip not in (allowed_ips) and fd.cip not in (allowed_ips))</span>
+    <span class="s">and container.id != "host"</span>
+  <span class="na">action</span><span class="pi">:</span>
+    <span class="pi">-</span> <span class="na">exec</span><span class="pi">:</span> <span class="s">kubectl exec -n &lt;namespace&gt; &lt;pod&gt; -- sh -c "iptables -A OUTPUT -j DROP"</span>
+    <span class="pi">-</span> <span class="na">alert</span><span class="pi">:</span> <span class="s">slack</span>
+</code></pre></div>  </div>
+
+  <h3 id="cicd">2. 集成到CI/CD</h3>
+
+  <p>在GitHub Actions或GitLab CI中增加运行时安全扫描步骤：</p>
+
+  <div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># .github/workflows/runtime-security.yml</span>
+<span class="na">name</span><span class="pi">:</span> <span class="s">Runtime Security Scan</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">deployment</span><span class="pi">:</span>
+    <span class="na">types</span><span class="pi">:</span> <span class="pi">[</span><span class="nv">created</span><span class="pi">]</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">scan</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Deploy to K8s</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="s">kubectl apply -f k8s/</span>
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Runtime Threat Detection</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s"># 使用kubectl获取运行时日志</span>
+          <span class="s">kubectl logs -n falco --since=5m | grep -E "Malicious|Suspicious"</span>
+</code></pre></div>  </div>
+
+  <h3 id="section-8">3. 修复流程</h3>
+
+  <ol>
+    <li><strong>确认</strong>：查看告警上下文，排除误报（如合法监控工具、内部DNS查询）。</li>
+    <li><strong>隔离</strong>：立即切断Pod网络（<code class="language-plaintext highlighter-rouge">kubectl exec &lt;pod&gt; -- iptables -P INPUT DROP</code>）。</li>
+    <li><strong>取证</strong>：导出Pod文件系统（<code class="language-plaintext highlighter-rouge">kubectl cp &lt;pod&gt;:/tmp /tmp/forensic</code>）。</li>
+    <li><strong>销毁</strong>：删除Pod并重建（确保从安全镜像重建）。</li>
+    <li><strong>根因</strong>：检查镜像来源、CI/CD管道、凭证泄露点。</li>
+    <li><strong>策略更新</strong>：将攻击IP/域名加入黑名单，更新Falco规则。</li>
+  </ol>
+
+  <h2 id="section-9">注意事项</h2>
+
+  <ul>
+    <li><strong>误报率</strong>：运行时检测初期误报率可能高达30-50%。需要根据业务流量模式逐步调整规则。建议先设置告警不自动响应，观察1-2周。</li>
+    <li><strong>性能开销</strong>：Falco基于eBPF，CPU开销通常&lt;5%。但在高流量Pod上，系统调用监控可能增加延迟。建议在非生产环境先测试。</li>
+    <li><strong>权限要求</strong>：运行时agent需要<code class="language-plaintext highlighter-rouge">privileged</code>或<code class="language-plaintext highlighter-rouge">CAP_SYS_PTRACE</code>等能力。这本身可能成为攻击面。建议使用专用命名空间运行agent，并限制其网络访问。</li>
+    <li><strong>日志存储</strong>：运行时日志量巨大（每天GB级）。需要配置日志轮转和保留策略，避免填满节点磁盘。</li>
+    <li><strong>合规风险</strong>：运行时监控可能捕获用户进程中的敏感数据（如API Key）。需要确保日志存储符合PIPL、GDPR等数据保护要求，必要时进行脱敏。</li>
+    <li><strong>工具局限性</strong>：没有工具能100%检测所有运行时威胁。攻击者可以使用rootkit、内存加载、无文件攻击等方式绕过。运行时检测应作为纵深防御的一层，而非唯一防线。</li>
+  </ul>
+
+  <h2 id="section-10">我的判断</h2>
+
+  <p><strong>运行时防御是K8s安全中最被低估的环节。</strong> 绝大多数团队只做镜像扫描和配置检查，认为“只要镜像干净、配置正确，运行时就是安全的”。这是错误的。</p>
+
+  <p>攻击者不需要0day。一个暴露的Jenkins、一个未加限制的<code class="language-plaintext highlighter-rouge">kubectl exec</code>、一个挂载了Docker socket的Pod，就足以完成横向移动和数据窃取。运行时检测是<strong>唯一能在攻击发生过程中发现并阻断的机制</strong>。</p>
+
+  <p><strong>建议行动顺序</strong>：</p>
+  <ol>
+    <li>本周：在测试集群部署Falco，开启默认规则，观察告警。</li>
+    <li>两周内：配置至少一个自动化响应动作（如隔离Pod）。</li>
+    <li>一个月内：将运行时检测结果纳入SIEM，建立告警响应SOP。</li>
+    <li>持续：每月回顾规则误报率，调整阈值。</li>
+  </ol>
+
+  <p><strong>不推荐</strong>：在没有运行时检测的情况下，仅依赖镜像扫描和网络防火墙来保护K8s集群。这等于只检查了入场门票，却没有监控场内行为。</p>
+
+  <hr />
+
+  <h2 id="english-brief-kubernetes-runtime-defense-playbook">English Brief: Kubernetes Runtime Defense Playbook</h2>
+
+  <p><strong>Risk</strong>: Runtime attacks exploit active processes, network connections, and file system behaviors that static image scans cannot detect. Common threats include container escape, lateral movement, cryptomining, and data exfiltration.</p>
+
+  <p><strong>Affected Teams</strong>: DevOps/SRE, security engineers, platform engineering, compliance teams. Not suitable for single-node Minikube or offline clusters.</p>
+
+  <p><strong>Detection Checklist</strong>:</p>
+  <ul>
+    <li>Deploy Falco (open-source) or commercial tools like Wiz/Upwind.</li>
+    <li>Monitor for: suspicious commands (<code class="language-plaintext highlighter-rouge">curl</code> to unknown IP), abnormal outbound connections, file writes to <code class="language-plaintext highlighter-rouge">/tmp/</code>, credential reads from environment variables.</li>
+    <li>Enable audit logging for <code class="language-plaintext highlighter-rouge">kubectl exec</code> and <code class="language-plaintext highlighter-rouge">kubectl run</code>.</li>
+  </ul>
+
+  <p><strong>Remediation Workflow</strong>:</p>
+  <ol>
+    <li>Confirm alert (rule out false positives).</li>
+    <li>Isolate pod (network drop).</li>
+    <li>Forensic capture.</li>
+    <li>Destroy and rebuild from secure image.</li>
+    <li>Update detection rules and blocklist.</li>
+  </ol>
+
+  <p><strong>Integration</strong>: Add runtime scanning to CI/CD deployment pipelines; configure automated responses (kill process, isolate pod) for high-risk alerts.</p>
+
+  <p><strong>Caveats</strong>:</p>
+  <ul>
+    <li>False positive rate can be 30-50% initially; tune rules over 1-2 weeks.</li>
+    <li>Runtime agents require privileged capabilities; run in dedicated namespace.</li>
+    <li>Log volume is high; configure rotation and retention.</li>
+    <li>No tool catches all threats; use as part of defense-in-depth.</li>
+  </ul>
+
+  <p><strong>Take</strong>: Runtime defense is the most overlooked layer in Kubernetes security. Image scanning alone is insufficient. Deploy Falco this week, automate at least one response action within two weeks, and integrate with SIEM within a month. Do not rely solely on static checks.</p>
+
+</div>
+
+<hr />
+
+<!-- English Version -->
+<div class="lang-en">
+
+  <h2 id="k8s-runtime-defense-playbook-detect--remediate-container-threats">K8s Runtime Defense Playbook: Detect &amp; Remediate Container Threats</h2>
+
+  <h1 id="k8s-runtime-defense-playbook-detect--remediate-container-threats-1">K8s Runtime Defense Playbook: Detect &amp; Remediate Container Threats</h1>
+
+  <p><strong>What It Is</strong><br />
+Kubernetes runtime defense is the practice of monitoring containerized environments in real-time to detect and respond to threats such as abnormal data access, lateral movement, and privilege escalation. It involves automating remediation actions—like quarantining compromised containers or updating policies—and integrating with existing security tools for a coordinated incident response.</p>
+
+  <p><strong>Why It Matters</strong><br />
+Kubernetes environments are dynamic and ephemeral, making static security measures insufficient. Runtime detection catches threats that evade pre-deployment scans, reducing breach impact. By correlating runtime signals with cloud configuration and identity context, teams can prioritize risks based on actual attack paths, reducing alert fatigue and focusing on genuine threats.</p>
+
+  <p><strong>Practical Next Steps</strong></p>
+  <ol>
+    <li><strong>Strengthen IAM</strong>: Apply least privilege, enable MFA for all accounts, and regularly audit permissions to prevent identity sprawl and excessive privileges.</li>
+    <li><strong>Secure Networks</strong>: Use VPCs to isolate resources, configure security groups and ACLs, and employ VPNs for private connectivity.</li>
+    <li><strong>Encrypt Data</strong>: Enable server-side encryption for storage (e.g., S3, EBS) and use SSL/TLS for data in transit.</li>
+    <li><strong>Deploy Runtime Detection</strong>: Use tools that provide timeline-based detection and event correlation for quick threat identification. Automate responses like killing malicious processes or isolating containers.</li>
+    <li><strong>Integrate with Existing Tools</strong>: Align runtime security solutions with SIEM, SOAR, and incident response workflows for comprehensive coverage and faster remediation.</li>
+  </ol>
+
+  <p><strong>Risks</strong></p>
+  <ul>
+    <li>Alert fatigue from poorly tuned detection rules can overwhelm teams.</li>
+    <li>Integration complexity may lead to gaps if not properly managed.</li>
+    <li>Monitoring agents can impact container performance if not optimized.</li>
+    <li>Over-automation without human validation might cause unnecessary disruptions.</li>
+  </ul>
+
+  <p><strong>Take</strong><br />
+Kubernetes runtime defense is essential for modern cloud security. Teams should adopt a unified strategy that combines IAM, network security, encryption, and real-time detection. Prioritize context-driven remediation over raw vulnerability counts, and ensure seamless integration with existing security processes to maintain a strong defense posture.</p>
+
+</div>
+
+<hr />
+
+<h3 id="参考来源--sources">参考来源 / Sources</h3>
+
+<ul>
+  <li><a href="https://www.armosec.io/glossary/kubernetes-runtime-threat-detection">What is Kubernetes Runtime Threat Detection?</a></li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[What is Kubernetes Runtime Security? Tools + Best Practices</td>
+          <td>Wiz](https://www.wiz.io/academy/container-security/kubernetes-runtime-security-best-practices)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li><a href="https://www.upwind.io/glossary/what-is-kubernetes-security">Kubernetes Security: Best Practices &amp; Modern Challenges</a></li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[AWS Security Checklist: Protect Your Cloud Workloads</td>
+          <td>Arthur M. posted on the topic</td>
+          <td>LinkedIn](https://www.linkedin.com/posts/arthur-m-24a2a81ba_aws-security-best-practices-checklist-activity-7406117789901475840-O5Nk)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>[The Only Cloud Security Checklist You’ll Ever Need</td>
+          <td>Wiz](https://www.wiz.io/academy/cloud-security/cloud-security-checklist)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+  </div><div class="post-engage" data-slug="2026-10-26-cloud-runtime-defense">
+    <div class="engage-stats">
+      <span class="engage-item view-count" title="浏览量 / views">
+        <span class="engage-ico" aria-hidden="true">◉</span>
+        <span class="engage-num" data-stat="views">—</span>
+        <span class="engage-lbl"><span class="zh">浏览</span><span class="en">views</span></span>
+      </span>
+      <span class="engage-item like-count" title="点赞 / likes">
+        <span class="engage-ico" aria-hidden="true">♥</span>
+        <span class="engage-num" data-stat="likes">—</span>
+        <span class="engage-lbl"><span class="zh">点赞</span><span class="en">likes</span></span>
+      </span>
+    </div>
+    <button class="like-btn" type="button" aria-pressed="false">
+      <span class="like-icon" aria-hidden="true">♥</span>
+      <span class="like-label"><span class="zh">点赞</span><span class="en">Like</span></span>
+    </button>
+  </div>
+
+  <div class="post-nav">
+    <a href="/ai-infosec-landing/" class="back-link">← BACK TO INTEL BOARD</a>
+    <a href="/ai-infosec-landing/feed.xml" class="back-link rss-back-link">RSS FEED</a>
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">東情局 / DONG INTEL BUREAU</div>
+      <p>
+        <span class="zh">硅仙人的 AI / 安全 / 合规情报站。过滤噪音，捕捉信号。</span>
+        <span class="en">AI / Security / Compliance Intel by Silicon Sage. Signal over noise.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p>LIVE SIGNAL MONITORING · UPDATED WEEKLY · MONDAY 00:00 CST</p>
+      <p>Jekyll · GitHub Actions · GitHub Pages</p>
+      <p class="footer-privacy"><span class="zh">本站使用 Supabase 统计访问数据（仅记录 IP 哈希用于去重）</span><span class="en">Anonymous view stats via Supabase (IP-hash only)</span></p>
+    </div>
+  </div>
+</footer>
+
+<script src="/ai-infosec-landing/assets/js/main.js?v=1792954216" defer></script>
+</body>
+</html>

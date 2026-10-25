@@ -10,10 +10,355 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 19 Oct 2026 02:33:53 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 26 Oct 2026 02:50:16 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>K8s运行时防御实战：检测与修复容器威胁 — K8s Runtime Defense Playbook: Detect &amp; Remediate Container Threats</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/10/26/cloud-runtime-defense.html</guid>
+      <pubDate>Mon, 26 Oct 2026 02:49:57 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">infosec</category>
+      <category domain="content_type">Defensive Playbook</category>
+      <category domain="tag">kubernetes</category><category domain="tag">runtime-security</category><category domain="tag">containers</category><category domain="tag">devsecops</category><category domain="tag">threat-detection</category>
+      <description>面向DevOps和安全团队的K8s运行时威胁监控实战指南，涵盖检测方法、自动修复流程及与现有工具的集成。重点介绍容器逃逸、横向移动等风险及操作注意事项。&#10;&#10;A practical guide for DevOps and security teams to monitor Kubernetes runtime threats, including detection methods, automated remediation workflows, and integration with existing tools. Covers key risks like container escapes and lateral movement, plus operational caveats.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;k8s&quot;&gt;K8s运行时防御实战：检测与修复容器威胁&lt;/h2&gt;
+
+  &lt;h1 id=&quot;k8s-1&quot;&gt;K8s运行时防御实战：检测与修复容器威胁&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;风险是什么&lt;/h2&gt;
+
+  &lt;p&gt;Kubernetes运行时攻击与镜像扫描阶段完全不同。镜像扫描只能发现静态漏洞（如CVE），但运行时攻击利用的是&lt;strong&gt;正在运行的进程、网络连接、文件系统行为&lt;/strong&gt;。攻击者一旦突破容器边界，会进行横向移动、权限提升、数据窃取或加密勒索。&lt;/p&gt;
+
+  &lt;p&gt;典型运行时威胁包括：&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;容器逃逸&lt;/strong&gt;：利用内核漏洞或misconfiguration跳出容器，控制宿主机。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;横向移动&lt;/strong&gt;：从已攻陷的Pod向同一集群内的其他服务发起扫描或连接。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;资源滥用&lt;/strong&gt;：容器内被植入挖矿程序，消耗GPU/CPU。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;数据外泄&lt;/strong&gt;：通过反向shell或DNS隧道将敏感数据传出集群。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;凭证窃取&lt;/strong&gt;：从环境变量或挂载的secret中读取API Key、数据库密码。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;运行时检测的核心价值在于：&lt;strong&gt;在攻击完成之前，通过行为异常识别并阻断&lt;/strong&gt;。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-1&quot;&gt;谁会受影响&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;DevOps / SRE团队&lt;/strong&gt;：负责集群稳定，需要快速识别并隔离恶意Pod。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;安全工程师&lt;/strong&gt;：需要将运行时检测嵌入到现有SOC/SIEM流程中。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;平台工程团队&lt;/strong&gt;：维护内部K8s平台，需要为租户提供运行时安全基线。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;合规团队&lt;/strong&gt;：面对等保、MLPS、SOC 2等要求运行时日志审计和威胁响应。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;不适用场景&lt;/strong&gt;：单节点Minikube、纯离线开发环境、无网络访问的K8s集群（运行时检测依赖网络行为分析）。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;怎么检查&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-3&quot;&gt;1. 部署运行时检测工具&lt;/h3&gt;
+
+  &lt;p&gt;推荐工具（按成熟度排序）：&lt;/p&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;工具&lt;/th&gt;
+        &lt;th&gt;类型&lt;/th&gt;
+        &lt;th&gt;检测能力&lt;/th&gt;
+        &lt;th&gt;开源/商业&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Falco&lt;/td&gt;
+        &lt;td&gt;主机级&lt;/td&gt;
+        &lt;td&gt;系统调用监控、文件/网络行为&lt;/td&gt;
+        &lt;td&gt;开源&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;KubeSec&lt;/td&gt;
+        &lt;td&gt;集群级&lt;/td&gt;
+        &lt;td&gt;配置异常、网络异常&lt;/td&gt;
+        &lt;td&gt;开源&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Wiz&lt;/td&gt;
+        &lt;td&gt;全栈&lt;/td&gt;
+        &lt;td&gt;运行时风险关联、攻击路径分析&lt;/td&gt;
+        &lt;td&gt;商业&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Upwind&lt;/td&gt;
+        &lt;td&gt;运行时&lt;/td&gt;
+        &lt;td&gt;进程行为、横向移动检测&lt;/td&gt;
+        &lt;td&gt;商业&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;Sysdig&lt;/td&gt;
+        &lt;td&gt;容器级&lt;/td&gt;
+        &lt;td&gt;运行时威胁检测、FIM&lt;/td&gt;
+        &lt;td&gt;开源+商业&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p&gt;&lt;strong&gt;最小可行方案&lt;/strong&gt;：Falco + 自定义规则。&lt;/p&gt;
+
+  &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 安装Falco&lt;/span&gt;
+helm repo add falcosecurity https://falcosecurity.github.io/charts
+helm &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;falco falcosecurity/falco
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h3 id=&quot;section-4&quot;&gt;2. 需要监控的关键告警类型&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;容器内执行敏感命令&lt;/strong&gt;：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl exec&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt;到未知IP、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;chmod +s /bin/sh&lt;/code&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;异常网络连接&lt;/strong&gt;：容器主动连接外部IP（非已知CDN/API）&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;文件系统写入异常&lt;/strong&gt;：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/cron*&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/root/.ssh&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp/&lt;/code&gt;下出现二进制文件&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;进程树异常&lt;/strong&gt;：父进程为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;sh&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bash&lt;/code&gt;，子进程为&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;python&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;perl&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;minerd&lt;/code&gt;（挖矿）&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;凭证读取&lt;/strong&gt;：读取&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/run/secrets/&lt;/code&gt;、环境变量中的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;TOKEN&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PASSWORD&lt;/code&gt;&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-5&quot;&gt;3. 检查清单（可每日/每次部署后执行）&lt;/h3&gt;
+
+  &lt;ul class=&quot;task-list&quot;&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;集群中所有Pod是否安装了运行时agent（Falco或等效）？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否配置了告警通道（Slack、PagerDuty、SIEM）？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否对&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl exec&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl run&lt;/code&gt;进行了审计日志记录？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否限制了容器内的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CAP_SYS_ADMIN&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CAP_NET_ADMIN&lt;/code&gt;等特权能力？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否对Pod的网络出流量设置了默认拒绝策略（默认deny）？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否对&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;hostNetwork&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;privileged&lt;/code&gt;等危险Pod配置进行了策略限制？&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-6&quot;&gt;怎么修 / 怎么接入流程&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-7&quot;&gt;1. 自动化响应（推荐优先级）&lt;/h3&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;响应动作&lt;/th&gt;
+        &lt;th&gt;触发条件&lt;/th&gt;
+        &lt;th&gt;风险等级&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;隔离Pod（网络断开）&lt;/td&gt;
+        &lt;td&gt;检测到外联C2&lt;/td&gt;
+        &lt;td&gt;高&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;杀死进程&lt;/td&gt;
+        &lt;td&gt;检测到挖矿进程&lt;/td&gt;
+        &lt;td&gt;中&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;快照容器并销毁&lt;/td&gt;
+        &lt;td&gt;检测到文件篡改或逃逸尝试&lt;/td&gt;
+        &lt;td&gt;高&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;通知+记录&lt;/td&gt;
+        &lt;td&gt;低风险异常行为&lt;/td&gt;
+        &lt;td&gt;低&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p&gt;&lt;strong&gt;示例：Falco规则触发后自动隔离Pod&lt;/strong&gt;&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# falco-rules.yaml&lt;/span&gt;
+&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;rule&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Malicious Outbound Connection&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;condition&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;(fd.sip not in (allowed_ips) and fd.cip not in (allowed_ips))&lt;/span&gt;
+    &lt;span class=&quot;s&quot;&gt;and container.id != &quot;host&quot;&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;exec&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kubectl exec -n &amp;lt;namespace&amp;gt; &amp;lt;pod&amp;gt; -- sh -c &quot;iptables -A OUTPUT -j DROP&quot;&lt;/span&gt;
+    &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;slack&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h3 id=&quot;cicd&quot;&gt;2. 集成到CI/CD&lt;/h3&gt;
+
+  &lt;p&gt;在GitHub Actions或GitLab CI中增加运行时安全扫描步骤：&lt;/p&gt;
+
+  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# .github/workflows/runtime-security.yml&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Runtime Security Scan&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;deployment&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;types&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;created&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;na&quot;&gt;scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
+    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v4&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Deploy to K8s&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;kubectl apply -f k8s/&lt;/span&gt;
+      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Runtime Threat Detection&lt;/span&gt;
+        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
+          &lt;span class=&quot;s&quot;&gt;# 使用kubectl获取运行时日志&lt;/span&gt;
+          &lt;span class=&quot;s&quot;&gt;kubectl logs -n falco --since=5m | grep -E &quot;Malicious|Suspicious&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h3 id=&quot;section-8&quot;&gt;3. 修复流程&lt;/h3&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;确认&lt;/strong&gt;：查看告警上下文，排除误报（如合法监控工具、内部DNS查询）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;隔离&lt;/strong&gt;：立即切断Pod网络（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl exec &amp;lt;pod&amp;gt; -- iptables -P INPUT DROP&lt;/code&gt;）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;取证&lt;/strong&gt;：导出Pod文件系统（&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl cp &amp;lt;pod&amp;gt;:/tmp /tmp/forensic&lt;/code&gt;）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;销毁&lt;/strong&gt;：删除Pod并重建（确保从安全镜像重建）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;根因&lt;/strong&gt;：检查镜像来源、CI/CD管道、凭证泄露点。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;策略更新&lt;/strong&gt;：将攻击IP/域名加入黑名单，更新Falco规则。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;section-9&quot;&gt;注意事项&lt;/h2&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;误报率&lt;/strong&gt;：运行时检测初期误报率可能高达30-50%。需要根据业务流量模式逐步调整规则。建议先设置告警不自动响应，观察1-2周。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;性能开销&lt;/strong&gt;：Falco基于eBPF，CPU开销通常&amp;lt;5%。但在高流量Pod上，系统调用监控可能增加延迟。建议在非生产环境先测试。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;权限要求&lt;/strong&gt;：运行时agent需要&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;privileged&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CAP_SYS_PTRACE&lt;/code&gt;等能力。这本身可能成为攻击面。建议使用专用命名空间运行agent，并限制其网络访问。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;日志存储&lt;/strong&gt;：运行时日志量巨大（每天GB级）。需要配置日志轮转和保留策略，避免填满节点磁盘。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;合规风险&lt;/strong&gt;：运行时监控可能捕获用户进程中的敏感数据（如API Key）。需要确保日志存储符合PIPL、GDPR等数据保护要求，必要时进行脱敏。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;工具局限性&lt;/strong&gt;：没有工具能100%检测所有运行时威胁。攻击者可以使用rootkit、内存加载、无文件攻击等方式绕过。运行时检测应作为纵深防御的一层，而非唯一防线。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-10&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;运行时防御是K8s安全中最被低估的环节。&lt;/strong&gt; 绝大多数团队只做镜像扫描和配置检查，认为“只要镜像干净、配置正确，运行时就是安全的”。这是错误的。&lt;/p&gt;
+
+  &lt;p&gt;攻击者不需要0day。一个暴露的Jenkins、一个未加限制的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl exec&lt;/code&gt;、一个挂载了Docker socket的Pod，就足以完成横向移动和数据窃取。运行时检测是&lt;strong&gt;唯一能在攻击发生过程中发现并阻断的机制&lt;/strong&gt;。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;建议行动顺序&lt;/strong&gt;：&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;本周：在测试集群部署Falco，开启默认规则，观察告警。&lt;/li&gt;
+    &lt;li&gt;两周内：配置至少一个自动化响应动作（如隔离Pod）。&lt;/li&gt;
+    &lt;li&gt;一个月内：将运行时检测结果纳入SIEM，建立告警响应SOP。&lt;/li&gt;
+    &lt;li&gt;持续：每月回顾规则误报率，调整阈值。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;不推荐&lt;/strong&gt;：在没有运行时检测的情况下，仅依赖镜像扫描和网络防火墙来保护K8s集群。这等于只检查了入场门票，却没有监控场内行为。&lt;/p&gt;
+
+  &lt;hr /&gt;
+
+  &lt;h2 id=&quot;english-brief-kubernetes-runtime-defense-playbook&quot;&gt;English Brief: Kubernetes Runtime Defense Playbook&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;Risk&lt;/strong&gt;: Runtime attacks exploit active processes, network connections, and file system behaviors that static image scans cannot detect. Common threats include container escape, lateral movement, cryptomining, and data exfiltration.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Affected Teams&lt;/strong&gt;: DevOps/SRE, security engineers, platform engineering, compliance teams. Not suitable for single-node Minikube or offline clusters.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Detection Checklist&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Deploy Falco (open-source) or commercial tools like Wiz/Upwind.&lt;/li&gt;
+    &lt;li&gt;Monitor for: suspicious commands (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;curl&lt;/code&gt; to unknown IP), abnormal outbound connections, file writes to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp/&lt;/code&gt;, credential reads from environment variables.&lt;/li&gt;
+    &lt;li&gt;Enable audit logging for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl exec&lt;/code&gt; and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kubectl run&lt;/code&gt;.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Remediation Workflow&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;Confirm alert (rule out false positives).&lt;/li&gt;
+    &lt;li&gt;Isolate pod (network drop).&lt;/li&gt;
+    &lt;li&gt;Forensic capture.&lt;/li&gt;
+    &lt;li&gt;Destroy and rebuild from secure image.&lt;/li&gt;
+    &lt;li&gt;Update detection rules and blocklist.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;Integration&lt;/strong&gt;: Add runtime scanning to CI/CD deployment pipelines; configure automated responses (kill process, isolate pod) for high-risk alerts.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Caveats&lt;/strong&gt;:&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;False positive rate can be 30-50% initially; tune rules over 1-2 weeks.&lt;/li&gt;
+    &lt;li&gt;Runtime agents require privileged capabilities; run in dedicated namespace.&lt;/li&gt;
+    &lt;li&gt;Log volume is high; configure rotation and retention.&lt;/li&gt;
+    &lt;li&gt;No tool catches all threats; use as part of defense-in-depth.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Take&lt;/strong&gt;: Runtime defense is the most overlooked layer in Kubernetes security. Image scanning alone is insufficient. Deploy Falco this week, automate at least one response action within two weeks, and integrate with SIEM within a month. Do not rely solely on static checks.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;k8s-runtime-defense-playbook-detect--remediate-container-threats&quot;&gt;K8s Runtime Defense Playbook: Detect &amp;amp; Remediate Container Threats&lt;/h2&gt;
+
+  &lt;h1 id=&quot;k8s-runtime-defense-playbook-detect--remediate-container-threats-1&quot;&gt;K8s Runtime Defense Playbook: Detect &amp;amp; Remediate Container Threats&lt;/h1&gt;
+
+  &lt;p&gt;&lt;strong&gt;What It Is&lt;/strong&gt;&lt;br /&gt;
+Kubernetes runtime defense is the practice of monitoring containerized environments in real-time to detect and respond to threats such as abnormal data access, lateral movement, and privilege escalation. It involves automating remediation actions—like quarantining compromised containers or updating policies—and integrating with existing security tools for a coordinated incident response.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Why It Matters&lt;/strong&gt;&lt;br /&gt;
+Kubernetes environments are dynamic and ephemeral, making static security measures insufficient. Runtime detection catches threats that evade pre-deployment scans, reducing breach impact. By correlating runtime signals with cloud configuration and identity context, teams can prioritize risks based on actual attack paths, reducing alert fatigue and focusing on genuine threats.&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;Practical Next Steps&lt;/strong&gt;&lt;/p&gt;
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;Strengthen IAM&lt;/strong&gt;: Apply least privilege, enable MFA for all accounts, and regularly audit permissions to prevent identity sprawl and excessive privileges.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Secure Networks&lt;/strong&gt;: Use VPCs to isolate resources, configure security groups and ACLs, and employ VPNs for private connectivity.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Encrypt Data&lt;/strong&gt;: Enable server-side encryption for storage (e.g., S3, EBS) and use SSL/TLS for data in transit.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Deploy Runtime Detection&lt;/strong&gt;: Use tools that provide timeline-based detection and event correlation for quick threat identification. Automate responses like killing malicious processes or isolating containers.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Integrate with Existing Tools&lt;/strong&gt;: Align runtime security solutions with SIEM, SOAR, and incident response workflows for comprehensive coverage and faster remediation.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;p&gt;&lt;strong&gt;Risks&lt;/strong&gt;&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;Alert fatigue from poorly tuned detection rules can overwhelm teams.&lt;/li&gt;
+    &lt;li&gt;Integration complexity may lead to gaps if not properly managed.&lt;/li&gt;
+    &lt;li&gt;Monitoring agents can impact container performance if not optimized.&lt;/li&gt;
+    &lt;li&gt;Over-automation without human validation might cause unnecessary disruptions.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;&lt;strong&gt;Take&lt;/strong&gt;&lt;br /&gt;
+Kubernetes runtime defense is essential for modern cloud security. Teams should adopt a unified strategy that combines IAM, network security, encryption, and real-time detection. Prioritize context-driven remediation over raw vulnerability counts, and ensure seamless integration with existing security processes to maintain a strong defense posture.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.armosec.io/glossary/kubernetes-runtime-threat-detection&quot;&gt;What is Kubernetes Runtime Threat Detection?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[What is Kubernetes Runtime Security? Tools + Best Practices&lt;/td&gt;
+          &lt;td&gt;Wiz](https://www.wiz.io/academy/container-security/kubernetes-runtime-security-best-practices)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.upwind.io/glossary/what-is-kubernetes-security&quot;&gt;Kubernetes Security: Best Practices &amp;amp; Modern Challenges&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[AWS Security Checklist: Protect Your Cloud Workloads&lt;/td&gt;
+          &lt;td&gt;Arthur M. posted on the topic&lt;/td&gt;
+          &lt;td&gt;LinkedIn](https://www.linkedin.com/posts/arthur-m-24a2a81ba_aws-security-best-practices-checklist-activity-7406117789901475840-O5Nk)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[The Only Cloud Security Checklist You’ll Ever Need&lt;/td&gt;
+          &lt;td&gt;Wiz](https://www.wiz.io/academy/cloud-security/cloud-security-checklist)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>AI代理可靠运维：护栏、评估与人工介入恢复 — Reliable AI Agent Operations: Guardrails, Evals, and Human-in-the-Loop Recovery</title>
@@ -7554,200 +7899,6 @@ with:
     &lt;/table&gt;
   &lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.ox.security/blog/sbom-tools&quot;&gt;Top 5 SBOM Tools 2025: Secure Your Software Supply Chain&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-    </item>
-    
-    <item>
-      <title>AI Agent循环与治理框架：可靠自主工作流的工程新实践 — AI Agent Loops &amp; Harnesses: The New Engineering Practice for Reliable Autonomous Workflows</title>
-      <link>https://kylesking.github.io/ai-infosec-landing/ai/2026/06/22/ai-trend-explainer.html</link>
-      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/ai/2026/06/22/ai-trend-explainer.html</guid>
-      <pubDate>Mon, 22 Jun 2026 01:19:16 +0800</pubDate>
-      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
-      <category domain="category">ai</category>
-      <category domain="content_type">Trend Analysis</category>
-      <category domain="tag">AI Agent</category><category domain="tag">Agent Loop</category><category domain="tag">Agent Harness</category><category domain="tag">Claude Code</category><category domain="tag">Codex</category>
-      <description>AI agent循环（感知-推理-规划-执行-观察）正成为Claude Code、Codex等编码工具的内置功能，取代自定义基础设施。Agent治理框架作为保证可靠性、可观测性和合规性的治理层出现，工程实践已成熟至4-12周构建周期。&#10;&#10;AI agent loops (perceive-reason-plan-act-observe) are becoming built-in features in coding tools like Claude Code and Codex, replacing custom infrastructure. Agent harnesses emerge as governance layers ensuring reliability, observability, and compliance, with engineering practices maturing into 4-12 week build cycles.</description>
-      <content:encoded>&lt;!-- Chinese Version --&gt;
-&lt;div class=&quot;lang-cn&quot;&gt;
-
-  &lt;h2 id=&quot;ai-agent&quot;&gt;AI Agent循环与治理框架：可靠自主工作流的工程新实践&lt;/h2&gt;
-
-  &lt;h1 id=&quot;ai-agent-&quot;&gt;AI Agent 循环与治理框架：可靠自主工作流的工程新实践&lt;/h1&gt;
-
-  &lt;h2 id=&quot;section&quot;&gt;这个趋势是什么&lt;/h2&gt;
-
-  &lt;p&gt;2026 年上半年，AI Agent 的开发范式正在从“写一个 prompt + 调一个 API”转向&lt;strong&gt;工程化循环（Loop）与可治理的无人机架（Harness）&lt;/strong&gt;。简单说，你不再把大模型当作单次问答工具，而是让它在一个&lt;strong&gt;感知—推理—规划—行动—观察&lt;/strong&gt;的闭环中反复迭代，直到完成复杂任务。同时，你需要给这个循环套上一层基础设施：工具权限、状态管理、数据溯源、评估与监控——这就是“Harness”。&lt;/p&gt;
-
-  &lt;p&gt;代表性进展：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;Claude Code 内置了 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/loop&lt;/code&gt; 命令、cron 调度和动态工作流，无需自己搭编排层。&lt;/li&gt;
-    &lt;li&gt;Codex 推出 Automations 标签页，支持定时任务和子 Agent 派生。&lt;/li&gt;
-    &lt;li&gt;METR 最新基准显示，Claude Opus 4.6 可在 12 小时内完成 50% 的测试任务，而一年前的 Opus 4 据能处理最长 1 小时 40 分钟的任务——天花板前移了约 &lt;strong&gt;6 倍&lt;/strong&gt;。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;这不是 demo，而是正在进入生产环境的工程模式。&lt;/p&gt;
-
-  &lt;h2 id=&quot;section-1&quot;&gt;为什么现在重要&lt;/h2&gt;
-
-  &lt;p&gt;过去一年，Agent 的主要瓶颈不是模型能力，而是&lt;strong&gt;稳定性与治理&lt;/strong&gt;。单次调用很容易做，但要让 Agent 自主运行数小时、数十小时，处理不断变化的状态，并且不出错、不泄密、可审计，就必须把循环和治理当成基础设施来建。&lt;/p&gt;
-
-  &lt;p&gt;三点核心驱动：&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;模型上下文的延长&lt;/strong&gt;让 Agent 可以维持更长的感知-行动-观察循环，不再频繁“失忆”。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;工具生态成熟&lt;/strong&gt;：Claude Code、Codex、Cursor 等 IDE 工具原生支持循环调度，LangGraph、CrewAI、Mastra、OpenAI Agents SDK 提供编排框架。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;企业合规压力&lt;/strong&gt;：自主工作流越多，越需要可追溯、可回放、可审计的 governance。没有 Harness 的 Agent 无法通过 SOC 2 或 PIPL 审查。&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h2 id=&quot;section-2&quot;&gt;它和旧做法的区别&lt;/h2&gt;
-
-  &lt;table&gt;
-    &lt;thead&gt;
-      &lt;tr&gt;
-        &lt;th&gt;维度&lt;/th&gt;
-        &lt;th&gt;旧做法&lt;/th&gt;
-        &lt;th&gt;新实践&lt;/th&gt;
-      &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-      &lt;tr&gt;
-        &lt;td&gt;任务长度&lt;/td&gt;
-        &lt;td&gt;每次对话独立，任务上限 1-2 小时&lt;/td&gt;
-        &lt;td&gt;12 小时+ 的连续任务，通过循环维持上下文&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;编排方式&lt;/td&gt;
-        &lt;td&gt;手动写 while 循环、自建状态管理&lt;/td&gt;
-        &lt;td&gt;框架原生提供 Loops、Cron、子 Agent 调度&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;可靠性&lt;/td&gt;
-        &lt;td&gt;缺乏可观测性，失败后难以定位&lt;/td&gt;
-        &lt;td&gt;Harness 包含评估、日志、WORM 审计、Merkl 验证&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;数据治理&lt;/td&gt;
-        &lt;td&gt;依赖模型自身的记忆或纯提示&lt;/td&gt;
-        &lt;td&gt;用认证数据层、指标标定提升 SQL 准确率 38%&lt;/td&gt;
-      &lt;/tr&gt;
-      &lt;tr&gt;
-        &lt;td&gt;部署复杂度&lt;/td&gt;
-        &lt;td&gt;需要自定义基础设施&lt;/td&gt;
-        &lt;td&gt;4-12 周可搭建生产级 Harness，代码量 5000-20000 行&lt;/td&gt;
-      &lt;/tr&gt;
-    &lt;/tbody&gt;
-  &lt;/table&gt;
-
-  &lt;p&gt;旧模式里，Agent 是&lt;strong&gt;一次性工具&lt;/strong&gt;；新模式里，Agent 是&lt;strong&gt;持续的在线工作者&lt;/strong&gt;。&lt;/p&gt;
-
-  &lt;h2 id=&quot;section-3&quot;&gt;可以怎么开始试&lt;/h2&gt;
-
-  &lt;h3 id=&quot;section-4&quot;&gt;第一步：选择一个自带循环能力的工具（1 天）&lt;/h3&gt;
-  &lt;p&gt;如果你在写代码任务，直接使用 &lt;strong&gt;Claude Code&lt;/strong&gt; 的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/loop&lt;/code&gt; 命令，或 &lt;strong&gt;Codex&lt;/strong&gt; 的 Automations 标签页。这些工具已经把循环、定时、子 Agent 拆成了配置项，你只需要定义任务和目标。&lt;/p&gt;
-
-  &lt;h3 id=&quot;agent-loop2-3-&quot;&gt;第二步：理解并定义你的 Agent Loop（2-3 天）&lt;/h3&gt;
-  &lt;p&gt;画出你自己的五个阶段：&lt;strong&gt;感知&lt;/strong&gt;（输入源是什么）、&lt;strong&gt;推理&lt;/strong&gt;（用哪个模型、怎么组织 context）、&lt;strong&gt;规划&lt;/strong&gt;（有没有子任务拆分逻辑）、&lt;strong&gt;行动&lt;/strong&gt;（工具集：API、数据库、文件系统）、&lt;strong&gt;观察&lt;/strong&gt;（如何捕捉结果、异常、超时）。不需要一开始写代码，先用流程图记录。&lt;/p&gt;
-
-  &lt;h3 id=&quot;harness-2-4-&quot;&gt;第三步：引入 Harness 组件（2-4 周）&lt;/h3&gt;
-  &lt;p&gt;参考 Atlan 的研究或开源项目（如 &lt;a href=&quot;https://github.com/najeed/ai-agent-eval-harness&quot;&gt;ai-agent-eval-harness&lt;/a&gt;），逐步添加：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;状态保存与回放&lt;/strong&gt;：每次循环的输入输出写入 Flight Recorder。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;权限与沙箱&lt;/strong&gt;：用 Docker 隔离 Agent 执行环境，用 OIDC 控制 API 访问。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;评估与监控&lt;/strong&gt;：设置 drift gauge 仪表盘，对比预期输出与实际结果。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;审计日志&lt;/strong&gt;：采用 WORM（一次写入多次读取）方式记录循环全程，防止篡改。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-5&quot;&gt;第四步：压测并迭代（1-2 周）&lt;/h3&gt;
-  &lt;p&gt;拿一个你现有的业务流程（比如自动化 bug 分类、数据清洗、报告生成），让 Agent 连续执行 10 次，观察错误率、超时率、资源消耗。收集失败案例，调整 prompt 或添加 retry 策略。&lt;/p&gt;
-
-  &lt;h3 id=&quot;section-6&quot;&gt;适合人群&lt;/h3&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;AI 工程师&lt;/strong&gt;：需要搭建生产级 Agent 服务的团队。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;DevSecOps / 安全工程师&lt;/strong&gt;：关注 Agent 的访问控制和审计。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;SaaS 产品经理&lt;/strong&gt;：想在产品内嵌入自主工作流功能。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;合规负责人&lt;/strong&gt;：需要证据体系证明 Agent 行为可追溯。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-7&quot;&gt;不适合人群&lt;/h3&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;只做实验性 Prototype&lt;/strong&gt;：如果任务不超过 5 分钟，不需要 Loop 和 Harness。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;没有明确长期任务需求的团队&lt;/strong&gt;：Loop 的价值在于连续运行，如果每个任务都是独立的，传统 prompt 即可。&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-8&quot;&gt;风险和限制&lt;/h2&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;成本不可控&lt;/strong&gt;：Agent 循环可能产生远高于预期的 token 消耗，尤其在没有设置预算上限或停止条件时。必须加上 max_steps 和 cost_watch。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;错误级联&lt;/strong&gt;：一个错误的观察结果会导致后续整个链路的偏差。需要引入“checkpoint”和人工审核节点。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;安全风险&lt;/strong&gt;：Agent 自主调用 API 可能导致数据泄露或越权。必须用 Harness 的权限层（OIDC、沙箱）限制工具范围。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;可解释性不足&lt;/strong&gt;：即使有审计日志，LLM 的推理过程仍然难以完全还原。可能需要引入“推理追踪（trace）”辅助。&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;依赖特定工具生态&lt;/strong&gt;：目前 Claude Code 和 Codex 的 Loop 功能与自家模型深度绑定，迁移成本较高。&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h2 id=&quot;section-9&quot;&gt;我的判断&lt;/h2&gt;
-
-  &lt;p&gt;&lt;strong&gt;Agent Loop + Harness 是 2026 年 Agent 从 Demo 走向生产的必须基础设施&lt;/strong&gt;。过去我们高估了 prompt 工程，低估了循环和治理的重要性。现在的事实是：模型能力已经足够支持数小时的任务，但缺乏有效循环管理的项目往往在 prototype 阶段就停滞。&lt;/p&gt;
-
-  &lt;p&gt;开源 eval harness 和商业工具的同步成熟，使得构建生产级 Agent 的门槛大幅降低。我建议任何计划上线自主 Agent 的团队，&lt;strong&gt;先花 1 周定义你的 Loop 和 Harness 需求，再用 4 周搭建最小可行版本，比直接调模型跑任务更高效&lt;/strong&gt;。&lt;/p&gt;
-
-  &lt;p&gt;同时也请记住：治理不是事后修补，而是从第一天就要嵌入的。选择框架时，优先考虑自带审计、状态管理和权限模型的方案（如 LangGraph + 自定义工具，或直接使用 Claude Code 的企业版）。不要等到 Agent 出错或合规审计上门才后悔。&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;!-- English Version --&gt;
-&lt;div class=&quot;lang-en&quot;&gt;
-
-  &lt;h2 id=&quot;ai-agent-loops--harnesses-the-new-engineering-practice-for-reliable-autonomous-workflows&quot;&gt;AI Agent Loops &amp;amp; Harnesses: The New Engineering Practice for Reliable Autonomous Workflows&lt;/h2&gt;
-
-  &lt;h1 id=&quot;ai-agent-loops--harnesses-the-new-engineering-practice-for-reliable-autonomous-workflows-1&quot;&gt;AI Agent Loops &amp;amp; Harnesses: The New Engineering Practice for Reliable Autonomous Workflows&lt;/h1&gt;
-
-  &lt;h2 id=&quot;what-it-is&quot;&gt;What It Is&lt;/h2&gt;
-
-  &lt;p&gt;An AI agent loop is the iterative execution cycle that enables autonomous task completion: &lt;strong&gt;perceive → reason → plan → act → observe&lt;/strong&gt;. The loop repeats until the task finishes or a stop condition is met. An AI agent harness is the surrounding infrastructure that makes the loop reliable — tools, state management, permissions, evals, observability, and governed data. Together they form the production foundation for autonomous AI agents.&lt;/p&gt;
-
-  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
-
-  &lt;p&gt;The ceiling for autonomous agent tasks has moved dramatically. METR benchmarks show Claude Opus 4.6 completing 50% of tasks that take 12 hours — a 6x jump from a year ago when the same model topped out at 1 hour 40 minutes. Built-in loop support has arrived: Claude Code ships &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/loop&lt;/code&gt;, cron scheduling, and dynamic workflows; Codex offers recurring schedules and subagent spawning. You no longer need custom infrastructure for basic loops.&lt;/p&gt;
-
-  &lt;p&gt;But loops alone aren’t enough. Without a harness, agents run ungoverned — no evals, no permission boundaries, no audit trail. Research across 522 enterprise queries shows that governed metadata lifts SQL accuracy by 38% (2.15x on medium-complexity queries). Building a production harness takes 4–12 weeks and 5,000–20,000 lines of infrastructure code.&lt;/p&gt;
-
-  &lt;h2 id=&quot;practical-next-steps&quot;&gt;Practical Next Steps&lt;/h2&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;Start with built-in loops&lt;/strong&gt; — Use Claude Code’s &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/loop&lt;/code&gt; or Codex Automations for recurring, well-scoped tasks before building custom loops.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Design a minimal harness early&lt;/strong&gt; — Define state schema, tool permissions, logging, and basic evals before scaling.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Run evals on every loop iteration&lt;/strong&gt; — Governed metadata and structured evaluations catch failures early. Open-source eval harnesses exist (e.g., the MultiAgentOps verification harness on GitHub).&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Add observability and audit logs&lt;/strong&gt; — WORM (write once, read many) logs, cryptographic sealing, and drift gauges help trace agent decisions and meet compliance requirements.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Sandbox execution&lt;/strong&gt; — Use hardened Docker isolation for code execution; gate file system and network access.&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h2 id=&quot;risks--limits&quot;&gt;Risks &amp;amp; Limits&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;Cost and latency&lt;/strong&gt; — Each loop iteration incurs LLM API costs and response time. Complex planning steps can slow throughput.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Harness complexity&lt;/strong&gt; — Building a full harness takes weeks. Teams often skip evals and permission boundaries, leading to unreliable or insecure agents.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;State corruption&lt;/strong&gt; — If the harness does not enforce data integrity, agents can operate on stale or polluted context.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Security surface&lt;/strong&gt; — Agents with tool access and loop autonomy increase attack surface. Without proper sandboxing and audit, a compromised agent can cause real damage.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;take&quot;&gt;Take&lt;/h2&gt;
-
-  &lt;p&gt;Agent loops are the engine; agent harnesses are the chassis. For production autonomous workflows, you need both. Start with built-in loop support from Claude Code or Codex, but invest early in a minimal harness — evals, governed data, and permission boundaries. The models are ready; your engineering practice needs to catch up. The teams that ship reliable autonomous agents will be those that treat harness engineering as a first-class concern, not an afterthought.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.requesty.ai/blog/loop-engineering-how-to-build-ai-agent-loops-that-run-themselves&quot;&gt;Loop Engineering: How to Build AI Agent Loops That Run …&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://blogs.oracle.com/developers/what-is-the-ai-agent-loop-the-core-architecture-behind-autonomous-ai-systems&quot;&gt;What Is the AI Agent Loop? The Core Architecture Behind …&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=RVEaDvh6f5A&quot;&gt;Agent Loops: Complete Guide (Claude Code + Codex) - YouTube&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://atlan.com/know/how-to-build-ai-agent-harness&quot;&gt;How to Build an AI Agent Harness: Step-by-Step Tutorial (2026) - Atlan&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/najeed/ai-agent-eval-harness&quot;&gt;GitHub - najeed/ai-agent-eval-harness: The open-source MultiAgentOps evaluation and verification harness for any industry business workflow. · GitHub&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
     </item>
