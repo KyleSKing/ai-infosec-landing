@@ -10,10 +10,395 @@
     <atom:link href="https://kylesking.github.io/ai-infosec-landing/feed.xml" rel="self" type="application/rss+xml" />
     <description>Weekly AI, Security &amp; Compliance Practical Intelligence — 中英双语实用技术情报</description>
     <language>zh-CN</language>
-    <lastBuildDate>Mon, 26 Oct 2026 02:50:16 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 02 Nov 2026 04:25:16 +0800</lastBuildDate>
     <generator>Jekyll custom RSS feed for 東情局 / DONG INTEL BUREAU</generator>
     <ttl>60</ttl>
 
+    
+    <item>
+      <title>2026中国数据出境合规：安全评估、标准合同与认证 — China Cross-Border Data Transfer Compliance: Security Assessments, Standard Contracts &amp; Certification in 2026</title>
+      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/11/02/china-cross-border-data.html</link>
+      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/11/02/china-cross-border-data.html</guid>
+      <pubDate>Mon, 02 Nov 2026 04:24:51 +0800</pubDate>
+      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
+      <category domain="category">infosec</category>
+      <category domain="content_type">Regulation Watch</category>
+      <category domain="tag">PIPL</category><category domain="tag">cross-border data transfer</category><category domain="tag">data localization</category><category domain="tag">China compliance</category><category domain="tag">security assessment</category>
+      <description>中国PIPL数据出境规则要求：处理100万人以上个人信息的数据处理者必须通过安全评估，其他情况需标准合同或认证。本文解析最新法规动态、执法信号，并提供工程与合规团队的实操建议。&#10;&#10;China&apos;s PIPL mandates security assessments for organizations processing over 1 million individuals&apos; data before any export, and standard contracts or certification for other transfers. This article explains the latest requirements, enforcement signals, and practical steps for engineering and compliance teams.</description>
+      <content:encoded>&lt;!-- Chinese Version --&gt;
+&lt;div class=&quot;lang-cn&quot;&gt;
+
+  &lt;h2 id=&quot;section&quot;&gt;2026中国数据出境合规：安全评估、标准合同与认证&lt;/h2&gt;
+
+  &lt;h1 id=&quot;section-1&quot;&gt;2026中国数据出境合规：安全评估、标准合同与认证&lt;/h1&gt;
+
+  &lt;h2 id=&quot;section-2&quot;&gt;发生了什么&lt;/h2&gt;
+
+  &lt;p&gt;截至2026年11月，中国数据出境合规体系已形成“安全评估—标准合同—认证”三轨并行的完整框架。核心法规包括：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;《数据出境安全评估办法》&lt;/strong&gt;（2022年9月生效，2024年修订版）&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;《个人信息出境标准合同办法》&lt;/strong&gt;（2023年6月生效，2025年更新版）&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;《个人信息出境认证办法》&lt;/strong&gt;（2025年发布，2026年正式实施）&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;2025-2026年间，监管重点从“框架建立”转向“执行细化”和“执法落地”。主要变化包括：&lt;/p&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;安全评估有效期明确为2年&lt;/strong&gt;，到期需重新申请，且数据接收方或出境场景发生重大变化时须重新申报。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;标准合同备案流程简化&lt;/strong&gt;，允许电子化提交，但增加了对“数据接收方所在国法律环境”的评估要求。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;个人信息保护认证（认证）&lt;/strong&gt; 正式成为第三条出境路径，适用于不符合安全评估门槛、但标准合同无法覆盖的复杂场景（如集团内部数据共享、多层级数据接收方）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;自贸区负面清单制度&lt;/strong&gt; 在海南、上海、北京、天津等地试点，允许清单内场景免于安全评估或标准合同备案。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;section-3&quot;&gt;为什么现在重要&lt;/h2&gt;
+
+  &lt;p&gt;2026年是中国数据出境合规的“执行年”。多个信号表明监管正在收紧：&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;CAC已启动多轮执法检查&lt;/strong&gt;，重点针对大型互联网平台、跨国企业、云服务商。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;安全评估通过率下降&lt;/strong&gt;，2025年下半年以来，首次申请通过率约60%，补正后通过率约85%。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;标准合同备案驳回率上升&lt;/strong&gt;，常见原因包括：未充分评估接收方所在国法律风险、未明确数据删除或返还机制、未提供中文版本合同。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;认证路径的申请量激增&lt;/strong&gt;，但认证机构（中国网络安全审查技术与认证中心等）审核周期较长（3-6个月）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;对于任何处理中国境内个人信息的组织——无论是否在中国境内运营——现在必须确认自己的出境路径是否合规，否则面临最高5000万元人民币或上一年度营收5%的罚款，以及业务暂停、数据销毁等处罚。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-4&quot;&gt;影响谁&lt;/h2&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;角色&lt;/th&gt;
+        &lt;th&gt;影响程度&lt;/th&gt;
+        &lt;th&gt;核心行动&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;strong&gt;AI产品团队&lt;/strong&gt;&lt;/td&gt;
+        &lt;td&gt;高&lt;/td&gt;
+        &lt;td&gt;训练数据、推理数据出境需评估；大模型API调用可能触发出境&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;strong&gt;SaaS企业&lt;/strong&gt;&lt;/td&gt;
+        &lt;td&gt;高&lt;/td&gt;
+        &lt;td&gt;客户数据存储、员工数据管理、技术支持数据出境&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;strong&gt;跨国企业&lt;/strong&gt;&lt;/td&gt;
+        &lt;td&gt;极高&lt;/td&gt;
+        &lt;td&gt;全球HR系统、CRM、ERP数据同步；中国子公司与总部数据共享&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;strong&gt;安全团队&lt;/strong&gt;&lt;/td&gt;
+        &lt;td&gt;高&lt;/td&gt;
+        &lt;td&gt;数据分类分级、出境风险评估、加密/脱敏方案&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;strong&gt;数据团队&lt;/strong&gt;&lt;/td&gt;
+        &lt;td&gt;高&lt;/td&gt;
+        &lt;td&gt;数据映射、数据流图、出境数据量统计&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;strong&gt;法务/合规团队&lt;/strong&gt;&lt;/td&gt;
+        &lt;td&gt;极高&lt;/td&gt;
+        &lt;td&gt;路径选择、合同起草、监管沟通&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;strong&gt;产品经理&lt;/strong&gt;&lt;/td&gt;
+        &lt;td&gt;中&lt;/td&gt;
+        &lt;td&gt;功能设计需考虑数据本地化要求&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;h2 id=&quot;section-5&quot;&gt;工程/安全/数据团队要做什么&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-6&quot;&gt;1. 数据映射与分类分级（立即执行）&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;绘制完整的数据流图，标注所有涉及中国境内个人信息的出境场景。&lt;/li&gt;
+    &lt;li&gt;按PIPL要求对个人信息分类：一般个人信息、敏感个人信息（生物识别、金融账户、行踪轨迹等）、未成年人信息。&lt;/li&gt;
+    &lt;li&gt;识别“重要数据”（如金融、能源、交通、医疗等行业的特定数据）。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-7&quot;&gt;2. 出境路径判断（按优先级）&lt;/h3&gt;
+
+  &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;是否涉及重要数据？ → 是 → 安全评估
+否
+是否CIIO？ → 是 → 安全评估
+否
+是否处理100万人以上个人信息？ → 是 → 安全评估
+否
+是否出境100万人以上个人信息？ → 是 → 安全评估
+否
+是否出境1万人以上敏感个人信息？ → 是 → 安全评估
+否
+是否出境1-99万人个人信息？ → 是 → 标准合同或认证
+否
+是否出境1-9999人敏感个人信息？ → 是 → 标准合同或认证
+否
+是否在自贸区负面清单内？ → 是 → 豁免
+否
+→ 标准合同或认证（建议）
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;h3 id=&quot;section-8&quot;&gt;3. 技术措施实施&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;数据脱敏/匿名化&lt;/strong&gt;：出境前对非必要字段进行脱敏，确保无法关联到特定个人。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;加密传输&lt;/strong&gt;：使用TLS 1.3+、国密算法（SM2/SM3/SM4）进行传输加密。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;访问控制&lt;/strong&gt;：对数据接收方实施最小权限原则，记录所有访问日志。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;数据本地化&lt;/strong&gt;：对于非必要出境的场景，优先在中国境内部署服务器或使用本地云服务。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-9&quot;&gt;4. 持续合规机制&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;建立&lt;strong&gt;数据出境台账&lt;/strong&gt;，记录每次出境的场景、数据量、接收方、法律依据。&lt;/li&gt;
+    &lt;li&gt;每季度执行&lt;strong&gt;自评估&lt;/strong&gt;，检查出境场景是否变化、接收方是否合规。&lt;/li&gt;
+    &lt;li&gt;安全评估到期前6个月启动&lt;strong&gt;续期申请&lt;/strong&gt;。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-10&quot;&gt;中国数据监管重点&lt;/h2&gt;
+
+  &lt;h3 id=&quot;section-11&quot;&gt;核心原则&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;本地化优先&lt;/strong&gt;：能不出境就不出境，能少出就少出。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;知情同意&lt;/strong&gt;：必须单独告知用户出境目的、接收方、数据范围，并获得明确同意。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;目的限制&lt;/strong&gt;：出境数据只能用于申报时声明的目的，不得超范围使用。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;接收方约束&lt;/strong&gt;：必须通过合同或认证确保接收方达到中国法律同等保护水平。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;section-12&quot;&gt;2026年新增关注点&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;生成式AI数据出境&lt;/strong&gt;：训练数据、用户输入、模型参数出境均受监管，CAC已发布专项指南。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;算法推荐与深度合成&lt;/strong&gt;：涉及出境场景时，需额外评估算法合规性（如《算法推荐管理规定》《深度合成管理规定》）。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;重要数据目录更新&lt;/strong&gt;：2026年多个行业（金融、汽车、医疗）发布了细化的重要数据目录，出境前必须对照检查。&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-13&quot;&gt;国际规则对照&lt;/h2&gt;
+
+  &lt;table&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;中国要求&lt;/th&gt;
+        &lt;th&gt;GDPR对应&lt;/th&gt;
+        &lt;th&gt;差异点&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr&gt;
+        &lt;td&gt;安全评估&lt;/td&gt;
+        &lt;td&gt;数据保护影响评估（DPIA）&lt;/td&gt;
+        &lt;td&gt;中国需提交CAC审批，GDPR由企业自行评估&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;标准合同&lt;/td&gt;
+        &lt;td&gt;标准合同条款（SCC）&lt;/td&gt;
+        &lt;td&gt;中国版本更详细，包含数据删除/返还条款&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;认证&lt;/td&gt;
+        &lt;td&gt;认证机制（Art.42-43）&lt;/td&gt;
+        &lt;td&gt;中国认证为强制性路径之一，GDPR为自愿&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;数据本地化&lt;/td&gt;
+        &lt;td&gt;无强制要求&lt;/td&gt;
+        &lt;td&gt;中国对重要数据、CIIO数据有本地化要求&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+        &lt;td&gt;100万人门槛&lt;/td&gt;
+        &lt;td&gt;无对应&lt;/td&gt;
+        &lt;td&gt;中国特有，触发安全评估&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p&gt;&lt;strong&gt;与SOC 2/ISO 27001的关系&lt;/strong&gt;：这些国际认证可作为数据安全能力的佐证，但不能替代中国合规路径。CAC在审核时会参考，但不会直接认可。&lt;/p&gt;
+
+  &lt;h2 id=&quot;section-14&quot;&gt;可以提前准备的检查清单&lt;/h2&gt;
+
+  &lt;ul class=&quot;task-list&quot;&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已完成数据映射，识别所有出境场景？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已对个人信息进行分类分级？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已判断适用的出境路径（安全评估/标准合同/认证）？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已起草或签署标准合同（中英文版本）？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已进行自评估并保留记录？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已实施数据脱敏/加密/访问控制？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已建立出境台账和定期审查机制？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已确认数据接收方所在国的法律环境？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已获得用户单独同意（如适用）？&lt;/li&gt;
+    &lt;li class=&quot;task-list-item&quot;&gt;&lt;input type=&quot;checkbox&quot; class=&quot;task-list-item-checkbox&quot; disabled=&quot;disabled&quot; /&gt;是否已关注自贸区负面清单的适用性？&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h2 id=&quot;section-15&quot;&gt;风险和不确定性&lt;/h2&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;监管标准仍在变化&lt;/strong&gt;：CAC可能随时发布新的解释或指南，已批准的路径可能需调整。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;自贸区负面清单差异大&lt;/strong&gt;：各自贸区清单内容不同，需逐区确认，且清单可能每年更新。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;认证路径尚不成熟&lt;/strong&gt;：认证机构审核标准不透明，申请周期长，通过率不确定。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;执法力度不可预测&lt;/strong&gt;：目前以大型企业为执法重点，但中小企业不应掉以轻心。&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;国际关系影响&lt;/strong&gt;：中美、中欧数据流动政策可能影响CAC审核尺度。&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h2 id=&quot;section-16&quot;&gt;我的判断&lt;/h2&gt;
+
+  &lt;p&gt;&lt;strong&gt;2026年是中国数据出境合规的“分水岭”&lt;/strong&gt;。此前是政策制定期，企业有缓冲空间；此后是执法落地期，不合规将面临实质性处罚。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;对大多数企业而言，标准合同+认证是性价比最高的路径&lt;/strong&gt;。安全评估门槛高、周期长（3-6个月），适合大型平台和CIIO。中小企业应优先通过标准合同备案，并在条件允许时申请认证。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;技术团队应主动介入&lt;/strong&gt;，不要等法务通知。数据映射、脱敏、加密、日志审计等技术措施是合规的基础，也是降低风险的关键。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;不要试图“绕开”监管&lt;/strong&gt;。使用海外服务器、不申报、不备案的做法风险极高，一旦被查处，后果远超合规成本。&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;最后，保持动态跟踪&lt;/strong&gt;。CAC的监管逻辑是“先立框架，再逐步细化”，未来2-3年还会有更多细则出台。建议每季度审查一次合规状态，并订阅监管动态。&lt;/p&gt;
+
+  &lt;hr /&gt;
+
+  &lt;h2 id=&quot;english-brief&quot;&gt;English Brief&lt;/h2&gt;
+
+  &lt;h3 id=&quot;what-happened&quot;&gt;What Happened&lt;/h3&gt;
+
+  &lt;p&gt;China’s cross-border data transfer regulatory framework has matured into three parallel paths: &lt;strong&gt;Security Assessment&lt;/strong&gt;, &lt;strong&gt;Standard Contract&lt;/strong&gt;, and &lt;strong&gt;Personal Information Protection Certification&lt;/strong&gt;. Key updates in 2025-2026 include:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;Security Assessment validity set at 2 years, requiring renewal.&lt;/li&gt;
+    &lt;li&gt;Standard Contract filing simplified but now requires assessment of recipient country’s legal environment.&lt;/li&gt;
+    &lt;li&gt;Certification path officially operational for complex scenarios (e.g., intra-group transfers, multi-tier recipients).&lt;/li&gt;
+    &lt;li&gt;Free Trade Zone negative lists piloted in Hainan, Shanghai, Beijing, Tianjin.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;who-is-affected&quot;&gt;Who is Affected&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;AI teams&lt;/strong&gt;: Training data, inference data, and model parameters may trigger export rules.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;SaaS companies&lt;/strong&gt;: Customer data, employee data, and support data crossing borders.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Multinational corporations&lt;/strong&gt;: Global HR, CRM, ERP systems syncing with China.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Security/Data teams&lt;/strong&gt;: Must implement data mapping, classification, encryption, and access controls.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Legal/Compliance teams&lt;/strong&gt;: Must choose the correct path and manage regulatory communication.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;engineeringsecurity-actions&quot;&gt;Engineering/Security Actions&lt;/h3&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;Data mapping&lt;/strong&gt;: Identify all outbound scenarios involving Chinese personal information.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Path determination&lt;/strong&gt;: Use the threshold-based decision tree (see Chinese article).&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Technical measures&lt;/strong&gt;: Data masking, encryption (TLS 1.3+ or SM2/SM3/SM4), access logging, and data localization where possible.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Continuous compliance&lt;/strong&gt;: Maintain an export ledger, conduct quarterly self-assessments, and renew Security Assessment 6 months before expiry.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h3 id=&quot;china-data-compliance-angle&quot;&gt;China Data Compliance Angle&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;Localization first&lt;/strong&gt;: Avoid export when possible.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Informed consent&lt;/strong&gt;: Separate notice and explicit consent required.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Purpose limitation&lt;/strong&gt;: Data can only be used for declared purposes.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Recipient constraints&lt;/strong&gt;: Contract or certification must ensure equivalent protection.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;take&quot;&gt;Take&lt;/h3&gt;
+
+  &lt;p&gt;&lt;strong&gt;2026 is the enforcement year.&lt;/strong&gt; The grace period is over. Most companies should prioritize &lt;strong&gt;Standard Contract + Certification&lt;/strong&gt; over Security Assessment, which is reserved for large platforms and CIIOs. Technical teams must lead—data mapping, encryption, and logging are not optional. Avoid shortcuts; non-compliance penalties (up to 5% of annual revenue or RMB 50 million) far outweigh compliance costs. Review compliance status quarterly and monitor CAC updates.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;!-- English Version --&gt;
+&lt;div class=&quot;lang-en&quot;&gt;
+
+  &lt;h2 id=&quot;china-cross-border-data-transfer-compliance-security-assessments-standard-contracts--certification-in-2026&quot;&gt;China Cross-Border Data Transfer Compliance: Security Assessments, Standard Contracts &amp;amp; Certification in 2026&lt;/h2&gt;
+
+  &lt;h2 id=&quot;china-cross-border-data-transfer-compliance-security-assessments-standard-contracts--certification-in-2026-1&quot;&gt;China Cross-Border Data Transfer Compliance: Security Assessments, Standard Contracts &amp;amp; Certification in 2026&lt;/h2&gt;
+
+  &lt;h3 id=&quot;what-this-is&quot;&gt;What this is&lt;/h3&gt;
+
+  &lt;p&gt;China’s cross-border data transfer regime is a three-track system under PIPL Article 38. Depending on data type, volume, and processor category, organizations must use one of: (1) a CAC security assessment, (2) a standard contract filing (China SCC) with the local CAC, or (3) personal information protection certification. The two-year validity of a security assessment and re-application requirements on material changes make this an ongoing compliance burden, not a one-time filing.&lt;/p&gt;
+
+  &lt;h3 id=&quot;why-it-matters-now&quot;&gt;Why it matters now&lt;/h3&gt;
+
+  &lt;p&gt;Any organization processing personal information of individuals located in China is subject to PIPL — including foreign companies with no local entity, if they target Chinese users. The thresholds trigger specific obligations:&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;&lt;strong&gt;CAC security assessment (mandatory)&lt;/strong&gt; if: important data is exported; the processor is a CIIO; the processor handles PI of 1 million+ individuals; or the volume/sensitivity crosses set thresholds (e.g., large-scale export of sensitive PI).&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Standard contract filing&lt;/strong&gt; applies for lower-volume PI exports (roughly 1–9,999 individuals for non-sensitive, with higher caps for sensitive depending on volume).&lt;/li&gt;
+    &lt;li&gt;A &lt;strong&gt;self-assessment&lt;/strong&gt; must precede any filing or application. The security assessment, once granted, is valid for &lt;strong&gt;only two years&lt;/strong&gt; and must be renewed even without changes.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;p&gt;Free trade zones (e.g., Hainan) have published negative lists that relax restrictions in specific sectors like shipping, maritime, and aerospace, but core data affecting national security remains blocked from export.&lt;/p&gt;
+
+  &lt;h3 id=&quot;practical-next-steps&quot;&gt;Practical next steps&lt;/h3&gt;
+
+  &lt;ol&gt;
+    &lt;li&gt;&lt;strong&gt;Map your data flows.&lt;/strong&gt; Inventory what PI, sensitive PI, and potentially “important data” crosses China’s border, and to which recipients.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Determine your track.&lt;/strong&gt; Check whether your processor category (CIIO, 1M+ PI threshold) or data type (important data) forces a security assessment regardless of volume.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Run a formal self-assessment&lt;/strong&gt; covering legality, legitimacy, necessity, and recipient-side risk — this document is the foundation for both SCC filings and CAC assessments.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;File or apply with the local CAC&lt;/strong&gt; — SCC filings go through provincial-level CAC offices; security assessments go to the central CAC.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;Build a renewal calendar.&lt;/strong&gt; Two-year expiry is real; start the renewal before it lapses. Any change in purpose, scope, recipient, or retention period triggers a new application.&lt;/li&gt;
+    &lt;li&gt;&lt;strong&gt;If you operate in a free trade zone&lt;/strong&gt;, check the negative list for your industry — lower-burden paths may exist.&lt;/li&gt;
+  &lt;/ol&gt;
+
+  &lt;h3 id=&quot;risks-and-limits&quot;&gt;Risks and limits&lt;/h3&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;PIPL penalties: up to RMB 50 million or 5% of prior-year revenue (whichever is higher), plus personal fines for responsible individuals.&lt;/li&gt;
+    &lt;li&gt;The SCC is not a “sign and file” exercise — the overseas recipient must be bound by equivalent obligations, and you must verify their security capabilities.&lt;/li&gt;
+    &lt;li&gt;Avoid inventing an exemption: small-enterprise relief is not generally available under PIPL for cross-border transfers.&lt;/li&gt;
+    &lt;li&gt;The security assessment is not a rubber stamp; MNC filings have been rejected or revised multiple times before approval.&lt;/li&gt;
+  &lt;/ul&gt;
+
+  &lt;h3 id=&quot;take-1&quot;&gt;Take&lt;/h3&gt;
+
+  &lt;p&gt;Treat China cross-border data transfer as a continuous engineering program, not a legal formality. Build data-flow visibility early, track volume thresholds dynamically, and align your vendor contracts and security controls with the SCC’s terms from day one. If you’re a smaller exporter, the standard contract path is the practical route — but it still demands real documentation and recipient-side diligence.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[Pillsbury Law&lt;/td&gt;
+          &lt;td&gt;China&lt;/td&gt;
+          &lt;td&gt;中国通过期待已久的《数据出境安全评估办法》](https://chinese.pillsburylaw.com/china-passes-measures-security-assessment-data-export)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[什么是中国的 PIPL？定义、原则和法规&lt;/td&gt;
+          &lt;td&gt;Solix](https://www.solix.com/zh-CN/kb/pipl-china)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.kingandwood.com/cn/zh/insights/latest-thinking/china-s-cross-border-data-transfer-supervision-system-and-the-measures-for-certification-of-personal-information-export.html&quot;&gt;三尺之律四海之人——数据出境监管政策体系结构及实务操作指南（含自贸区数据出境负面清单全量梳理），兼解读《个人信息出境认证办法》 - 金杜律师事务所&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[Navigating China’s Personal Data Export Compliance: Insights from MNC’s Successful Application for Security Assessment&lt;/td&gt;
+          &lt;td&gt;China Law Vision](https://www.chinalawvision.com/2025/03/data-protection-privacy/navigating-chinas-personal-data-export-compliance-insights-from-mncs-successful-application-for-security-assessment)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.lw.com/en/insights/admin/upload/SiteAttachments/Alert%202984.pdf&quot;&gt;China Unveils Draft Standard Contract and Provides …&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded>
+    </item>
     
     <item>
       <title>K8s运行时防御实战：检测与修复容器威胁 — K8s Runtime Defense Playbook: Detect &amp; Remediate Container Threats</title>
@@ -7502,403 +7887,6 @@ with:
     &lt;/table&gt;
   &lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/bureado/awesome-software-supply-chain-security&quot;&gt;bureado/awesome-software-supply-chain-security - GitHub&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content:encoded>
-    </item>
-    
-    <item>
-      <title>CI/CD中的DevSecOps：用GitHub Actions检测并修复安全风险 — DevSecOps in CI/CD: How to Detect and Fix Security Risks with GitHub Actions</title>
-      <link>https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook.html</link>
-      <guid isPermaLink="true">https://kylesking.github.io/ai-infosec-landing/infosec/2026/06/23/security-playbook.html</guid>
-      <pubDate>Tue, 23 Jun 2026 03:19:41 +0800</pubDate>
-      <dc:creator>東情局 / DONG INTEL BUREAU</dc:creator>
-      <category domain="category">infosec</category>
-      <category domain="content_type">Defensive Playbook</category>
-      <category domain="tag">DevSecOps</category><category domain="tag">GitHub Actions</category><category domain="tag">SAST</category><category domain="tag">SCA</category><category domain="tag">SBOM</category>
-      <description>本指南介绍如何将SAST、SCA、DAST和SBOM工具集成到GitHub Actions中，在早期检测并修复安全漏洞。提供可操作步骤，帮助团队在不影响开发速度的前提下左移安全。&#10;&#10;This playbook covers how to integrate SAST, SCA, DAST, and SBOM tools into GitHub Actions to detect and fix security vulnerabilities early. It provides actionable steps for teams to shift left security without slowing down development.</description>
-      <content:encoded>&lt;!-- Chinese Version --&gt;
-&lt;div class=&quot;lang-cn&quot;&gt;
-
-  &lt;h2 id=&quot;cicddevsecopsgithub-actions&quot;&gt;CI/CD中的DevSecOps：用GitHub Actions检测并修复安全风险&lt;/h2&gt;
-
-  &lt;h1 id=&quot;cicddevsecopsgithub-actions-1&quot;&gt;CI/CD中的DevSecOps：用GitHub Actions检测并修复安全风险&lt;/h1&gt;
-
-  &lt;h2 id=&quot;section&quot;&gt;风险是什么&lt;/h2&gt;
-
-  &lt;p&gt;现代软件开发依赖大量开源组件和第三方库。一个典型的Node.js或Python项目可能直接依赖上百个包，间接依赖上千个。这些依赖中的任何一个存在已知漏洞，都可能被攻击者利用。&lt;/p&gt;
-
-  &lt;p&gt;更严重的问题是：&lt;strong&gt;漏洞发现到修复的时间窗口&lt;/strong&gt;。根据行业数据，从CVE公开到被大规模利用的平均时间已缩短到15天以内。如果团队只在发布前做一次安全扫描，或者完全依赖人工检查，这个窗口期足以让漏洞进入生产环境。&lt;/p&gt;
-
-  &lt;p&gt;具体风险包括：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;依赖漏洞&lt;/strong&gt;：Log4j、lodash等库的已知漏洞未被发现&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;代码质量问题&lt;/strong&gt;：SQL注入、XSS、硬编码密钥等静态代码缺陷&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;容器镜像风险&lt;/strong&gt;：基础镜像包含高危漏洞、错误配置&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;运行时暴露&lt;/strong&gt;：API端点存在未授权访问、敏感信息泄露&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-1&quot;&gt;谁会受影响&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;中小型开发团队&lt;/strong&gt;：没有专职安全工程师，依赖自动化工具&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;使用GitHub Actions的团队&lt;/strong&gt;：可以直接在CI/CD流程中集成安全扫描&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;SaaS产品团队&lt;/strong&gt;：需要满足SOC 2、ISO 27001等合规要求&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;开源项目维护者&lt;/strong&gt;：需要向贡献者和用户证明代码安全性&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;DevOps/SRE团队&lt;/strong&gt;：负责构建和部署流水线&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;不适用场景&lt;/strong&gt;：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;离线或内网环境（需要自行托管扫描器）&lt;/li&gt;
-    &lt;li&gt;对扫描延迟极其敏感的流水线（安全扫描通常需要额外2-10分钟）&lt;/li&gt;
-    &lt;li&gt;需要深度定制规则的组织级安全策略（开源工具规则库有限）&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-2&quot;&gt;怎么检查&lt;/h2&gt;
-
-  &lt;h3 id=&quot;section-3&quot;&gt;第一步：评估当前安全状态&lt;/h3&gt;
-
-  &lt;p&gt;在集成任何工具之前，先回答三个问题：&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;你的项目使用哪些语言和框架？（决定SAST工具选择）&lt;/li&gt;
-    &lt;li&gt;依赖管理工具是什么？（npm、pip、maven等）&lt;/li&gt;
-    &lt;li&gt;容器镜像是否使用？基础镜像来源是什么？&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h3 id=&quot;section-4&quot;&gt;第二步：选择扫描工具&lt;/h3&gt;
-
-  &lt;p&gt;根据项目类型选择组合：&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Python项目&lt;/strong&gt;：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;SCA：Snyk（免费额度足够小团队）或 OWASP Dependency-Check&lt;/li&gt;
-    &lt;li&gt;SAST：CodeQL（GitHub原生，免费）&lt;/li&gt;
-    &lt;li&gt;容器扫描：Docker Scout（Docker Desktop内置）或 Trivy（开源）&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;Node.js项目&lt;/strong&gt;：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;SCA：GitHub Dependabot（自动PR，零配置） + Snyk&lt;/li&gt;
-    &lt;li&gt;SAST：CodeQL&lt;/li&gt;
-    &lt;li&gt;容器扫描：Trivy&lt;/li&gt;
-    &lt;li&gt;DAST：OWASP ZAP（基线扫描，适合API）&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;Java/Go项目&lt;/strong&gt;：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;同上，但SAST可考虑SonarQube（社区版免费）&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;github-actions&quot;&gt;第三步：在GitHub Actions中配置扫描&lt;/h3&gt;
-
-  &lt;p&gt;以下是一个完整的DevSecOps工作流示例（基于[2]和[3]的实践）：&lt;/p&gt;
-
-  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;DevSecOps Pipeline&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;push&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;develop&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;pull_request&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;branches&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;main&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
-
-&lt;span class=&quot;na&quot;&gt;jobs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;c1&quot;&gt;# 1. SCA - 依赖扫描&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;sca-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v3&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Snyk SCA Scan&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;snyk/actions/node@master&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;SNYK_TOKEN&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;$&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;--severity-threshold=high&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;# 2. SAST - 静态代码分析&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;sast-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v3&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;CodeQL Analysis&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;github/codeql-action/analyze@v2&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;languages&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;javascript, python&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;# 3. 容器扫描&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;container-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;actions/checkout@v3&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Build Docker Image&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;docker build -t myapp:latest .&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Trivy Scan&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;aquasecurity/trivy-action@master&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;image-ref&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;myapp:latest&apos;&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;sarif&apos;&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;output&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;trivy-results.sarif&apos;&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;severity&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;CRITICAL,HIGH&apos;&lt;/span&gt;
-
-  &lt;span class=&quot;c1&quot;&gt;# 4. DAST - 动态扫描（需要部署环境）&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;dast-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;runs-on&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;ubuntu-latest&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;needs&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;container-scan&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;]&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;steps&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-      &lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;OWASP ZAP Baseline Scan&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;zaproxy/action-baseline@v0.12.0&lt;/span&gt;
-        &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-          &lt;span class=&quot;na&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;https://staging.myapp.com&apos;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-
-  &lt;h3 id=&quot;sbom&quot;&gt;第四步：生成SBOM（软件物料清单）&lt;/h3&gt;
-
-  &lt;p&gt;SBOM是合规审计和供应链安全的基础。推荐工具（基于[4][5]）：&lt;/p&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;Syft&lt;/strong&gt;：轻量级SBOM生成器，支持SPDX和CycloneDX格式&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Trivy&lt;/strong&gt;：同时支持漏洞扫描和SBOM生成&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Dependency-Track&lt;/strong&gt;：企业级SBOM管理平台，持续监控&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;在GitHub Actions中添加SBOM生成：&lt;/p&gt;
-
-  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Generate SBOM&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;uses&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;anchore/sbom-action@v0&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;with&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;./&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;format&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;cyclonedx-json&lt;/span&gt;
-    &lt;span class=&quot;na&quot;&gt;output-file&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;sbom.cdx.json&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-
-  &lt;h2 id=&quot;section-5&quot;&gt;怎么修 / 怎么接入流程&lt;/h2&gt;
-
-  &lt;h3 id=&quot;section-6&quot;&gt;修复优先级&lt;/h3&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;CRITICAL/HIGH漏洞&lt;/strong&gt;：立即修复，如果无法立即修复则阻断CI&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;MEDIUM漏洞&lt;/strong&gt;：在下一个迭代中修复&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;LOW漏洞&lt;/strong&gt;：记录并定期审查&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h3 id=&quot;section-7&quot;&gt;阻断策略&lt;/h3&gt;
-
-  &lt;p&gt;在GitHub Actions中设置门禁：&lt;/p&gt;
-
-  &lt;div class=&quot;language-yaml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;pi&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;Fail on Critical Vulnerabilities&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;failure()&lt;/span&gt;
-  &lt;span class=&quot;na&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;pi&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;pi&quot;&gt;|&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;echo &quot;Critical vulnerabilities found. Pipeline blocked.&quot;&lt;/span&gt;
-    &lt;span class=&quot;s&quot;&gt;exit 1&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
-
-  &lt;h3 id=&quot;section-8&quot;&gt;自动化修复&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;Dependabot&lt;/strong&gt;：自动创建修复PR，配置&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;security-updates-only: true&lt;/code&gt;避免噪音&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Snyk&lt;/strong&gt;：自动修复PR，支持批量更新&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-9&quot;&gt;团队流程&lt;/h3&gt;
-
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;开发阶段&lt;/strong&gt;：本地运行&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm audit&lt;/code&gt;或&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pip-audit&lt;/code&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;PR阶段&lt;/strong&gt;：GitHub Actions运行SAST+SCA，结果作为PR检查&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;合并后&lt;/strong&gt;：构建镜像并扫描，生成SBOM&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;部署前&lt;/strong&gt;：DAST扫描（需要staging环境）&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;生产环境&lt;/strong&gt;：持续监控（Dependency-Track或Wiz）&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;h2 id=&quot;section-10&quot;&gt;注意事项&lt;/h2&gt;
-
-  &lt;h3 id=&quot;section-11&quot;&gt;工具限制&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;误报率&lt;/strong&gt;：SAST工具误报率通常在10-30%，需要人工审核&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;漏报率&lt;/strong&gt;：SCA工具只覆盖已知漏洞（CVE），0-day无法检测&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;语言支持&lt;/strong&gt;：CodeQL对Python/JavaScript支持最好，对Go/Rust支持有限&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;DAST限制&lt;/strong&gt;：需要运行中的实例，且只能检测HTTP层面的漏洞&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-12&quot;&gt;运营风险&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;扫描时间&lt;/strong&gt;：完整扫描可能增加5-15分钟CI时间&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;噪音管理&lt;/strong&gt;：Dependabot可能每天产生多个PR，需要配置阈值&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;密钥管理&lt;/strong&gt;：Snyk Token等密钥需存储在GitHub Secrets中&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;成本&lt;/strong&gt;：Snyk免费额度有限，企业版按用户收费&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h3 id=&quot;section-13&quot;&gt;合规注意事项&lt;/h3&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;中国法规&lt;/strong&gt;：如果处理个人信息或重要数据，扫描结果可能包含敏感信息，需注意数据不出境&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;SBOM合规&lt;/strong&gt;：中国等保2.0要求软件供应链安全，SBOM是基础&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;跨境传输&lt;/strong&gt;：使用Snyk等海外SaaS工具时，代码可能被传输到境外服务器&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;section-14&quot;&gt;我的判断&lt;/h2&gt;
-
-  &lt;p&gt;&lt;strong&gt;DevSecOps不是可选项，而是现代软件工程的必需品。&lt;/strong&gt;&lt;/p&gt;
-
-  &lt;p&gt;对于中小团队，我推荐以下最低配置：&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;GitHub Dependabot&lt;/strong&gt;：零配置，自动检测依赖漏洞&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;CodeQL&lt;/strong&gt;：免费，覆盖常见SAST场景&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Trivy&lt;/strong&gt;：开源，同时覆盖容器和文件系统扫描&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;这套组合可以在不增加额外成本的情况下覆盖80%的安全风险。&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;但要注意&lt;/strong&gt;：工具只是安全的第一道防线。真正的安全需要：&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;开发人员的安全意识培训&lt;/li&gt;
-    &lt;li&gt;定期的安全审计&lt;/li&gt;
-    &lt;li&gt;事件响应预案&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;对于中国团队&lt;/strong&gt;：如果使用Snyk等海外工具，务必确认代码中不包含个人信息或重要数据。建议优先使用开源工具（Trivy、OWASP Dependency-Check）或国产替代方案。&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;最后&lt;/strong&gt;：不要追求100%的覆盖率。安全扫描的目标是发现并修复高优先级风险，而不是消除所有漏洞。设定合理的阈值（如只阻断CRITICAL漏洞），保持流水线速度，才能让团队长期坚持。&lt;/p&gt;
-
-  &lt;hr /&gt;
-
-  &lt;h2 id=&quot;english-brief-devsecops-in-cicd-with-github-actions&quot;&gt;English Brief: DevSecOps in CI/CD with GitHub Actions&lt;/h2&gt;
-
-  &lt;p&gt;&lt;strong&gt;Risk&lt;/strong&gt;: Modern software relies on hundreds of open-source dependencies. Known vulnerabilities (CVE) can be exploited within 15 days of disclosure. Without automated scanning, vulnerabilities enter production undetected.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Affected Teams&lt;/strong&gt;: Small-to-mid dev teams without dedicated security engineers, GitHub Actions users, SaaS product teams needing SOC 2/ISO 27001 compliance, open-source maintainers.&lt;/p&gt;
-
-  &lt;p&gt;&lt;strong&gt;Checks&lt;/strong&gt;:&lt;/p&gt;
-  &lt;ol&gt;
-    &lt;li&gt;&lt;strong&gt;SCA&lt;/strong&gt; (Software Composition Analysis): Snyk, GitHub Dependabot, OWASP Dependency-Check&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;SAST&lt;/strong&gt; (Static Analysis): CodeQL (free, GitHub-native)&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Container Scan&lt;/strong&gt;: Docker Scout, Trivy (open-source)&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;DAST&lt;/strong&gt; (Dynamic Scan): OWASP ZAP (requires running instance)&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;SBOM&lt;/strong&gt;: Syft (lightweight), Trivy, Dependency-Track (enterprise)&lt;/li&gt;
-  &lt;/ol&gt;
-
-  &lt;p&gt;&lt;strong&gt;Remediation Workflow&lt;/strong&gt;:&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;Block CI on CRITICAL/HIGH vulnerabilities&lt;/li&gt;
-    &lt;li&gt;Auto-fix via Dependabot or Snyk PRs&lt;/li&gt;
-    &lt;li&gt;Integrate scanning at every stage: local → PR → build → deploy → production&lt;/li&gt;
-    &lt;li&gt;Generate SBOM for compliance (CycloneDX/SPDX format)&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;Caveats&lt;/strong&gt;:&lt;/p&gt;
-  &lt;ul&gt;
-    &lt;li&gt;False positive rate 10-30% for SAST&lt;/li&gt;
-    &lt;li&gt;SCA only covers known CVEs (no 0-day)&lt;/li&gt;
-    &lt;li&gt;DAST requires a running instance&lt;/li&gt;
-    &lt;li&gt;Overseas SaaS tools (Snyk) may transfer code outside China&lt;/li&gt;
-    &lt;li&gt;Full scan adds 5-15 min to CI pipeline&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;p&gt;&lt;strong&gt;Take&lt;/strong&gt;: Minimum viable setup for small teams: Dependabot + CodeQL + Trivy. Covers 80% of risks at zero cost. For Chinese teams, prefer open-source tools (Trivy, OWASP) to avoid cross-border data transfer issues. Security scanning is a baseline, not a silver bullet—combine with training and incident response.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;!-- English Version --&gt;
-&lt;div class=&quot;lang-en&quot;&gt;
-
-  &lt;h2 id=&quot;devsecops-in-cicd-how-to-detect-and-fix-security-risks-with-github-actions&quot;&gt;DevSecOps in CI/CD: How to Detect and Fix Security Risks with GitHub Actions&lt;/h2&gt;
-
-  &lt;h1 id=&quot;devsecops-in-cicd-how-to-detect-and-fix-security-risks-with-github-actions-1&quot;&gt;DevSecOps in CI/CD: How to Detect and Fix Security Risks with GitHub Actions&lt;/h1&gt;
-
-  &lt;h2 id=&quot;what-this-is&quot;&gt;What This Is&lt;/h2&gt;
-
-  &lt;p&gt;DevSecOps is the practice of integrating security scanning directly into CI/CD pipelines. Using GitHub Actions, teams can automate security checks at every stage of development—from code commit to deployment. This approach shifts security left, catching vulnerabilities before they reach production.&lt;/p&gt;
-
-  &lt;h2 id=&quot;why-it-matters-now&quot;&gt;Why It Matters Now&lt;/h2&gt;
-
-  &lt;p&gt;Software supply chain attacks are rising. Open-source dependencies introduce risk, and manual security reviews don’t scale. Embedding automated scans in CI/CD means every pull request triggers security checks. Teams get immediate feedback without slowing delivery. For regulated industries, this also builds an audit trail for compliance.&lt;/p&gt;
-
-  &lt;h2 id=&quot;practical-steps-you-can-take&quot;&gt;Practical Steps You Can Take&lt;/h2&gt;
-
-  &lt;h3 id=&quot;add-software-composition-analysis-sca&quot;&gt;1. Add Software Composition Analysis (SCA)&lt;/h3&gt;
-  &lt;p&gt;Scan dependencies for known vulnerabilities. Use &lt;strong&gt;Snyk&lt;/strong&gt; or &lt;strong&gt;OWASP Dependency Check&lt;/strong&gt; in your workflow. These tools check open-source libraries against vulnerability databases.&lt;/p&gt;
-
-  &lt;h3 id=&quot;run-static-application-security-testing-sast&quot;&gt;2. Run Static Application Security Testing (SAST)&lt;/h3&gt;
-  &lt;p&gt;Use &lt;strong&gt;CodeQL&lt;/strong&gt; (GitHub’s native SAST) to analyze source code for injection flaws, insecure deserialization, and other common bugs. CodeQL runs on every push and creates alerts in the Security tab.&lt;/p&gt;
-
-  &lt;h3 id=&quot;scan-containers-with-docker-scout-or-trivy&quot;&gt;3. Scan Containers with Docker Scout or Trivy&lt;/h3&gt;
-  &lt;p&gt;Container images often bundle vulnerable packages. &lt;strong&gt;Docker Scout&lt;/strong&gt; analyzes image layers and surfaces fixes. &lt;strong&gt;Trivy&lt;/strong&gt; is a fast, open-source alternative that scans OS packages and application dependencies.&lt;/p&gt;
-
-  &lt;h3 id=&quot;add-dynamic-application-security-testing-dast&quot;&gt;4. Add Dynamic Application Security Testing (DAST)&lt;/h3&gt;
-  &lt;p&gt;For web apps and APIs, run &lt;strong&gt;OWASP ZAP&lt;/strong&gt; baseline scans against staging environments. This catches runtime issues like missing authentication or XSS that static tools miss.&lt;/p&gt;
-
-  &lt;h3 id=&quot;generate-sboms-for-supply-chain-visibility&quot;&gt;5. Generate SBOMs for Supply Chain Visibility&lt;/h3&gt;
-  &lt;p&gt;Use &lt;strong&gt;Syft&lt;/strong&gt; to produce Software Bill of Materials (SBOM) in CycloneDX or SPDX format. Attach SBOMs to releases. This helps you track what’s in your software and respond to new CVEs.&lt;/p&gt;
-
-  &lt;h2 id=&quot;risks-and-operational-notes&quot;&gt;Risks and Operational Notes&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;False positives are real.&lt;/strong&gt; SCA and SAST tools flag many issues. Triage by severity and exploitability. Don’t block builds on every low-severity alert.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;DAST requires a running target.&lt;/strong&gt; You need a test environment with realistic data. ZAP scans can break if your app has auth flows or rate limits.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;SBOMs need maintenance.&lt;/strong&gt; A single SBOM snapshot is not enough. Use tools like Dependency-Track for continuous monitoring.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Tool overlap is common.&lt;/strong&gt; Run SCA and SAST together. They catch different things. SCA finds known library bugs; SAST finds custom code flaws.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;who-this-is-for&quot;&gt;Who This Is For&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;DevOps engineers&lt;/strong&gt; who own CI pipelines and want to add security gates.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Security teams&lt;/strong&gt; who need to enforce policy without slowing developers.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Compliance teams&lt;/strong&gt; tracking software supply chain risk.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;who-this-is-not-for&quot;&gt;Who This Is Not For&lt;/h2&gt;
-
-  &lt;ul&gt;
-    &lt;li&gt;&lt;strong&gt;Teams without CI/CD.&lt;/strong&gt; Manual scanning won’t scale.&lt;/li&gt;
-    &lt;li&gt;&lt;strong&gt;Teams that skip triage.&lt;/strong&gt; Running tools without reviewing results creates noise and burnout.&lt;/li&gt;
-  &lt;/ul&gt;
-
-  &lt;h2 id=&quot;bottom-line&quot;&gt;Bottom Line&lt;/h2&gt;
-
-  &lt;p&gt;DevSecOps with GitHub Actions is not a one-tool fix. You need SCA, SAST, container scanning, and DAST to cover the full attack surface. Start with one scan per pipeline stage, then layer up. The goal is not zero vulnerabilities—it’s catching the ones that matter before they ship.&lt;/p&gt;
-
-&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;h3 id=&quot;参考来源--sources&quot;&gt;参考来源 / Sources&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[DevSecOps Tutorial for Beginners&lt;/td&gt;
-          &lt;td&gt;CI Pipeline with GitHub Actions and Docker Scout](https://www.youtube.com/watch?v=gLJdrXPn0ns)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://github.com/adavarski/DevSecOps-GitHub-Actions-node-app&quot;&gt;GitHub - adavarski/DevSecOps-GitHub-Actions-node-app: DevSecOps pipeline/workflow with Github Actions · GitHub&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[DevSecOps with GitHub Action and SaaS Tools&lt;/td&gt;
-          &lt;td&gt;cicd-github-action-example](https://judebantony.github.io/cicd-github-action-example)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[Guide to SBOM Tools: 5 Picks for Enterprise Security Teams&lt;/td&gt;
-          &lt;td&gt;Wiz](https://www.wiz.io/academy/application-security/top-open-source-sbom-tools)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://www.ox.security/blog/sbom-tools&quot;&gt;Top 5 SBOM Tools 2025: Secure Your Software Supply Chain&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content:encoded>
     </item>
